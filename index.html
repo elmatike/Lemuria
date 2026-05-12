@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemuria | Presencia Digital que Vende</title>
+    <meta name="description" content="Agencia de crecimiento digital. Creamos tu página web, optimizamos tu Google Maps y mejoramos tu Instagram para aumentar tus ventas.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        noche: '#0F172A',
+                        cian: '#06B6D4',
+                        pizarra: '#94A3B8',
+                        exito: '#10B981',
+                        humo: '#F8FAFC',
+                        card: '#1E293B',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+        }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Neon button effect */
+        .btn-neon {
+            background-color: #06B6D4;
+            color: #0F172A;
+            transition: all 0.3s ease;
+        }
+        .btn-neon:hover {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            border: 2px solid #06B6D4;
+            color: #F8FAFC;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover {
+            background-color: rgba(6, 182, 212, 0.1);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #06B6D4, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden selection:bg-cian selection:text-noche">
+
+    <!-- 1. Navbar -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-noche/80 backdrop-blur-md border-b border-white/10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <i class="ph-fill ph-planet text-3xl text-cian"></i>
+                    <span class="font-bold text-2xl tracking-tighter text-humo">LEMURIA</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#servicios" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Servicios</a>
+                    <a href="#metodo" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Método</a>
+                    <a href="#casos" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Casos de Éxito</a>
+                    <a href="#planes" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Planes</a>
+                </div>
+                <div class="hidden md:flex">
+                    <a href="#contacto" class="btn-neon px-6 py-2.5 rounded-lg font-semibold text-sm">Asesoría Gratis</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-humo hover:text-cian">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cian/20 rounded-full blur-[120px] -z-10"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-section">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-white/10 text-sm font-medium text-pizarra mb-8">
+                <span class="flex h-2 w-2 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-exito opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-exito"></span>
+                </span>
+                Respuesta en 24h | Resultados medibles
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
+                Más clientes para tu negocio, <br class="hidden md:block" />
+                con presencia digital <span class="text-gradient">que vende.</span>
+            </h1>
+            
+            <p class="mt-4 text-xl md:text-2xl text-pizarra max-w-3xl mx-auto mb-10 leading-relaxed">
+                Creamos tu página web, optimizamos tu Google Maps y mejoramos tu Instagram para aumentar tus ventas y tu reputación online.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#contacto" class="btn-neon px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2">
+                    Inicia tu Crecimiento <i class="ph-bold ph-arrow-right"></i>
+                </a>
+                <a href="#casos" class="btn-outline px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center">
+                    Ver Casos Reales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Sección Servicios -->
+    <section id="servicios" class="py-24 bg-noche/50 border-y border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ecosistema Digital Completo</h2>
+                <p class="text-pizarra text-lg max-w-2xl mx-auto">No hacemos "solo webs". Construimos máquinas de adquisición de clientes adaptadas a tu negocio.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 group fade-in-section">
+                    <div class="w-14 h-14 rounded-xl bg-cian/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-desktop text-3xl text-cian"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-humo">Desarrollo Web High-End</h3>
+                    <p class="text-pizarra leading-relaxed">Landing pages y webs corporativas ultrarrápidas, diseñadas específicamente para convertir visitantes en leads cualificados.</p>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 group fade-in-section" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 rounded-xl bg-cian/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-map-pin-line text-3xl text-cian"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-humo">SEO Local & Maps</h3>
+                    <p class="text-pizarra leading-relaxed">Posicionamos tu negocio en los primeros resultados de Google Maps en tu ciudad para que te encuentren cuando te necesitan.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 group fade-in-section" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 rounded-xl bg-cian/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-instagram-logo text-3xl text-cian"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-humo">Instagram Strategy</h3>
+                    <p class="text-pizarra leading-relaxed">Optimizamos tu perfil, definimos pilares de contenido y creamos un funnel visual que genera confianza y autoridad al instante.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Propuesta de Valor -->
+    <section class="py-24 overflow-hidden relative">
+        <div class="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-cian/5 to-transparent -z-10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in-section">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+                        Estrategia <span class="text-cian">></span> Estética
+                    </h2>
+                    <p class="text-pizarra text-lg mb-8">
+                        De nada sirve una web bonita si nadie la visita, o si quienes la visitan no entienden qué vendes. En Lemuria unimos diseño premium con psicología de ventas.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-exito text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-humo text-lg">Enfoque en Conversión</h4>
+                                <p class="text-pizarra">Diseñamos cada botón y cada texto para guiar al usuario a la compra o contacto.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-exito text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-humo text-lg">Velocidad de Carga Extrema</h4>
+                                <p class="text-pizarra">Webs optimizadas para cargar en menos de 2 segundos. Menos esperas, más clientes.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-exito text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-humo text-lg">Datos sobre Suposiciones</h4>
+                                <p class="text-pizarra">Implementamos analítica avanzada para medir qué funciona y escalarlo.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="relative fade-in-section">
+                    <div class="absolute inset-0 bg-gradient-to-r from-cian to-exito rounded-2xl blur-2xl opacity-20"></div>
+                    <div class="bg-card border border-white/10 rounded-2xl p-8 relative z-10 shadow-2xl">
+                        <div class="flex items-center justify-between border-b border-white/5 pb-4 mb-6">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <div class="text-xs font-mono text-pizarra">lemuria-dashboard.exe</div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-pizarra">Tráfico Web</span>
+                                    <span class="text-exito">+145%</span>
+                                </div>
+                                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full bg-cian w-[85%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-pizarra">Leads Generados</span>
+                                    <span class="text-exito">+210%</span>
+                                </div>
+                                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full bg-exito w-[65%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-pizarra">Tasa de Conversión</span>
+                                    <span class="text-exito">4.8%</span>
+                                </div>
+                                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-cian to-exito w-[45%] rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Proceso (Step-by-Step) -->
+    <section id="metodo" class="py-24 bg-noche/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Nuestro Método de Crecimiento</h2>
+                <p class="text-pizarra text-lg">Un proceso transparente y orientado a resultados.</p>
+            </div>
+            
+            <div class="relative">
+                <!-- Linea conectora desktop -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-white/10 -translate-y-1/2"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
+                    <!-- Paso 1 -->
+                    <div class="relative text-center fade-in-section group">
+                        <div class="w-16 h-16 mx-auto bg-card border-2 border-cian text-cian rounded-2xl flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-cian group-hover:text-noche transition-colors shadow-[0_0_15px_rgba(6,182,212,0.2)] group-hover:shadow-[0_0_20px_rgba(6,182,212,0.6)]">
+                            1
+                        </div>
+                        <h3 class="text-lg font-bold text-humo mb-2">Diagnóstico</h3>
+                        <p class="text-sm text-pizarra">Analizamos tu situación actual, competencia y definimos tu cliente ideal.</p>
+                    </div>
+                    
+                    <!-- Paso 2 -->
+                    <div class="relative text-center fade-in-section group" style="transition-delay: 100ms;">
+                        <div class="w-16 h-16 mx-auto bg-card border-2 border-white/10 text-pizarra rounded-2xl flex items-center justify-center text-2xl font-bold mb-6 group-hover:border-cian group-hover:text-cian transition-colors">
+                            2
+                        </div>
+                        <h3 class="text-lg font-bold text-humo mb-2">Estrategia</h3>
+                        <p class="text-sm text-pizarra">Diseñamos el plan de acción (Web, SEO, RRSS) enfocado en ROI.</p>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="relative text-center fade-in-section group" style="transition-delay: 200ms;">
+                        <div class="w-16 h-16 mx-auto bg-card border-2 border-white/10 text-pizarra rounded-2xl flex items-center justify-center text-2xl font-bold mb-6 group-hover:border-cian group-hover:text-cian transition-colors">
+                            3
+                        </div>
+                        <h3 class="text-lg font-bold text-humo mb-2">Implementación</h3>
+                        <p class="text-sm text-pizarra">Desarrollamos e implementamos todo el ecosistema digital en tiempo récord.</p>
+                    </div>
+
+                    <!-- Paso 4 -->
+                    <div class="relative text-center fade-in-section group" style="transition-delay: 300ms;">
+                        <div class="w-16 h-16 mx-auto bg-card border-2 border-white/10 text-pizarra rounded-2xl flex items-center justify-center text-2xl font-bold mb-6 group-hover:border-cian group-hover:text-cian transition-colors">
+                            <i class="ph-bold ph-rocket-launch"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-humo mb-2">Crecimiento</h3>
+                        <p class="text-sm text-pizarra">Medimos resultados, optimizamos iterativamente y escalamos tus ventas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Portfolio (Casos Reales) -->
+    <section id="casos" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 fade-in-section">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Casos de Éxito</h2>
+                    <p class="text-pizarra text-lg">Resultados reales para negocios reales.</p>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <a href="#" class="text-cian hover:text-humo flex items-center gap-2 font-medium transition-colors">
+                        Ver todos los proyectos <i class="ph-bold ph-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Caso 1 -->
+                <div class="group cursor-pointer fade-in-section">
+                    <div class="relative overflow-hidden rounded-2xl aspect-[4/3] mb-6 bg-card border border-white/10">
+                        <div class="absolute inset-0 bg-gradient-to-t from-noche via-noche/40 to-transparent z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000" alt="Restaurante Local" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-cian text-sm font-bold mb-2">Gastronomía</p>
+                                    <h3 class="text-2xl font-bold text-humo">Restaurante El Roble</h3>
+                                </div>
+                                <div class="bg-exito/20 text-exito px-3 py-1 rounded-full text-sm font-bold border border-exito/30 backdrop-blur-sm">
+                                    +120% Reservas
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caso 2 -->
+                <div class="group cursor-pointer fade-in-section" style="transition-delay: 100ms;">
+                    <div class="relative overflow-hidden rounded-2xl aspect-[4/3] mb-6 bg-card border border-white/10">
+                        <div class="absolute inset-0 bg-gradient-to-t from-noche via-noche/40 to-transparent z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1629904853716-f0ba54fc44f7?auto=format&fit=crop&q=80&w=1000" alt="Clínica Dental" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-cian text-sm font-bold mb-2">Salud</p>
+                                    <h3 class="text-2xl font-bold text-humo">Clínica Dental Sonríe</h3>
+                                </div>
+                                <div class="bg-exito/20 text-exito px-3 py-1 rounded-full text-sm font-bold border border-exito/30 backdrop-blur-sm">
+                                    Top 1 Google Maps
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Testimonios -->
+    <section class="py-24 bg-noche/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonio 1 -->
+                <div class="bg-card p-8 rounded-2xl border border-white/5 fade-in-section">
+                    <div class="flex gap-1 text-yellow-500 mb-6 text-xl">
+                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                    </div>
+                    <p class="text-pizarra mb-8 italic">"Desde que Lemuria rediseñó nuestra web y optimizó nuestro perfil de empresa en Google, no damos abasto con los nuevos clientes. Totalmente recomendados."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-xl font-bold text-humo">M</div>
+                        <div>
+                            <h4 class="font-bold text-humo">Martín López</h4>
+                            <p class="text-sm text-pizarra">Dueño, Taller Mecánico AutoFix</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div class="bg-card p-8 rounded-2xl border border-white/5 fade-in-section" style="transition-delay: 100ms;">
+                    <div class="flex gap-1 text-yellow-500 mb-6 text-xl">
+                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                    </div>
+                    <p class="text-pizarra mb-8 italic">"Entendieron perfectamente la estética que buscaba para mi estudio. La web es rapidísima y me llegan contactos de calidad todos los días."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-xl font-bold text-humo">S</div>
+                        <div>
+                            <h4 class="font-bold text-humo">Sofía Gómez</h4>
+                            <p class="text-sm text-pizarra">Arquitecta, SG Estudio</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div class="bg-card p-8 rounded-2xl border border-white/5 fade-in-section" style="transition-delay: 200ms;">
+                    <div class="flex gap-1 text-yellow-500 mb-6 text-xl">
+                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                    </div>
+                    <p class="text-pizarra mb-8 italic">"El cambio en nuestro Instagram fue brutal. Pasamos de tener un feed aburrido a ser una referencia en nuestro sector. Excelentes profesionales."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-xl font-bold text-humo">C</div>
+                        <div>
+                            <h4 class="font-bold text-humo">Carlos Ruiz</h4>
+                            <p class="text-sm text-pizarra">Director, Fitness Club</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Planes (Pricing) -->
+    <section id="planes" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Planes de Crecimiento</h2>
+                <p class="text-pizarra text-lg">Elige la velocidad a la que quieres escalar tu negocio.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-center">
+                <!-- Plan Base -->
+                <div class="bg-card p-8 rounded-3xl border border-white/5 fade-in-section">
+                    <h3 class="text-xl font-bold text-humo mb-2">Presencia Base</h3>
+                    <p class="text-pizarra text-sm mb-6">Ideal para empezar con buen pie en digital.</p>
+                    <div class="text-4xl font-bold text-humo mb-8">€499</div>
+                    <ul class="space-y-4 mb-8 text-pizarra text-sm">
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Landing Page de alta conversión</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Diseño Responsivo</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Formulario de Contacto</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> SEO Básico</li>
+                    </ul>
+                    <a href="#contacto" class="block w-full text-center py-3 rounded-lg btn-outline font-semibold">Elegir Plan</a>
+                </div>
+
+                <!-- Plan Crecimiento (Destacado) -->
+                <div class="bg-gradient-to-b from-card to-noche p-1 rounded-3xl relative fade-in-section transform md:-translate-y-4 shadow-2xl shadow-cian/20">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-cian text-noche px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">Más Popular</div>
+                    <div class="bg-card p-8 rounded-[23px] h-full border border-cian/30 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-cian/10 blur-3xl rounded-full"></div>
+                        <h3 class="text-xl font-bold text-humo mb-2 text-cian">Crecimiento Local</h3>
+                        <p class="text-pizarra text-sm mb-6">Domina tu ciudad y atrae clientes diarios.</p>
+                        <div class="text-4xl font-bold text-humo mb-8">€899</div>
+                        <ul class="space-y-4 mb-8 text-pizarra text-sm relative z-10">
+                            <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> <span class="font-medium text-humo">Todo lo del Plan Base</span></li>
+                            <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Multi-page Website (hasta 5 págs)</li>
+                            <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Setup & Optimización Google Maps</li>
+                            <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Sistema de reseñas automatizado</li>
+                            <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Integración WhatsApp / Chat</li>
+                        </ul>
+                        <a href="#contacto" class="block w-full text-center py-3 rounded-lg btn-neon font-semibold relative z-10">Elegir Plan</a>
+                    </div>
+                </div>
+
+                <!-- Plan Dominio -->
+                <div class="bg-card p-8 rounded-3xl border border-white/5 fade-in-section">
+                    <h3 class="text-xl font-bold text-humo mb-2">Dominio Total</h3>
+                    <p class="text-pizarra text-sm mb-6">El ecosistema completo para ser líder.</p>
+                    <div class="text-4xl font-bold text-humo mb-8">€1,499</div>
+                    <ul class="space-y-4 mb-8 text-pizarra text-sm">
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> <span class="font-medium text-humo">Todo lo del Plan Crecimiento</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Web Corporativa Completa</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Estrategia y Setup de Instagram</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> Analítica Avanzada (GA4)</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-cian"></i> 1 Mes de Soporte Priority</li>
+                    </ul>
+                    <a href="#contacto" class="block w-full text-center py-3 rounded-lg btn-outline font-semibold">Elegir Plan</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. FAQ -->
+    <section class="py-24 bg-noche/50 border-y border-white/5">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Preguntas Frecuentes</h2>
+            </div>
+
+            <div class="space-y-4 fade-in-section">
+                <!-- FAQ Item 1 -->
+                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
+                        <span class="font-medium text-humo">¿Cuánto tiempo tardan en crear mi web?</span>
+                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
+                        Dependiendo del plan elegido, un proyecto típico tarda entre 2 y 4 semanas desde que realizamos el diagnóstico inicial hasta el lanzamiento oficial.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
+                        <span class="font-medium text-humo">¿Ustedes gestionan mis redes sociales mensualmente?</span>
+                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
+                        Nuestro enfoque en los planes principales es dejar tu ecosistema listo (Estrategia, diseño de perfil, plantillas). Si requieres gestión mensual o pauta publicitaria, ofrecemos servicios de retención personalizados tras finalizar el proyecto principal.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
+                        <span class="font-medium text-humo">¿Cómo mejoran mi perfil de Google Maps?</span>
+                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
+                        Optimizamos la ficha con palabras clave locales, actualizamos imágenes, servicios e implementamos un sistema para que obtengas reseñas reales de tus clientes recurrentes, lo que eleva tu posicionamiento de forma orgánica.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Footer / CTA -->
+    <section id="contacto" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-cian/5"></div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-t from-cian/10 to-transparent blur-3xl -z-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-in-section">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">¿Listo para vender más?</h2>
+            <p class="text-xl text-pizarra mb-10 max-w-2xl mx-auto">Agenda una sesión de diagnóstico gratuita de 15 minutos. Sin compromiso. Solo valor para tu negocio.</p>
+            
+            <a href="https://wa.me/1234567890" target="_blank" class="btn-neon inline-flex items-center gap-3 px-10 py-5 rounded-xl font-bold text-lg mb-20 shadow-2xl shadow-cian/20">
+                <i class="ph-fill ph-whatsapp logo text-2xl"></i> Hablar por WhatsApp
+            </a>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 border-t border-white/10 pt-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="ph-fill ph-planet text-3xl text-cian"></i>
+                        <span class="font-bold text-2xl tracking-tighter text-humo">LEMURIA</span>
+                    </div>
+                    <p class="text-pizarra text-sm max-w-xs">Agencia de crecimiento digital especializada en transformar presencia online en ventas reales.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-humo mb-4">Enlaces</h4>
+                    <ul class="space-y-2 text-sm text-pizarra">
+                        <li><a href="#servicios" class="hover:text-cian transition-colors">Servicios</a></li>
+                        <li><a href="#metodo" class="hover:text-cian transition-colors">Nuestro Método</a></li>
+                        <li><a href="#casos" class="hover:text-cian transition-colors">Casos de Éxito</a></li>
+                        <li><a href="#planes" class="hover:text-cian transition-colors">Precios</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-humo mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-sm text-pizarra">
+                        <li class="flex items-center gap-2"><i class="ph ph-envelope-simple text-cian"></i> hola@lemuria.digital</li>
+                        <li class="flex items-center gap-2"><i class="ph ph-phone text-cian"></i> +34 600 000 000</li>
+                    </ul>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cian hover:text-noche transition-all"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cian hover:text-noche transition-all"><i class="ph-fill ph-linkedin-logo text-xl"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cian hover:text-noche transition-all"><i class="ph-fill ph-twitter-logo text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-xs text-pizarra/50">
+                &copy; 2026 Lemuria Digital. Todos los derechos reservados.
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/1234567890" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center text-3xl shadow-lg shadow-[#25D366]/30 hover:scale-110 transition-transform z-50">
+        <i class="ph-fill ph-whatsapp logo"></i>
+    </a>
+
+    <!-- Scripts para Animaciones y FAQ -->
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                // Toggle current
+                content.classList.toggle('hidden');
+                if(!content.classList.contains('hidden')) {
+                    icon.classList.add('rotate-180');
+                } else {
+                    icon.classList.remove('rotate-180');
+                }
+            });
+        });
+
+        // Scroll Animations (Intersection Observer)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Navbar blur effect on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
