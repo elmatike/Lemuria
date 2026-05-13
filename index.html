@@ -553,13 +553,19 @@
         <div class="absolute inset-0 bg-cian/5"></div>
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-t from-cian/10 to-transparent blur-3xl -z-10"></div>
         
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-in-section">
-            <h2 class="text-4xl md:text-6xl font-bold mb-6">¿Listo para vender más?</h2>
-            <p class="text-xl text-pizarra mb-10 max-w-2xl mx-auto">Agenda una sesión de diagnóstico gratuita de 15 minutos. Sin compromiso. Solo valor para tu negocio.</p>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 fade-in-section">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">¿Listo para vender más?</h2>
+                <p class="text-xl text-pizarra max-w-2xl mx-auto">Reserva tu sesión de diagnóstico gratuita de 15 minutos directamente aquí abajo.</p>
+            </div>
             
-            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/TU_USUARIO_CALENDLY'});return false;" class="btn-neon inline-flex items-center gap-3 px-10 py-5 rounded-xl font-bold text-lg mb-20 shadow-2xl shadow-cian/20 cursor-pointer">
-                <i class="ph-bold ph-calendar-plus text-2xl"></i> Agendar Sesión
-            </button>
+            <!-- Calendly Inline Widget -->
+            <div class="bg-card rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+                <div class="calendly-inline-widget" 
+                     data-url="https://calendly.com/TU_USUARIO_CALENDLY?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0f172a&text_color=f8fafc&primary_color=06b6d4" 
+                     style="min-width:320px;height:750px;">
+                </div>
+            </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 relative z-10">
