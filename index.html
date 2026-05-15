@@ -116,10 +116,163 @@
         </div>
     </nav>
 
-    <!-- 2. Hero -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <!-- Background elements -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cian/20 rounded-full blur-[120px] -z-10"></div>
+        <!-- Dynamic Dithered Waves Background -->
+        <div id="dither-canvas-container" class="absolute inset-0 -z-10 opacity-40"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script>
+            (function() {
+                const container = document.getElementById('dither-canvas-container');
+                const scene = new THREE.Scene();
+                const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+                const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                container.appendChild(renderer.domElement);
+
+                const uniforms = {
+                    uTime: { value: 0 },
+                    uResolution: { value: new THREE.Vector2() },
+                    uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+                    uColor: { value: new THREE.Color(0.02, 0.71, 0.83) }, // #06B6D4
+                    uFrequency: { value: 10.0 },
+                    uMouseRadius: { value: 0.1 }
+                };
+
+                const vertexShader = `
+                    varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = vec4(position, 1.0);
+                    }
+                `;
+
+                const fragmentShader = `
+                    uniform float uTime;
+                    uniform vec2 uResolution;
+                    uniform vec2 uMouse;
+                    uniform vec3 uColor;
+                    uniform float uFrequency;
+                    uniform float uMouseRadius;
+                    varying vec2 vUv;
+
+                    // Simple noise function
+                    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                    vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                    vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+                    float snoise(vec2 v) {
+                        const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                        vec2 i  = floor(v + dot(v, C.yy) );
+                        vec2 x0 = v -   i + dot(i, C.xx);
+                        vec2 i1;
+                        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                        vec4 x12 = x0.xyxy + C.xxzz;
+                        x12.xy -= i1;
+                        i = mod289(i);
+                        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                        m = m*m ;
+                        m = m*m ;
+                        vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                        vec3 h = abs(x) - 0.5;
+                        vec3 ox = floor(x + 0.5);
+                        vec3 a0 = x - ox;
+                        m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                        vec3 g;
+                        g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                        return 130.0 * dot(m, g);
+                    }
+
+                    float fbm(vec2 p) {
+                        float v = 0.0;
+                        float a = 0.5;
+                        for (int i = 0; i < 3; i++) {
+                            v += a * snoise(p);
+                            p = p * 2.0;
+                            a *= 0.5;
+                        }
+                        return v;
+                    }
+
+                    // Bayer Matrix for Dithering
+                    float dither8x8(vec2 uv) {
+                        int x = int(mod(uv.x, 8.0));
+                        int y = int(mod(uv.y, 8.0));
+                        int index = x + y * 8;
+                        float limit = 0.0;
+                        if (x < 8) {
+                            if (index == 0) limit = 0.015625; else if (index == 1) limit = 0.515625; else if (index == 2) limit = 0.140625; else if (index == 3) limit = 0.640625;
+                            else if (index == 4) limit = 0.046875; else if (index == 5) limit = 0.546875; else if (index == 6) limit = 0.171875; else if (index == 7) limit = 0.671875;
+                            else if (index == 8) limit = 0.765625; else if (index == 9) limit = 0.265625; else if (index == 10) limit = 0.890625; else if (index == 11) limit = 0.390625;
+                            else if (index == 12) limit = 0.796875; else if (index == 13) limit = 0.296875; else if (index == 14) limit = 0.921875; else if (index == 15) limit = 0.421875;
+                            else if (index == 16) limit = 0.203125; else if (index == 17) limit = 0.703125; else if (index == 18) limit = 0.078125; else if (index == 19) limit = 0.578125;
+                            else if (index == 20) limit = 0.234375; else if (index == 21) limit = 0.734375; else if (index == 22) limit = 0.109375; else if (index == 23) limit = 0.609375;
+                            else if (index == 24) limit = 0.953125; else if (index == 25) limit = 0.453125; else if (index == 26) limit = 0.828125; else if (index == 27) limit = 0.328125;
+                            else if (index == 28) limit = 0.984375; else if (index == 29) limit = 0.484375; else if (index == 30) limit = 0.859375; else if (index == 31) limit = 0.359375;
+                            else if (index == 32) limit = 0.0625; else if (index == 33) limit = 0.5625; else if (index == 34) limit = 0.1875; else if (index == 35) limit = 0.6875;
+                            else if (index == 36) limit = 0.03125; else if (index == 37) limit = 0.53125; else if (index == 38) limit = 0.15625; else if (index == 39) limit = 0.65625;
+                            else if (index == 40) limit = 0.8125; else if (index == 41) limit = 0.3125; else if (index == 42) limit = 0.9375; else if (index == 43) limit = 0.4375;
+                            else if (index == 44) limit = 0.78125; else if (index == 45) limit = 0.28125; else if (index == 46) limit = 0.90625; else if (index == 47) limit = 0.40625;
+                            else if (index == 48) limit = 0.25; else if (index == 49) limit = 0.75; else if (index == 50) limit = 0.125; else if (index == 51) limit = 0.625;
+                            else if (index == 52) limit = 0.21875; else if (index == 53) limit = 0.71875; else if (index == 54) limit = 0.09375; else if (index == 55) limit = 0.59375;
+                            else if (index == 56) limit = 1.0; else if (index == 57) limit = 0.5; else if (index == 58) limit = 0.875; else if (index == 59) limit = 0.375;
+                            else if (index == 60) limit = 0.96875; else if (index == 61) limit = 0.46875; else if (index == 62) limit = 0.84375; else if (index == 63) limit = 0.34375;
+                        }
+                        return limit;
+                    }
+
+                    void main() {
+                        vec2 uv = vUv;
+                        float dist = distance(uv, uMouse);
+                        float mouseEff = smoothstep(uMouseRadius, 0.0, dist) * 0.5;
+                        
+                        vec2 p = uv * uFrequency;
+                        float n = fbm(p + uTime * 0.2 + mouseEff);
+                        float intensity = n * 0.5 + 0.5;
+                        
+                        // Apply Dithering
+                        float threshold = dither8x8(gl_FragCoord.xy);
+                        float final = intensity > threshold ? 1.0 : 0.0;
+                        
+                        gl_FragColor = vec4(uColor * final, final * 0.6);
+                    }
+                `;
+
+                const geometry = new THREE.PlaneGeometry(2, 2);
+                const material = new THREE.ShaderMaterial({
+                    uniforms,
+                    vertexShader,
+                    fragmentShader,
+                    transparent: true
+                });
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+
+                function resize() {
+                    const w = container.clientWidth;
+                    const h = container.clientHeight;
+                    renderer.setSize(w, h);
+                    uniforms.uResolution.value.set(w, h);
+                }
+
+                window.addEventListener('resize', resize);
+                window.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    uniforms.uMouse.value.set(
+                        (e.clientX - rect.left) / rect.width,
+                        1.0 - (e.clientY - rect.top) / rect.height
+                    );
+                });
+
+                function animate(t) {
+                    uniforms.uTime.value = t * 0.001;
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(animate);
+                }
+
+                resize();
+                requestAnimationFrame(animate);
+            })();
+        </script>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-section">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-white/10 text-sm font-medium text-pizarra mb-8">
