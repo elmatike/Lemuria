@@ -306,8 +306,10 @@
         </script>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-section">
-            <h1 class="text-6xl md:text-9xl font-black tracking-tighter mb-8 leading-tight text-center min-h-[1.2em]">
-                <span id="typing-hero-title" class="text-gradient inline-block"></span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[1.1] text-center flex flex-col items-center justify-center">
+                <span id="typing-hero-1" class="text-gradient block h-[1.1em]"></span>
+                <span id="typing-hero-2" class="text-gradient block h-[1.1em]"></span>
+                <span id="typing-hero-3" class="text-gradient block h-[1.1em]"></span>
             </h1>
             
             <p class="mt-4 text-xl md:text-2xl text-pizarra max-w-3xl mx-auto mb-10 leading-relaxed min-h-[3em]">
@@ -938,12 +940,28 @@
             }
         }
 
-        // Initialize Hero Animations
-        initTextType('typing-hero-title', {
-            text: ["+ Clientes", "+ Visibilidad", "+ Confianza"],
-            typingSpeed: 80,
-            pauseDuration: 2000,
-            loop: true,
+        // Initialize Hero Animations (Stacked Sequential)
+        initTextType('typing-hero-1', {
+            text: "+ Clientes",
+            typingSpeed: 70,
+            loop: false,
+            initialDelay: 200,
+            cursorCharacter: '|'
+        });
+
+        initTextType('typing-hero-2', {
+            text: "+ Visibilidad",
+            typingSpeed: 70,
+            loop: false,
+            initialDelay: 1200, // Starts after first line
+            cursorCharacter: '|'
+        });
+
+        initTextType('typing-hero-3', {
+            text: "+ Confianza",
+            typingSpeed: 70,
+            loop: false,
+            initialDelay: 2500, // Starts after second line
             cursorCharacter: '|'
         });
 
