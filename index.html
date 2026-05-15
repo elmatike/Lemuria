@@ -970,7 +970,7 @@
             const ripple = document.createElement('div');
             ripple.className = 'ripple-drop';
             
-            const size = Math.random() * 40 + 20; 
+            const size = Math.random() * 100 + 20; // Diverse: 20px to 120px
             const x = Math.random() * window.innerWidth;
             const y = Math.random() * window.innerHeight;
 
@@ -982,7 +982,7 @@
             container.appendChild(ripple);
 
             setTimeout(() => { ripple.remove(); }, 5000);
-            setTimeout(spawnRipple, Math.random() * 8000 + 7000);
+            setTimeout(spawnRipple, Math.random() * 4000 + 4000); // More frequent: 4s to 8s
         }
         
         // Start after a short delay
