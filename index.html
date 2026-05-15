@@ -88,6 +88,34 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        /* GlareHover Effect */
+        .glare-hover {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glare-hover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                var(--gh-angle, -45deg),
+                hsla(0, 0%, 0%, 0) 60%,
+                var(--gh-rgba, rgba(255, 255, 255, 0.3)) 70%,
+                hsla(0, 0%, 0%, 0),
+                hsla(0, 0%, 0%, 0) 100%
+            );
+            transition: var(--gh-duration, 650ms) ease;
+            background-size: var(--gh-size, 250%) var(--gh-size, 250%), 100% 100%;
+            background-repeat: no-repeat;
+            background-position: -100% -100%, 0 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .glare-hover:hover::before {
+            background-position: 100% 100%, 0 0;
+        }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden selection:bg-cian selection:text-noche">
@@ -653,7 +681,8 @@
                 <!-- Plan Plata (Destacado) -->
                 <div class="bg-gradient-to-b from-card to-noche p-1 rounded-3xl relative fade-in-section transform md:-translate-y-4 shadow-2xl shadow-cian/20 flex flex-col">
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-cian text-noche px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide z-20">Más Popular</div>
-                    <div class="bg-card p-8 rounded-[23px] h-full border border-cian/30 relative overflow-hidden flex flex-col">
+                    <div class="bg-card p-8 rounded-[23px] h-full border border-cian/30 relative overflow-hidden flex flex-col glare-hover cursor-pointer" 
+                         style="--gh-angle: -30deg; --gh-rgba: rgba(255,255,255,0.3); --gh-duration: 800ms; --gh-size: 300%;">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-cian/10 blur-3xl rounded-full"></div>
                         <h3 class="text-xl font-bold text-humo mb-2">Plan Plata</h3>
                         <p class="text-cian font-medium text-sm mb-2 uppercase tracking-wider">Crecimiento y Reputación</p>
