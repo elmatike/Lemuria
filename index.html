@@ -16,6 +16,9 @@
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Three.js for Backgrounds -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -119,8 +122,7 @@
     <!-- 2. Hero -->
     <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <!-- Dynamic Dithered Waves Background -->
-        <div id="dither-canvas-container" class="absolute inset-0 -z-10 opacity-40"></div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <div id="dither-canvas-container" class="absolute inset-0 -z-10 opacity-30"></div>
         <script>
             (function() {
                 const container = document.getElementById('dither-canvas-container');
@@ -135,8 +137,8 @@
                     uResolution: { value: new THREE.Vector2() },
                     uMouse: { value: new THREE.Vector2(0.5, 0.5) },
                     uColor: { value: new THREE.Color(0.02, 0.71, 0.83) }, // #06B6D4
-                    uFrequency: { value: 10.0 },
-                    uMouseRadius: { value: 0.1 }
+                    uFrequency: { value: 8.0 },
+                    uMouseRadius: { value: 0.15 }
                 };
 
                 const vertexShader = `
@@ -156,7 +158,6 @@
                     uniform float uMouseRadius;
                     varying vec2 vUv;
 
-                    // Simple noise function
                     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
                     vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
                     vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -195,7 +196,6 @@
                         return v;
                     }
 
-                    // Bayer Matrix for Dithering
                     float dither8x8(vec2 uv) {
                         int x = int(mod(uv.x, 8.0));
                         int y = int(mod(uv.y, 8.0));
@@ -231,11 +231,10 @@
                         float n = fbm(p + uTime * 0.2 + mouseEff);
                         float intensity = n * 0.5 + 0.5;
                         
-                        // Apply Dithering
                         float threshold = dither8x8(gl_FragCoord.xy);
                         float final = intensity > threshold ? 1.0 : 0.0;
                         
-                        gl_FragColor = vec4(uColor * final, final * 0.6);
+                        gl_FragColor = vec4(uColor * final, final * 0.5);
                     }
                 `;
 
@@ -250,8 +249,9 @@
                 scene.add(mesh);
 
                 function resize() {
-                    const w = container.clientWidth;
-                    const h = container.clientHeight;
+                    const section = container.closest('section');
+                    const w = section.offsetWidth;
+                    const h = section.offsetHeight;
                     renderer.setSize(w, h);
                     uniforms.uResolution.value.set(w, h);
                 }
@@ -271,7 +271,7 @@
                     requestAnimationFrame(animate);
                 }
 
-                resize();
+                setTimeout(resize, 100);
                 requestAnimationFrame(animate);
             })();
         </script>
@@ -285,10 +285,10 @@
                 Respuesta en 24h | Resultados medibles
             </div>
             
-            <h1 class="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-[1.1] text-center">
-                <span class="text-gradient block">+ Clientes</span>
-                <span class="text-gradient block">+ Visibilidad</span>
-                <span class="text-gradient block">+ Confianza</span>
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-tight text-center">
+                <span class="text-gradient inline-block">+ Clientes</span><br>
+                <span class="text-gradient inline-block">+ Visibilidad</span><br>
+                <span class="text-gradient inline-block">+ Confianza</span>
             </h1>
             
             <p class="mt-4 text-xl md:text-2xl text-pizarra max-w-3xl mx-auto mb-10 leading-relaxed">
