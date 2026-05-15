@@ -116,7 +116,7 @@
         .glare-hover:hover::before {
             background-position: 100% 100%, 0 0;
         }
-        /* Water Ripple Effect */
+        /* Water Ripple Effect - Forced Visibility */
         #global-ripple-container {
             position: fixed;
             top: 0;
@@ -124,29 +124,26 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1; /* Up from -5 to be visible over backgrounds */
+            z-index: 40; /* High z-index to stay above dark backgrounds */
             overflow: hidden;
         }
 
         .ripple-drop {
             position: absolute;
-            border: 2px solid rgba(6, 182, 212, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             transform: scale(0);
-            animation: ripple-animation 5s ease-out forwards;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            animation: ripple-animation 4s ease-out forwards;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.6), inset 0 0 10px rgba(6, 182, 212, 0.4);
         }
 
         @keyframes ripple-animation {
             0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            15% {
-                opacity: 0.7;
+                transform: scale(0.1);
+                opacity: 1;
             }
             100% {
-                transform: scale(10);
+                transform: scale(8);
                 opacity: 0;
             }
         }
@@ -971,11 +968,10 @@
             document.body.appendChild(container);
 
             function spawnRipple() {
-                // Only spawn if page is scrolled a bit or just randomly
                 const ripple = document.createElement('div');
                 ripple.className = 'ripple-drop';
                 
-                const size = Math.random() * 80 + 40; // 40px to 120px
+                const size = Math.random() * 100 + 50; 
                 const x = Math.random() * window.innerWidth;
                 const y = Math.random() * window.innerHeight;
 
@@ -986,18 +982,15 @@
 
                 container.appendChild(ripple);
 
-                // Self-destruct after animation
                 setTimeout(() => {
                     ripple.remove();
-                }, 6000);
+                }, 4000);
 
-                // Schedule next drop (Increased frequency for better visibility)
-                const nextDelay = Math.random() * 4000 + 2000; // Every 2s to 6s
+                const nextDelay = Math.random() * 3000 + 1000; // Every 1-4 seconds for clear visibility
                 setTimeout(spawnRipple, nextDelay);
             }
 
-            // Start the sequence sooner
-            setTimeout(spawnRipple, 1000);
+            setTimeout(spawnRipple, 500);
         })();
     </script>
 </body>
