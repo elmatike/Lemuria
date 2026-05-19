@@ -48,15 +48,24 @@
             color: #F8FAFC;
         }
         
-        .star {
+        .star-btn {
             cursor: pointer;
-            transition: all 0.2s ease;
-            color: #475569;
+            transition: transform 0.15s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            display: inline-flex;
         }
-        .star:hover,
-        .star.active {
-            color: #FBBF24;
+        .star-btn:hover {
             transform: scale(1.2);
+        }
+        .star-btn svg {
+            fill: #475569;
+            transition: fill 0.15s ease;
+        }
+        .star-btn.active svg,
+        .star-btn.hovered svg {
+            fill: #FBBF24;
         }
         
         .btn-neon {
@@ -105,14 +114,24 @@
                 <!-- Estrellas -->
                 <div>
                     <label class="block text-sm font-medium text-humo mb-2">¿Cómo fue tu experiencia?</label>
-                    <div class="flex items-center gap-2" id="star-container">
-                        <i class="ph-fill ph-star star text-3xl" data-value="1"></i>
-                        <i class="ph-fill ph-star star text-3xl" data-value="2"></i>
-                        <i class="ph-fill ph-star star text-3xl" data-value="3"></i>
-                        <i class="ph-fill ph-star star text-3xl" data-value="4"></i>
-                        <i class="ph-fill ph-star star text-3xl" data-value="5"></i>
+                    <div class="flex items-center gap-1" id="star-container">
+                        <button type="button" class="star-btn" data-value="1">
+                            <i class="ph-fill ph-star text-4xl"></i>
+                        </button>
+                        <button type="button" class="star-btn" data-value="2">
+                            <i class="ph-fill ph-star text-4xl"></i>
+                        </button>
+                        <button type="button" class="star-btn" data-value="3">
+                            <i class="ph-fill ph-star text-4xl"></i>
+                        </button>
+                        <button type="button" class="star-btn" data-value="4">
+                            <i class="ph-fill ph-star text-4xl"></i>
+                        </button>
+                        <button type="button" class="star-btn" data-value="5">
+                            <i class="ph-fill ph-star text-4xl"></i>
+                        </button>
                     </div>
-                    <input type="hidden" id="estrellas" value="5">
+                    <input type="hidden" id="estrellas" value="0">
                 </div>
 
                 <!-- Descripción -->
@@ -143,41 +162,47 @@
     </div>
 
     <script>
-        // Supabase config
         const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
         const EDGE_FUNCTION_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co/functions/v1/send-approval-email';
         
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Star rating logic
-        const stars = document.querySelectorAll('.star');
+        const starBtns = document.querySelectorAll('.star-btn');
         const estrellasInput = document.getElementById('estrellas');
-        let selectedStars = 5;
+        let selectedStars = 0;
 
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                selectedStars = parseInt(star.dataset.value);
-                estrellasInput.value = selectedStars;
-                updateStars();
+        function setStars(value) {
+            selectedStars = value;
+            estrellasInput.value = value;
+            starBtns.forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.value) <= value);
+            });
+        }
+
+        starBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setStars(parseInt(btn.dataset.value));
             });
 
-            star.addEventListener('mouseenter', () => {
-                const hoverValue = parseInt(star.dataset.value);
-                stars.forEach(s => {
-                    s.classList.toggle('active', parseInt(s.dataset.value) <= hoverValue);
+            btn.addEventListener('mouseenter', () => {
+                const hoverValue = parseInt(btn.dataset.value);
+                starBtns.forEach(b => {
+                    b.classList.toggle('hovered', parseInt(b.dataset.value) <= hoverValue);
                 });
             });
         });
 
-        document.getElementById('star-container').addEventListener('mouseleave', updateStars);
-
-        function updateStars() {
-            stars.forEach(s => {
-                s.classList.toggle('active', parseInt(s.dataset.value) <= selectedStars);
+        document.getElementById('star-container').addEventListener('mouseleave', () => {
+            starBtns.forEach(btn => {
+                btn.classList.remove('hovered');
             });
-        }
-        updateStars();
+            setStars(selectedStars);
+        });
+
+        // Initialize with 0 stars
+        setStars(0);
 
         // Form submission
         document.getElementById('review-form').addEventListener('submit', async (e) => {
@@ -189,13 +214,16 @@
             const descripcion = document.getElementById('descripcion').value.trim();
 
             if (!empresa || !descripcion) return;
+            if (estrellas < 1 || estrellas > 5) {
+                alert('Por favor seleccioná una calificación de estrellas.');
+                return;
+            }
 
             btn.disabled = true;
             btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Enviando...';
 
             try {
-                // Insert review into Supabase
-                const { data, error } = await supabase
+                const { data, error } = await sb
                     .from('reviews')
                     .insert([
                         { empresa, estrellas, descripcion, aprobada: false }
