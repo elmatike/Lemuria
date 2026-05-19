@@ -337,18 +337,18 @@
             })();
         </script>
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[1.1] text-center flex flex-col items-center justify-center">
-                <span id="typing-hero-1" class="text-gradient block h-[1.1em]"></span>
-                <span id="typing-hero-2" class="text-gradient block h-[1.1em]"></span>
-                <span id="typing-hero-3" class="text-gradient block h-[1.1em]"></span>
+                <span id="hero-line-1" class="text-gradient block h-[1.1em] opacity-0">+ Clientes</span>
+                <span id="hero-line-2" class="text-gradient block h-[1.1em] opacity-0">+ Visibilidad</span>
+                <span id="hero-line-3" class="text-gradient block h-[1.1em] opacity-0">+ Confianza</span>
             </h1>
             
-            <p class="mt-4 text-xl md:text-2xl text-pizarra max-w-3xl mx-auto mb-10 leading-relaxed min-h-[3em]">
-                <span id="typing-hero-desc"></span>
+            <p class="mt-4 text-xl md:text-2xl text-pizarra max-w-3xl mx-auto mb-10 leading-relaxed opacity-0" id="hero-desc">
+                Creamos tu página web, visibilizamos tu negocio en maps y mejoramos tus redes para aumentar tus ventas y tu reputación online.
             </p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 opacity-0" id="hero-cta">
                 <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-neon px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2">
                     Inicia tu Crecimiento <i class="ph-bold ph-arrow-right"></i>
                 </a>
@@ -398,91 +398,7 @@
         </div>
     </section>
 
-    <!-- 4. Propuesta de Valor -->
-    <section class="py-24 overflow-hidden relative">
-        <div class="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-cian/5 to-transparent -z-10"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="fade-in-section">
-                    <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-                        Estrategia <span class="text-cian">></span> Estética
-                    </h2>
-                    <p class="text-pizarra text-lg mb-8">
-                        De nada sirve una web bonita si nadie la visita, o si quienes la visitan no entienden qué vendes. En Lemuria unimos diseño premium con psicología de ventas.
-                    </p>
-                    
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3">
-                            <i class="ph-fill ph-check-circle text-exito text-2xl mt-1"></i>
-                            <div>
-                                <h4 class="font-bold text-humo text-lg">Enfoque en Conversión</h4>
-                                <p class="text-pizarra">Diseñamos cada botón y cada texto para guiar al usuario a la compra o contacto.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="ph-fill ph-check-circle text-exito text-2xl mt-1"></i>
-                            <div>
-                                <h4 class="font-bold text-humo text-lg">Velocidad de Carga Extrema</h4>
-                                <p class="text-pizarra">Webs optimizadas para cargar en menos de 2 segundos. Menos esperas, más clientes.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="ph-fill ph-check-circle text-exito text-2xl mt-1"></i>
-                            <div>
-                                <h4 class="font-bold text-humo text-lg">Datos sobre Suposiciones</h4>
-                                <p class="text-pizarra">Implementamos analítica avanzada para medir qué funciona y escalarlo.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="relative fade-in-section">
-                    <div class="absolute inset-0 bg-gradient-to-r from-cian to-exito rounded-2xl blur-2xl opacity-20"></div>
-                    <div class="bg-card border border-white/10 rounded-2xl p-8 relative z-10 shadow-2xl">
-                        <div class="flex items-center justify-between border-b border-white/5 pb-4 mb-6">
-                            <div class="flex gap-2">
-                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            </div>
-                            <div class="text-xs font-mono text-pizarra">lemuria-dashboard.exe</div>
-                        </div>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-pizarra">Tráfico Web</span>
-                                    <span class="text-exito">+145%</span>
-                                </div>
-                                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
-                                    <div class="h-full bg-cian w-[85%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-pizarra">Leads Generados</span>
-                                    <span class="text-exito">+210%</span>
-                                </div>
-                                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
-                                    <div class="h-full bg-exito w-[65%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-pizarra">Tasa de Conversión</span>
-                                    <span class="text-exito">4.8%</span>
-                                </div>
-                                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-cian to-exito w-[45%] rounded-full"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. Proceso (Step-by-Step) -->
+    <!-- 4. Proceso (Step-by-Step) -->
     <section id="metodo" class="py-24 bg-noche/50 border-y border-white/5 relative overflow-hidden">
         <div class="absolute -left-24 top-1/4 w-96 h-96 bg-cian/10 rounded-full blur-[120px] -z-10"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -771,115 +687,35 @@
             observer.observe(section);
         });
 
-        // --- TextType Vanilla JS Implementation ---
-        function initTextType(elementId, options) {
-            const el = document.getElementById(elementId);
-            if (!el) return;
-
-            const texts = Array.isArray(options.text) ? options.text : [options.text];
-            const typingSpeed = options.typingSpeed || 50;
-            const pauseDuration = options.pauseDuration || 2000;
-            const deletingSpeed = options.deletingSpeed || 30;
-            const loop = options.loop !== false;
-            const cursorChar = options.cursorCharacter || '|';
-
-            let currentTextIndex = 0;
-            let currentCharIndex = 0;
-            let isDeleting = false;
-            let isVisible = !options.startOnVisible;
-
-            // Add inner structure
-            el.innerHTML = `<span class="typing-content"></span><span class="typing-cursor">${cursorChar}</span>`;
-            const contentEl = el.querySelector('.typing-content');
-            const cursorEl = el.querySelector('.typing-cursor');
-
-            // Cursor Blink Animation (GSAP)
-            gsap.to(cursorEl, {
-                opacity: 0,
-                duration: 0.5,
-                repeat: -1,
-                yoyo: true,
-                ease: "power2.inOut"
-            });
-
-            const type = () => {
-                if (!isVisible) return;
-
-                const currentFullText = texts[currentTextIndex];
-                
-                if (isDeleting) {
-                    if (contentEl.textContent === '') {
-                        isDeleting = false;
-                        currentTextIndex = (currentTextIndex + 1) % texts.length;
-                        if (!loop && currentTextIndex === 0) return; // Stop if no loop
-                        setTimeout(type, 500);
-                        return;
-                    }
-                    contentEl.textContent = currentFullText.substring(0, contentEl.textContent.length - 1);
-                    setTimeout(type, deletingSpeed);
-                } else {
-                    if (contentEl.textContent === currentFullText) {
-                        if (!loop && currentTextIndex === texts.length - 1) {
-                            cursorEl.style.display = 'none'; // Hide cursor at end
-                            return;
-                        }
-                        setTimeout(() => {
-                            isDeleting = true;
-                            type();
-                        }, pauseDuration);
-                        return;
-                    }
-                    contentEl.textContent = currentFullText.substring(0, contentEl.textContent.length + 1);
-                    setTimeout(type, typingSpeed);
-                }
-            };
-
-            if (options.startOnVisible) {
-                const observer = new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting) {
-                        isVisible = true;
-                        type();
-                        observer.disconnect();
-                    }
-                }, { threshold: 0.1 });
-                observer.observe(el);
-            } else {
-                setTimeout(type, options.initialDelay || 0);
-            }
-        }
-
-        // Initialize Hero Animations (Stacked Sequential)
-        initTextType('typing-hero-1', {
-            text: "+ Clientes",
-            typingSpeed: 70,
-            loop: false,
-            initialDelay: 200,
-            cursorCharacter: '|'
-        });
-
-        initTextType('typing-hero-2', {
-            text: "+ Visibilidad",
-            typingSpeed: 70,
-            loop: false,
-            initialDelay: 1200, // Starts after first line
-            cursorCharacter: '|'
-        });
-
-        initTextType('typing-hero-3', {
-            text: "+ Confianza",
-            typingSpeed: 70,
-            loop: false,
-            initialDelay: 2500, // Starts after second line
-            cursorCharacter: '|'
-        });
-
-        initTextType('typing-hero-desc', {
-            text: ["Creamos tu página web, visibilizamos tu negocio en maps y mejoramos tus redes para aumentar tus ventas y tu reputación online."],
-            typingSpeed: 30,
-            loop: false,
-            startOnVisible: true,
-            initialDelay: 1000,
-            cursorCharacter: '_'
+        // --- Hero GSAP Staggered Animation ---
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+            
+            tl.fromTo("#hero-line-1", 
+                { opacity: 0, y: 40, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8 },
+                0.3
+            )
+            .fromTo("#hero-line-2", 
+                { opacity: 0, y: 40, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8 },
+                0.6
+            )
+            .fromTo("#hero-line-3", 
+                { opacity: 0, y: 40, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8 },
+                0.9
+            )
+            .fromTo("#hero-desc", 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 1 },
+                1.3
+            )
+            .fromTo("#hero-cta", 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.8 },
+                1.6
+            );
         });
 
         // Navbar blur effect on scroll
