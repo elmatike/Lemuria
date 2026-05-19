@@ -550,40 +550,28 @@
             </div>
 
             <div class="space-y-4 fade-in-section">
-                <!-- FAQ Item 1 -->
+                <!-- FAQ Item 1 - Quién está detrás -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
                     <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cuánto tiempo tardan en crear mi web?</span>
+                        <span class="font-medium text-humo">¿Quién está detrás?</span>
                         <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
                     </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Dependiendo del plan elegido, un proyecto típico tarda entre 1 y 2 semanas desde el diagnóstico inicial hasta el lanzamiento.
+                    <div class="px-6 pb-5 hidden faq-content">
+                        <div class="flex flex-col md:flex-row items-start gap-6 pt-2">
+                            <div class="md:w-1/2 text-sm">
+                                <h4 class="font-bold text-humo text-lg mb-2">Tadeo Fernandez</h4>
+                                <p class="text-pizarra leading-relaxed">Fundador de Lemuria. Soy de Córdoba y me dedico a ayudar a negocios locales a crecer en internet. Trabajo directamente con cada cliente, sin intermediarios.</p>
+                            </div>
+                            <div class="md:w-1/2 md:self-start">
+                                <video id="tadeo-video" class="w-full max-h-80 object-contain rounded-xl" playsinline muted preload="auto">
+                                    <source src="https://res.cloudinary.com/dpeanyiml/video/upload/v1779228392/PXL_20260519_212754862_3_hdgq9d.webm" type="video/webm">
+                                </video>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- FAQ Item 2 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cómo es el sistema de reseñas con Gmail?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
-                    </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Implementamos un sistema que facilita a tus clientes dejar reseñas reales en Google. A través de un QR o enlace directo, simplificamos el proceso para que más clientes compartan su experiencia positiva, mejorando tu reputación online de forma orgánica.
-                    </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cómo mejoran mi perfil de Google Maps?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
-                    </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Optimizamos la ficha con palabras clave locales, actualizamos imágenes, servicios e implementamos un sistema de reseñas para que obtengas opiniones reales de tus clientes, lo que eleva tu posicionamiento de forma orgánica.
-                    </div>
-                </div>
-
-                <!-- FAQ Item 4 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
                     <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
                         <span class="font-medium text-humo">¿Cómo me aseguras que funcione?</span>
@@ -594,24 +582,36 @@
                     </div>
                 </div>
 
-                <!-- FAQ Item 5 - Quién está detrás -->
+                <!-- FAQ Item 3 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
                     <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Quién está detrás?</span>
+                        <span class="font-medium text-humo">¿Cuánto tiempo tardan en crear mi web?</span>
                         <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
                     </button>
-                    <div class="px-6 pb-5 hidden faq-content">
-                        <div class="flex flex-col md:flex-row items-center gap-6 pt-2">
-                            <div class="md:w-1/2 text-sm">
-                                <h4 class="font-bold text-humo text-lg mb-2">Tadeo Fernandez</h4>
-                                <p class="text-pizarra leading-relaxed">Fundador de Lemuria. Soy de Córdoba y me dedico a ayudar a negocios locales a crecer en internet. Trabajo directamente con cada cliente, sin intermediarios.</p>
-                            </div>
-                            <div class="md:w-1/2 flex justify-center">
-                                <video id="tadeo-video" class="max-h-64 rounded-xl" playsinline muted preload="auto">
-                                    <source src="https://res.cloudinary.com/dpeanyiml/video/upload/v1779228392/PXL_20260519_212754862_3_hdgq9d.webm" type="video/webm">
-                                </video>
-                            </div>
-                        </div>
+                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
+                        Dependiendo del plan elegido, un proyecto tarda menos de una semana desde el diagnóstico hasta el lanzamiento.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
+                        <span class="font-medium text-humo">¿Cómo mejoran mi perfil de Google Maps?</span>
+                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
+                        Optimizamos la ficha con palabras clave locales, actualizamos imágenes, servicios e implementamos un sistema de reseñas para que obtengas opiniones reales de tus clientes, lo que eleva tu posicionamiento de forma orgánica.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
+                        <span class="font-medium text-humo">¿Cómo es el sistema de reseñas?</span>
+                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
+                        Implementamos un sistema que facilita a tus clientes dejar reseñas reales en Google. A través de un QR o enlace directo, simplificamos el proceso para que más clientes compartan su experiencia positiva, mejorando tu reputación online de forma orgánica.
                     </div>
                 </div>
             </div>
@@ -639,7 +639,7 @@
                         <i class="ph-fill ph-planet text-3xl text-cian"></i>
                         <span class="font-bold text-2xl tracking-tighter text-humo">LEMURIA</span>
                     </div>
-                    <p class="text-pizarra text-sm max-w-xs">Agencia de crecimiento digital especializada en transformar presencia online en ventas reales.</p>
+                    <p class="text-pizarra text-sm max-w-xs">Creamos ecosistemas digitales que traen clientes, generan confianza y cierran ventas.</p>
                 </div>
                 
                 <div>
