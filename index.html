@@ -17,6 +17,9 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <!-- Animation Dependencies (GSAP & Three.js) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -481,6 +484,23 @@
         </div>
     </section>
 
+    <!-- 7. Reseñas de Clientes -->
+    <section id="resenas" class="py-24 bg-noche/50 border-y border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
+                <p class="text-pizarra text-lg">Opiniones reales de negocios que confiaron en nosotros.</p>
+                <a href="resenas.html" class="inline-flex items-center gap-2 mt-6 text-cian hover:text-humo transition-colors font-medium">
+                    Dejá tu reseña <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+
+            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Reviews will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
 
 
     <!-- 8. Planes (Pricing) -->
@@ -807,6 +827,55 @@
         window.addEventListener('load', () => {
             setTimeout(spawnRipple, 1000);
         });
+
+        // --- Load Approved Reviews from Supabase ---
+        const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function renderStars(count) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += `<i class="ph-fill ph-star ${i <= count ? 'text-yellow-400' : 'text-pizarra/30'} text-lg"></i>`;
+            }
+            return html;
+        }
+
+        async function loadReviews() {
+            const container = document.getElementById('reviews-container');
+            if (!container) return;
+
+            const { data, error } = await sb
+                .from('reviews')
+                .select('*')
+                .eq('aprobada', true)
+                .order('created_at', { ascending: false });
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center text-pizarra py-8">
+                        <i class="ph ph-chat-text text-4xl mb-3 block"></i>
+                        <p>Aún no hay reseñas publicadas. ¡Sé el primero!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = data.map(review => `
+                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 fade-in-section">
+                    <h3 class="text-lg font-bold text-humo mb-3">${review.empresa}</h3>
+                    <div class="flex gap-1 mb-4">${renderStars(review.estrellas)}</div>
+                    <p class="text-pizarra text-sm leading-relaxed">"${review.descripcion}"</p>
+                </div>
+            `).join('');
+
+            // Re-observe new fade-in elements
+            document.querySelectorAll('.fade-in-section:not(.is-visible)').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        loadReviews();
     </script>
 </body>
 </html>

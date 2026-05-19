@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dejar Reseña | LEMURIA</title>
+    <meta name="description" content="Dejá tu reseña sobre el servicio de Lemuria Digital.">
+    
+    <!-- Planet Favicon -->
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtevfngjs/image/upload/e_trim,c_lpad,w_512,h_512,b_transparent/v1778556633/Gemini_Generated_Image_rb7hc0rb7hc0rb7h_jq1ftt.png">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        noche: '#0F172A',
+                        cian: '#06B6D4',
+                        pizarra: '#94A3B8',
+                        exito: '#10B981',
+                        humo: '#F8FAFC',
+                        card: '#1E293B',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+        }
+        
+        .star {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #475569;
+        }
+        .star:hover,
+        .star.active {
+            color: #FBBF24;
+            transform: scale(1.2);
+        }
+        
+        .btn-neon {
+            background-color: #06B6D4;
+            color: #0F172A;
+            transition: all 0.3s ease;
+        }
+        .btn-neon:hover {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn-neon:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-lg w-full fade-in-section">
+        <!-- Back button -->
+        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-pizarra hover:text-cian transition-colors mb-8 text-sm">
+            <i class="ph-bold ph-arrow-left"></i> Volver al sitio
+        </a>
+
+        <div class="text-center mb-10">
+            <div class="w-16 h-16 rounded-2xl bg-cian/10 flex items-center justify-center mx-auto mb-6">
+                <i class="ph-fill ph-star text-4xl text-cian"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">Dejá tu Reseña</h1>
+            <p class="text-pizarra">Contanos tu experiencia con Lemuria. Tu opinión ayuda a otros negocios a confiar en nosotros.</p>
+        </div>
+
+        <div class="bg-card rounded-2xl p-8 border border-white/10 shadow-2xl">
+            <form id="review-form" class="space-y-6">
+                <!-- Nombre de empresa -->
+                <div>
+                    <label for="empresa" class="block text-sm font-medium text-humo mb-2">Nombre de tu empresa</label>
+                    <input type="text" id="empresa" required placeholder="Ej: Villa Silvina" 
+                        class="w-full px-4 py-3 rounded-xl bg-noche border border-white/10 text-humo placeholder-pizarra/50 focus:outline-none focus:border-cian focus:ring-1 focus:ring-cian transition-colors">
+                </div>
+
+                <!-- Estrellas -->
+                <div>
+                    <label class="block text-sm font-medium text-humo mb-2">¿Cómo fue tu experiencia?</label>
+                    <div class="flex items-center gap-2" id="star-container">
+                        <i class="ph-fill ph-star star text-3xl" data-value="1"></i>
+                        <i class="ph-fill ph-star star text-3xl" data-value="2"></i>
+                        <i class="ph-fill ph-star star text-3xl" data-value="3"></i>
+                        <i class="ph-fill ph-star star text-3xl" data-value="4"></i>
+                        <i class="ph-fill ph-star star text-3xl" data-value="5"></i>
+                    </div>
+                    <input type="hidden" id="estrellas" value="5">
+                </div>
+
+                <!-- Descripción -->
+                <div>
+                    <label for="descripcion" class="block text-sm font-medium text-humo mb-2">Tu opinión</label>
+                    <textarea id="descripcion" required rows="4" placeholder="Contanos qué te pareció el servicio..."
+                        class="w-full px-4 py-3 rounded-xl bg-noche border border-white/10 text-humo placeholder-pizarra/50 focus:outline-none focus:border-cian focus:ring-1 focus:ring-cian transition-colors resize-none"></textarea>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" id="submit-btn" class="w-full btn-neon py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña
+                </button>
+            </form>
+
+            <!-- Success message (hidden by default) -->
+            <div id="success-msg" class="hidden text-center py-8">
+                <div class="w-16 h-16 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="ph-fill ph-check-circle text-4xl text-exito"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-humo mb-2">¡Gracias por tu reseña!</h2>
+                <p class="text-pizarra">Será revisada antes de publicarse en nuestro sitio.</p>
+                <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-6 text-cian hover:text-humo transition-colors font-medium">
+                    Volver al sitio <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase config
+        const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
+        const EDGE_FUNCTION_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co/functions/v1/send-approval-email';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Star rating logic
+        const stars = document.querySelectorAll('.star');
+        const estrellasInput = document.getElementById('estrellas');
+        let selectedStars = 5;
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedStars = parseInt(star.dataset.value);
+                estrellasInput.value = selectedStars;
+                updateStars();
+            });
+
+            star.addEventListener('mouseenter', () => {
+                const hoverValue = parseInt(star.dataset.value);
+                stars.forEach(s => {
+                    s.classList.toggle('active', parseInt(s.dataset.value) <= hoverValue);
+                });
+            });
+        });
+
+        document.getElementById('star-container').addEventListener('mouseleave', updateStars);
+
+        function updateStars() {
+            stars.forEach(s => {
+                s.classList.toggle('active', parseInt(s.dataset.value) <= selectedStars);
+            });
+        }
+        updateStars();
+
+        // Form submission
+        document.getElementById('review-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const empresa = document.getElementById('empresa').value.trim();
+            const estrellas = parseInt(document.getElementById('estrellas').value);
+            const descripcion = document.getElementById('descripcion').value.trim();
+
+            if (!empresa || !descripcion) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Enviando...';
+
+            try {
+                // Insert review into Supabase
+                const { data, error } = await supabase
+                    .from('reviews')
+                    .insert([
+                        { empresa, estrellas, descripcion, aprobada: false }
+                    ])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                // Call edge function to send approval email
+                try {
+                    await fetch(EDGE_FUNCTION_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reviewId: data.id })
+                    });
+                } catch (emailError) {
+                    console.error('Error sending email:', emailError);
+                }
+
+                // Show success message
+                document.getElementById('review-form').classList.add('hidden');
+                document.getElementById('success-msg').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error:', error);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña';
+                alert('Hubo un error al enviar tu reseña. Por favor intentá de nuevo.');
+            }
+        });
+    </script>
+</body>
+</html>
