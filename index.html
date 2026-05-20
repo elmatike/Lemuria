@@ -223,7 +223,11 @@
         }
         
         /* Horizontal Scroll Section */
-        .horizontal-scroll { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .horizontal-scroll {
+            overflow-x: auto; scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+            flex-wrap: nowrap;
+        }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
         .snap-card { scroll-snap-align: center; }
         
@@ -376,15 +380,9 @@
                 </div>
             </div>
 
-            <!-- Act 2 (hidden initially) -->
-            <div id="hero-act-2" class="hidden">
-                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold tracking-[-0.04em]">
-                    <span class="gradient-text">Hasta ahora.</span>
-                </h1>
-                <div class="flex items-center justify-center gap-3 mt-12">
-                    <span class="font-mono text-muted text-sm">Visitantes hoy:</span>
-                    <span class="font-mono text-exito text-2xl counter" id="visitor-count-2">+147</span>
-                </div>
+            <!-- Spacer for centering last card on desktop -->
+            <div class="hidden md:block flex-shrink-0" style="width: calc((100vw - 48px - 32px) / 2 - 32px); min-width: 0;"></div>
+        </div>
             </div>
 
             <!-- Act 3 (hidden initially) -->
@@ -466,16 +464,19 @@
     </section>
 
     <!-- ==================== 3. LA SOLUCIÓN (Horizontal Scroll) ==================== -->
-    <section id="solucion" class="py-16 md:py-24 lg:py-32 relative overflow-hidden">
+    <section id="solucion" class="py-16 md:py-24 lg:py-32 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-16">
             <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-4 md:mb-6 block">La solución</span>
             <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.04em]">Hacemos más que web.<br><span class="gradient-text">Posicionamos tu negocio.</span></h2>
         </div>
 
         <!-- Horizontal Scroll Container -->
-        <div class="horizontal-scroll flex md:justify-center gap-4 md:gap-8 px-4 sm:px-6 lg:px-8 pb-8 snap-center" id="services-scroll">
+        <div class="horizontal-scroll flex gap-4 md:gap-8 px-4 sm:px-6 lg:px-8 pb-8" id="services-scroll">
+            <!-- Spacer for centering first card on desktop -->
+            <div class="hidden md:block flex-shrink-0" style="width: calc((100vw - 48px - 32px) / 2 - 32px); min-width: 0;"></div>
+
             <!-- Service 1 -->
-            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] max-w-lg">
+            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[400px] lg:w-[420px]">
                 <div class="glass rounded-3xl p-6 md:p-10 h-full relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-violeta/10 rounded-full blur-3xl group-hover:bg-violeta/20 transition-colors"></div>
                     <span class="font-mono text-violeta/40 text-6xl md:text-8xl font-bold absolute top-4 md:top-6 right-4 md:right-8">01</span>
@@ -494,7 +495,7 @@
             </div>
 
             <!-- Service 2 -->
-            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] max-w-lg">
+            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[400px] lg:w-[420px]">
                 <div class="glass rounded-3xl p-6 md:p-10 h-full relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-magenta/10 rounded-full blur-3xl group-hover:bg-magenta/20 transition-colors"></div>
                     <span class="font-mono text-magenta/40 text-6xl md:text-8xl font-bold absolute top-4 md:top-6 right-4 md:right-8">02</span>
@@ -513,7 +514,7 @@
             </div>
 
             <!-- Service 3 -->
-            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] max-w-lg">
+            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[400px] lg:w-[420px]">
                 <div class="glass rounded-3xl p-6 md:p-10 h-full relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-cyan/10 rounded-full blur-3xl group-hover:bg-cyan/20 transition-colors"></div>
                     <span class="font-mono text-cyan/40 text-6xl md:text-8xl font-bold absolute top-4 md:top-6 right-4 md:right-8">03</span>
