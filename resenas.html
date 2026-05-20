@@ -36,11 +36,13 @@
         @keyframes portal-spin { to { transform: rotate(360deg); } }
         .portal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .portal-btn:disabled::before { animation: none; }
-        .star-btn { cursor: pointer; transition: transform 0.15s ease, color 0.15s ease; background: none; border: none; padding: 0; display: inline-flex; color: #4A4A6A; font-size: 2.5rem; line-height: 1; }
+        .star-btn { cursor: pointer; transition: transform 0.15s ease, color 0.15s ease; background: none; border: none; padding: 0; display: inline-flex; color: #4A4A6A; font-size: 2rem; line-height: 1; }
+        @media (min-width: 768px) { .star-btn { font-size: 2.5rem; } }
         .star-btn:hover { transform: scale(1.2); }
         .star-btn.active, .star-btn.hovered { color: #EC4899; }
         .dot-grid { background-image: radial-gradient(circle, rgba(124,58,237,0.15) 1px, transparent 1px); background-size: 24px 24px; }
         ::selection { background: rgba(124,58,237,0.4); color: #fff; }
+        input, textarea { font-size: 16px; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex items-center justify-center px-4 dot-grid">
@@ -57,7 +59,7 @@
             <p class="text-gris">Contanos tu experiencia con Lemuria. Tu opinión ayuda a otros negocios a confiar en nosotros.</p>
         </div>
 
-        <div class="glass rounded-3xl p-10">
+        <div class="glass rounded-3xl p-6 md:p-10">
             <form id="review-form" class="space-y-6">
                 <div>
                     <label for="empresa" class="block text-sm font-medium text-texto mb-2 font-mono tracking-wide">Nombre de tu empresa</label>

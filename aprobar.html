@@ -33,9 +33,9 @@
     </style>
 </head>
 <body class="antialiased min-h-screen flex items-center justify-center px-4 dot-grid">
-    <div class="max-w-md w-full text-center" id="loading-state">
-        <div class="relative w-24 h-24 mx-auto mb-8">
-            <svg class="w-24 h-24" viewBox="0 0 48 48">
+    <div class="max-w-md w-full text-center px-4" id="loading-state">
+        <div class="relative w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 md:mb-8">
+            <svg class="w-20 h-20 md:w-24 md:h-24" viewBox="0 0 48 48">
                 <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(124,58,237,0.15)" stroke-width="2"/>
                 <circle cx="24" cy="24" r="20" fill="none" stroke="url(#progressGrad)" stroke-width="2" stroke-linecap="round" stroke-dasharray="125.66" stroke-dashoffset="125.66" class="animate-spin" style="animation-duration: 1.5s; transform-origin: center;"/>
                 <defs><linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#EC4899"/></linearGradient></defs>
@@ -48,8 +48,8 @@
         <p class="text-gris font-mono text-sm">Un momento por favor.</p>
     </div>
 
-    <div class="max-w-md w-full text-center hidden" id="success-state">
-        <div class="w-24 h-24 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-8">
+    <div class="max-w-md w-full text-center hidden px-4" id="success-state">
+        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-6 md:mb-8">
             <i class="ph-fill ph-check-circle text-5xl text-exito"></i>
         </div>
         <h1 class="text-2xl font-bold mb-2 tracking-[-0.02em]">Reseña aprobada</h1>
@@ -60,8 +60,8 @@
         </a>
     </div>
 
-    <div class="max-w-md w-full text-center hidden" id="error-state">
-        <div class="w-24 h-24 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-8">
+    <div class="max-w-md w-full text-center hidden px-4" id="error-state">
+        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-6 md:mb-8">
             <i class="ph-fill ph-x-circle text-5xl text-red-500"></i>
         </div>
         <h1 class="text-2xl font-bold mb-2 tracking-[-0.02em]">Error al aprobar</h1>

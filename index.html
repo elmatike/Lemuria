@@ -263,10 +263,12 @@
         @media (max-width: 768px) {
             * { cursor: auto; }
             .cursor-dot, .cursor-trail, .cursor-ring { display: none; }
-            .dock-nav { bottom: 16px; padding: 6px 8px; }
-            .dock-item { width: 36px; height: 36px; }
+            .dock-nav { bottom: 12px; padding: 4px 6px; gap: 2px; max-width: calc(100vw - 16px); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .dock-nav::-webkit-scrollbar { display: none; }
+            .dock-item { width: 36px; height: 36px; flex-shrink: 0; }
             .dock-item .tooltip { display: none; }
-            .scroll-progress-ring { bottom: 80px; right: 16px; width: 40px; height: 40px; }
+            .scroll-progress-ring { bottom: 72px; right: 12px; width: 36px; height: 36px; }
+            .scroll-progress-ring .icon { font-size: 12px; }
         }
         
         /* Reduced Motion */
@@ -367,7 +369,7 @@
 
             <!-- Act 2 (hidden initially) -->
             <div id="hero-act-2" class="hidden">
-                <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-[-0.04em]">
+                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold tracking-[-0.04em]">
                     <span class="gradient-text">Hasta ahora.</span>
                 </h1>
                 <div class="flex items-center justify-center gap-3 mt-12">
@@ -383,10 +385,10 @@
                         <i class="ph-fill ph-planet text-4xl text-violeta"></i>
                     </div>
                 </div>
-                <h1 class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-[-0.04em] mb-4 glitch" data-text="LEMURIA">
+                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold tracking-[-0.04em] mb-4 glitch" data-text="LEMURIA">
                     <span class="text-texto">LEMURIA</span>
                 </h1>
-                <p class="font-mono text-gris text-sm sm:text-base tracking-[0.2em] uppercase mb-12">Digital Growth Engine</p>
+                <p class="font-mono text-gris text-xs sm:text-base tracking-[0.2em] uppercase mb-8">Digital Growth Engine</p>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
                     <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="portal-btn px-8 py-4 rounded-xl text-lg font-bold text-texto flex items-center justify-center gap-2">
@@ -424,7 +426,7 @@
 
                 <!-- Right: Stats Cards -->
                 <div class="space-y-6" id="problem-stats">
-                    <div class="glass rounded-2xl p-8 transform translate-x-full opacity-0" data-delay="0">
+                    <div class="glass rounded-2xl p-6 md:p-8 transform translate-y-full md:translate-y-0 md:translate-x-full opacity-0" data-delay="0">
                         <div class="flex items-center gap-4 mb-3">
                             <div class="w-10 h-10 rounded-lg bg-violeta/10 flex items-center justify-center">
                                 <i class="ph-bold ph-globe text-violeta text-xl"></i>
@@ -433,7 +435,7 @@
                         </div>
                         <p class="text-gris">de las búsquedas locales no encuentran web</p>
                     </div>
-                    <div class="glass rounded-2xl p-8 transform translate-x-full opacity-0" data-delay="200">
+                    <div class="glass rounded-2xl p-6 md:p-8 transform translate-y-full md:translate-y-0 md:translate-x-full opacity-0" data-delay="200">
                         <div class="flex items-center gap-4 mb-3">
                             <div class="w-10 h-10 rounded-lg bg-magenta/10 flex items-center justify-center">
                                 <i class="ph-bold ph-star text-magenta text-xl"></i>
@@ -442,7 +444,7 @@
                         </div>
                         <p class="text-gris">confían en reseñas online antes de comprar</p>
                     </div>
-                    <div class="glass rounded-2xl p-8 transform translate-x-full opacity-0" data-delay="400">
+                    <div class="glass rounded-2xl p-6 md:p-8 transform translate-y-full md:translate-y-0 md:translate-x-full opacity-0" data-delay="400">
                         <div class="flex items-center gap-4 mb-3">
                             <div class="w-10 h-10 rounded-lg bg-cyan/10 flex items-center justify-center">
                                 <i class="ph-bold ph-map-pin text-cyan text-xl"></i>
@@ -464,9 +466,9 @@
         </div>
 
         <!-- Horizontal Scroll Container -->
-        <div class="horizontal-scroll flex gap-8 px-4 sm:px-6 lg:px-8 pb-8" id="services-scroll">
+        <div class="horizontal-scroll flex gap-6 md:gap-8 px-4 sm:px-6 lg:px-8 pb-8 snap-center" id="services-scroll">
             <!-- Service 1 -->
-            <div class="snap-card flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[40vw]">
+            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] max-w-lg">
                 <div class="glass rounded-3xl p-10 h-full relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-violeta/10 rounded-full blur-3xl group-hover:bg-violeta/20 transition-colors"></div>
                     <span class="font-mono text-violeta/40 text-8xl font-bold absolute top-6 right-8">01</span>
@@ -485,7 +487,7 @@
             </div>
 
             <!-- Service 2 -->
-            <div class="snap-card flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[40vw]">
+            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] max-w-lg">
                 <div class="glass rounded-3xl p-10 h-full relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-magenta/10 rounded-full blur-3xl group-hover:bg-magenta/20 transition-colors"></div>
                     <span class="font-mono text-magenta/40 text-8xl font-bold absolute top-6 right-8">02</span>
@@ -504,7 +506,7 @@
             </div>
 
             <!-- Service 3 -->
-            <div class="snap-card flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[40vw]">
+            <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] max-w-lg">
                 <div class="glass rounded-3xl p-10 h-full relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-cyan/10 rounded-full blur-3xl group-hover:bg-cyan/20 transition-colors"></div>
                     <span class="font-mono text-cyan/40 text-8xl font-bold absolute top-6 right-8">03</span>
@@ -540,70 +542,113 @@
 
             <!-- Circuit Timeline -->
             <div class="relative">
-                <!-- Circuit Line (SVG) -->
+                <!-- Circuit Line (SVG) - desktop only -->
                 <svg class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-2 hidden md:block" viewBox="0 0 8 1000" preserveAspectRatio="none">
                     <line x1="4" y1="0" x2="4" y2="1000" stroke="rgba(124,58,237,0.2)" stroke-width="2"/>
                     <line class="circuit-line" id="circuit-line" x1="4" y1="0" x2="4" y2="1000" stroke="url(#progressGradient)" stroke-width="2"/>
                 </svg>
 
-                <div class="space-y-20 md:space-y-32">
-                    <!-- Step 1 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
-                        <div class="md:w-1/2 md:text-right md:pr-20">
-                            <span class="font-mono text-violeta/30 text-7xl font-bold block mb-4">01</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Análisis y Diagnóstico</h3>
-                            <p class="text-gris leading-relaxed">Entendemos tu negocio y tu mercado actual para identificar puntos de mejora.</p>
+                <!-- Mobile Timeline -->
+                <div class="md:hidden space-y-12 pl-8 border-l-2 border-violeta/20">
+                    <!-- Step 1 Mobile -->
+                    <div class="relative">
+                        <div class="absolute -left-[41px] w-10 h-10 rounded-full bg-noche border-2 border-violeta flex items-center justify-center">
+                            <i class="ph-bold ph-magnifying-glass text-violeta text-lg"></i>
                         </div>
-                        <div class="relative z-10 flex-shrink-0">
-                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-violeta flex items-center justify-center shadow-[0_0_30px_rgba(124,58,237,0.3)]">
-                                <i class="ph-bold ph-magnifying-glass text-violeta text-2xl"></i>
-                            </div>
-                        </div>
-                        <div class="md:w-1/2 md:pl-20"></div>
+                        <span class="font-mono text-violeta/30 text-5xl font-bold block mb-2">01</span>
+                        <h3 class="text-xl font-bold text-texto mb-2">Análisis y Diagnóstico</h3>
+                        <p class="text-gris leading-relaxed">Entendemos tu negocio y tu mercado actual para identificar puntos de mejora.</p>
                     </div>
-
-                    <!-- Step 2 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
-                        <div class="md:w-1/2 md:pr-20"></div>
-                        <div class="relative z-10 flex-shrink-0">
-                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-magenta flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.3)]">
-                                <i class="ph-bold ph-strategy text-magenta text-2xl"></i>
-                            </div>
+                    <!-- Step 2 Mobile -->
+                    <div class="relative">
+                        <div class="absolute -left-[41px] w-10 h-10 rounded-full bg-noche border-2 border-magenta flex items-center justify-center">
+                            <i class="ph-bold ph-strategy text-magenta text-lg"></i>
                         </div>
-                        <div class="md:w-1/2 md:pl-20 md:text-left">
-                            <span class="font-mono text-magenta/30 text-7xl font-bold block mb-4">02</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Planificación Estratégica</h3>
-                            <p class="text-gris leading-relaxed">Definimos la estructura de tu web y redes sociales enfocándonos en mejorar la experiencia de tus usuarios.</p>
-                        </div>
+                        <span class="font-mono text-magenta/30 text-5xl font-bold block mb-2">02</span>
+                        <h3 class="text-xl font-bold text-texto mb-2">Planificación Estratégica</h3>
+                        <p class="text-gris leading-relaxed">Definimos la estructura de tu web y redes sociales enfocándonos en mejorar la experiencia de tus usuarios.</p>
                     </div>
-
-                    <!-- Step 3 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
-                        <div class="md:w-1/2 md:text-right md:pr-20">
-                            <span class="font-mono text-cyan/30 text-7xl font-bold block mb-4">03</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Desarrollo y Configuración</h3>
-                            <p class="text-gris leading-relaxed">Creamos o adaptamos tu presencia digital con un enfoque en funcionamiento técnico y usabilidad.</p>
+                    <!-- Step 3 Mobile -->
+                    <div class="relative">
+                        <div class="absolute -left-[41px] w-10 h-10 rounded-full bg-noche border-2 border-cyan flex items-center justify-center">
+                            <i class="ph-bold ph-code text-cyan text-lg"></i>
                         </div>
-                        <div class="relative z-10 flex-shrink-0">
-                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-cyan flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)]">
-                                <i class="ph-bold ph-code text-cyan text-2xl"></i>
-                            </div>
-                        </div>
-                        <div class="md:w-1/2 md:pl-20"></div>
+                        <span class="font-mono text-cyan/30 text-5xl font-bold block mb-2">03</span>
+                        <h3 class="text-xl font-bold text-texto mb-2">Desarrollo y Configuración</h3>
+                        <p class="text-gris leading-relaxed">Creamos o adaptamos tu presencia digital con un enfoque en funcionamiento técnico y usabilidad.</p>
                     </div>
+                    <!-- Step 4 Mobile -->
+                    <div class="relative">
+                        <div class="absolute -left-[41px] w-10 h-10 rounded-full bg-noche border-2 border-exito flex items-center justify-center">
+                            <i class="ph-bold ph-rocket-launch text-exito text-lg"></i>
+                        </div>
+                        <span class="font-mono text-exito/30 text-5xl font-bold block mb-2">04</span>
+                        <h3 class="text-xl font-bold text-texto mb-2">Mantenimiento y Ajustes</h3>
+                        <p class="text-gris leading-relaxed">Tras el lanzamiento, realizamos revisiones periódicas para ajustar detalles según los resultados obtenidos.</p>
+                    </div>
+                </div>
 
-                    <!-- Step 4 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
-                        <div class="md:w-1/2 md:pr-20"></div>
-                        <div class="relative z-10 flex-shrink-0">
-                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-exito flex items-center justify-center shadow-[0_0_30px_rgba(52,211,153,0.3)]">
-                                <i class="ph-bold ph-rocket-launch text-exito text-2xl"></i>
+                <!-- Desktop Timeline -->
+                <div class="hidden md:block">
+                    <div class="space-y-20 md:space-y-32">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                            <div class="md:w-1/2 md:text-right md:pr-20">
+                                <span class="font-mono text-violeta/30 text-7xl font-bold block mb-4">01</span>
+                                <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Análisis y Diagnóstico</h3>
+                                <p class="text-gris leading-relaxed">Entendemos tu negocio y tu mercado actual para identificar puntos de mejora.</p>
+                            </div>
+                            <div class="relative z-10 flex-shrink-0">
+                                <div class="w-16 h-16 rounded-full bg-noche border-2 border-violeta flex items-center justify-center shadow-[0_0_30px_rgba(124,58,237,0.3)]">
+                                    <i class="ph-bold ph-magnifying-glass text-violeta text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-20"></div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                            <div class="md:w-1/2 md:pr-20"></div>
+                            <div class="relative z-10 flex-shrink-0">
+                                <div class="w-16 h-16 rounded-full bg-noche border-2 border-magenta flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.3)]">
+                                    <i class="ph-bold ph-strategy text-magenta text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-20 md:text-left">
+                                <span class="font-mono text-magenta/30 text-7xl font-bold block mb-4">02</span>
+                                <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Planificación Estratégica</h3>
+                                <p class="text-gris leading-relaxed">Definimos la estructura de tu web y redes sociales enfocándonos en mejorar la experiencia de tus usuarios.</p>
                             </div>
                         </div>
-                        <div class="md:w-1/2 md:pl-20 md:text-left">
-                            <span class="font-mono text-exito/30 text-7xl font-bold block mb-4">04</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Mantenimiento y Ajustes</h3>
-                            <p class="text-gris leading-relaxed">Tras el lanzamiento, realizamos revisiones periódicas para ajustar detalles según los resultados obtenidos.</p>
+
+                        <!-- Step 3 -->
+                        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                            <div class="md:w-1/2 md:text-right md:pr-20">
+                                <span class="font-mono text-cyan/30 text-7xl font-bold block mb-4">03</span>
+                                <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Desarrollo y Configuración</h3>
+                                <p class="text-gris leading-relaxed">Creamos o adaptamos tu presencia digital con un enfoque en funcionamiento técnico y usabilidad.</p>
+                            </div>
+                            <div class="relative z-10 flex-shrink-0">
+                                <div class="w-16 h-16 rounded-full bg-noche border-2 border-cyan flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+                                    <i class="ph-bold ph-code text-cyan text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-20"></div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                            <div class="md:w-1/2 md:pr-20"></div>
+                            <div class="relative z-10 flex-shrink-0">
+                                <div class="w-16 h-16 rounded-full bg-noche border-2 border-exito flex items-center justify-center shadow-[0_0_30px_rgba(52,211,153,0.3)]">
+                                    <i class="ph-bold ph-rocket-launch text-exito text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-20 md:text-left">
+                                <span class="font-mono text-exito/30 text-7xl font-bold block mb-4">04</span>
+                                <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Mantenimiento y Ajustes</h3>
+                                <p class="text-gris leading-relaxed">Tras el lanzamiento, realizamos revisiones periódicas para ajustar detalles según los resultados obtenidos.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -658,9 +703,9 @@
             <!-- Featured Case -->
             <div class="glass rounded-3xl overflow-hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <div class="relative aspect-[4/3] lg:aspect-auto">
+                    <div class="relative aspect-[4/3] lg:aspect-auto max-h-64 lg:max-h-none">
                         <img src="https://res.cloudinary.com/dtevfngjs/image/upload/v1778255217/cd13b27a-5476-4790-b766-8c12387574d4_grd9rv.jpg" alt="Villa Silvina" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-gradient-to-r from-noche/80 to-transparent lg:bg-gradient-to-l"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-noche/80 via-noche/20 to-transparent lg:bg-gradient-to-l lg:from-noche/80 lg:to-transparent"></div>
                     </div>
                     <div class="p-10 lg:p-16 flex flex-col justify-center">
                         <span class="font-mono text-violeta text-xs tracking-[0.2em] uppercase mb-4">Caso de Éxito</span>
@@ -731,9 +776,9 @@
                 </div>
 
                 <!-- Gold (Featured) -->
-                <div class="relative flex flex-col md:-translate-y-4">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violeta to-magenta text-texto px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider z-20">Más Popular</div>
-                    <div class="glass rounded-3xl p-10 h-full relative overflow-hidden flex flex-col border-violeta/40 shadow-[0_0_60px_rgba(124,58,237,0.15)]">
+                <div class="relative flex flex-col">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violeta to-magenta text-texto px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider z-20 whitespace-nowrap">Más Popular</div>
+                    <div class="glass rounded-3xl p-8 md:p-10 h-full relative overflow-hidden flex flex-col border-violeta/40 shadow-[0_0_60px_rgba(124,58,237,0.15)]">
                         <div class="absolute top-0 right-0 w-48 h-48 bg-violeta/10 blur-3xl rounded-full"></div>
                         <span class="font-mono text-magenta/40 text-6xl font-bold block mb-2">02</span>
                         <h3 class="text-2xl font-bold text-texto mb-1">Gold</h3>
@@ -795,7 +840,7 @@
                                 <p class="text-gris leading-relaxed">Fundador de Lemuria. Soy de Córdoba y me dedico a ayudar a negocios locales a crecer en internet. Trabajo directamente con cada cliente, sin intermediarios.</p>
                             </div>
                             <div class="md:w-1/2">
-                                <video class="w-full max-h-64 object-contain rounded-xl" playsinline muted preload="auto">
+                                <video class="w-full max-h-48 md:max-h-64 object-contain rounded-xl" playsinline muted preload="auto">
                                     <source src="https://res.cloudinary.com/dpeanyiml/video/upload/v1779228392/PXL_20260519_212754862_3_hdgq9d.webm" type="video/webm">
                                 </video>
                             </div>
@@ -874,11 +919,11 @@
             </h2>
             <p class="text-xl text-gris mb-12 max-w-2xl mx-auto">Contanos tu situación actual para ver si te podemos ayudar, sin compromiso.</p>
             
-            <div class="relative inline-block">
+            <div class="relative inline-block overflow-visible">
                 <!-- Pulse Rings -->
-                <div class="pulse-ring absolute -inset-8"></div>
-                <div class="pulse-ring absolute -inset-8" style="animation-delay: 0.5s"></div>
-                <div class="pulse-ring absolute -inset-8" style="animation-delay: 1s"></div>
+                <div class="pulse-ring absolute -inset-4 md:-inset-8"></div>
+                <div class="pulse-ring absolute -inset-4 md:-inset-8" style="animation-delay: 0.5s"></div>
+                <div class="pulse-ring absolute -inset-4 md:-inset-8" style="animation-delay: 1s"></div>
                 
                 <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="portal-btn inline-flex items-center gap-3 px-12 py-5 rounded-xl text-lg font-bold text-texto relative z-10">
                     <span><i class="ph-bold ph-whatsapp-logo text-2xl"></i> Escribinos por WhatsApp</span>
@@ -935,7 +980,7 @@
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-violeta to-magenta text-texto rounded-full flex items-center justify-center text-2xl shadow-lg shadow-violeta/30 hover:scale-110 transition-transform z-50 md:bottom-24">
+    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-20 right-4 md:bottom-24 md:right-6 w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-violeta to-magenta text-texto rounded-full flex items-center justify-center text-xl md:text-2xl shadow-lg shadow-violeta/30 hover:scale-110 transition-transform z-50">
         <i class="ph-fill ph-whatsapp-logo"></i>
     </a>
 
@@ -1155,9 +1200,13 @@
             trigger: '#problem-stats',
             start: 'top 70%',
             onEnter: () => {
+                const isMobile = window.innerWidth <= 768;
                 document.querySelectorAll('#problem-stats > div').forEach((card, i) => {
                     setTimeout(() => {
-                        gsap.to(card, { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' });
+                        gsap.fromTo(card, 
+                            { y: isMobile ? 40 : 0, opacity: 0 }, 
+                            { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
+                        );
                     }, i * 200);
                 });
             }
