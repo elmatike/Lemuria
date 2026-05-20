@@ -77,13 +77,16 @@
                 .from('reviews')
                 .update({ aprobada: true })
                 .eq('id', reviewId)
-                .eq('aprobada', false)
+                .select()
                 .then(({ data, error }) => {
                     document.getElementById('loading-state').classList.add('hidden');
                     
-                    if (error || !data) {
+                    if (error) {
                         document.getElementById('error-state').classList.remove('hidden');
-                        document.getElementById('error-msg').textContent = 'No se encontró la reseña o ya fue aprobada.';
+                        document.getElementById('error-msg').textContent = 'No se encontró la reseña.';
+                    } else if (!data || data.length === 0) {
+                        document.getElementById('error-state').classList.remove('hidden');
+                        document.getElementById('error-msg').textContent = 'Esta reseña ya fue aprobada anteriormente.';
                     } else {
                         document.getElementById('success-state').classList.remove('hidden');
                         
