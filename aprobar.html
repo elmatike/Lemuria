@@ -17,45 +17,43 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        noche: '#0F172A', cian: '#06B6D4', pizarra: '#94A3B8',
-                        exito: '#10B981', humo: '#F8FAFC', card: '#1E293B',
+                        negro: '#0A0A0A', card: '#161616', oro: '#C9A84C', oroClaro: '#E8D5A3',
+                        blanco: '#FFFFFF', gris: '#A0A0A0', exito: '#2ECC71',
                     }
                 }
             }
         }
     </script>
-    <style>
-        body { background-color: #0F172A; color: #F8FAFC; }
-    </style>
+    <style> body { background-color: #0A0A0A; color: #FFFFFF; } </style>
 </head>
 <body class="antialiased min-h-screen flex items-center justify-center px-4">
     <div class="max-w-md w-full text-center" id="loading-state">
-        <div class="w-16 h-16 rounded-full bg-cian/10 flex items-center justify-center mx-auto mb-6">
-            <i class="ph-bold ph-spinner animate-spin text-4xl text-cian"></i>
+        <div class="w-20 h-20 rounded-full border-2 border-oro/20 flex items-center justify-center mx-auto mb-6">
+            <i class="ph-bold ph-spinner animate-spin text-4xl text-oro"></i>
         </div>
         <h1 class="text-2xl font-bold mb-2">Aprobando reseña...</h1>
-        <p class="text-pizarra">Un momento por favor.</p>
+        <p class="text-gris">Un momento por favor.</p>
     </div>
 
     <div class="max-w-md w-full text-center hidden" id="success-state">
-        <div class="w-20 h-20 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-6">
+        <div class="w-24 h-24 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-6">
             <i class="ph-fill ph-check-circle text-5xl text-exito"></i>
         </div>
         <h1 class="text-2xl font-bold mb-2">Reseña aprobada</h1>
-        <p class="text-pizarra mb-6">La reseña ya está publicada en el sitio.</p>
-        <p class="text-sm text-pizarra/60">Redirigiendo al sitio en <span id="countdown">3</span> segundos...</p>
-        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-4 text-cian hover:text-humo transition-colors font-medium">
+        <p class="text-gris mb-6">La reseña ya está publicada en el sitio.</p>
+        <p class="text-sm text-muted">Redirigiendo al sitio en <span id="countdown">3</span> segundos...</p>
+        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-4 text-oro hover:text-oroClaro transition-colors font-medium">
             Ir al sitio ahora <i class="ph-bold ph-arrow-right"></i>
         </a>
     </div>
 
     <div class="max-w-md w-full text-center hidden" id="error-state">
-        <div class="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-6">
+        <div class="w-24 h-24 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-6">
             <i class="ph-fill ph-x-circle text-5xl text-red-500"></i>
         </div>
         <h1 class="text-2xl font-bold mb-2">Error al aprobar</h1>
-        <p class="text-pizarra mb-6" id="error-msg">No se encontró la reseña o ya fue aprobada.</p>
-        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-cian hover:text-humo transition-colors font-medium">
+        <p class="text-gris mb-6" id="error-msg">No se encontró la reseña o ya fue aprobada.</p>
+        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-oro hover:text-oroClaro transition-colors font-medium">
             Volver al sitio <i class="ph-bold ph-arrow-right"></i>
         </a>
     </div>
@@ -73,35 +71,24 @@
             document.getElementById('error-state').classList.remove('hidden');
             document.getElementById('error-msg').textContent = 'No se proporcionó un ID de reseña válido.';
         } else {
-            sb
-                .from('reviews')
-                .update({ aprobada: true })
-                .eq('id', reviewId)
-                .select()
-                .then(({ data, error }) => {
-                    document.getElementById('loading-state').classList.add('hidden');
-                    
-                    if (error) {
-                        document.getElementById('error-state').classList.remove('hidden');
-                        document.getElementById('error-msg').textContent = 'No se encontró la reseña.';
-                    } else if (!data || data.length === 0) {
-                        document.getElementById('error-state').classList.remove('hidden');
-                        document.getElementById('error-msg').textContent = 'Esta reseña ya fue aprobada anteriormente.';
-                    } else {
-                        document.getElementById('success-state').classList.remove('hidden');
-                        
-                        let count = 3;
-                        const countdownEl = document.getElementById('countdown');
-                        const interval = setInterval(() => {
-                            count--;
-                            countdownEl.textContent = count;
-                            if (count <= 0) {
-                                clearInterval(interval);
-                                window.location.href = 'https://lemurianos.vercel.app/';
-                            }
-                        }, 1000);
-                    }
-                });
+            sb.from('reviews').update({ aprobada: true }).eq('id', reviewId).select().then(({ data, error }) => {
+                document.getElementById('loading-state').classList.add('hidden');
+                if (error) {
+                    document.getElementById('error-state').classList.remove('hidden');
+                    document.getElementById('error-msg').textContent = 'No se encontró la reseña.';
+                } else if (!data || data.length === 0) {
+                    document.getElementById('error-state').classList.remove('hidden');
+                    document.getElementById('error-msg').textContent = 'Esta reseña ya fue aprobada anteriormente.';
+                } else {
+                    document.getElementById('success-state').classList.remove('hidden');
+                    let count = 3;
+                    const countdownEl = document.getElementById('countdown');
+                    const interval = setInterval(() => {
+                        count--; countdownEl.textContent = count;
+                        if (count <= 0) { clearInterval(interval); window.location.href = 'https://lemurianos.vercel.app/'; }
+                    }, 1000);
+                }
+            });
         }
     </script>
 </body>

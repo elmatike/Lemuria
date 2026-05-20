@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEMURIA | Presencia Digital que Vende</title>
-    <meta name="description" content="Agencia de crecimiento digital. Creamos tu página web, visibilizamos tu negocio en maps y mejoramos tus redes para aumentar tus ventas y tu reputación online.">
+    <meta name="description" content="Agencia de crecimiento digital. Creamos tu web, te posicionamos en Maps y mejoramos las redes para impulsar tus ventas.">
     
-    <!-- Planet Favicon -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtevfngjs/image/upload/e_trim,c_lpad,w_512,h_512,b_transparent/v1778556633/Gemini_Generated_Image_rb7hc0rb7hc0rb7h_jq1ftt.png">
     
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -20,9 +20,9 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Animation Dependencies (GSAP & Three.js) -->
+    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,16 +30,18 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        noche: '#0F172A',
-                        cian: '#06B6D4',
-                        pizarra: '#94A3B8',
-                        exito: '#10B981',
-                        humo: '#F8FAFC',
-                        card: '#1E293B',
+                        negro: '#0A0A0A',
+                        carbon: '#111111',
+                        card: '#161616',
+                        oro: '#C9A84C',
+                        oroClaro: '#E8D5A3',
+                        oroOscuro: '#8B7635',
+                        blanco: '#FFFFFF',
+                        gris: '#A0A0A0',
+                        muted: '#555555',
+                        exito: '#2ECC71',
                     }
                 }
             }
@@ -47,433 +49,404 @@
     </script>
     
     <style>
-        body {
-            background-color: #0F172A;
-            color: #F8FAFC;
+        * { cursor: none; }
+        body { background-color: #0A0A0A; color: #FFFFFF; }
+        
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px; height: 8px; background: #C9A84C;
+            position: fixed; border-radius: 50%; pointer-events: none;
+            z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .cursor-ring {
+            width: 40px; height: 40px; border: 1px solid rgba(201,168,76,0.5);
+            position: fixed; border-radius: 50%; pointer-events: none;
+            z-index: 9998; transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        .cursor-ring.hover { width: 60px; height: 60px; border-color: #C9A84C; }
+        
+        /* Noise Overlay */
+        .noise-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
         }
         
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-            will-change: opacity, visibility;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: none;
-        }
-
-        /* Neon button effect */
-        .btn-neon {
-            background-color: #06B6D4;
-            color: #0F172A;
-            transition: all 0.3s ease;
-        }
-        .btn-neon:hover {
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
-            filter: brightness(1.1);
-            transform: translateY(-2px);
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, #8B7635, #C9A84C, #E8D5A3);
+            z-index: 9997; width: 0%; transition: width 0.1s;
         }
         
-        .btn-outline {
-            border: 2px solid #06B6D4;
-            color: #F8FAFC;
-            transition: all 0.3s ease;
+        /* Side Navigation Dots */
+        .side-nav { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); z-index: 9000; display: flex; flex-direction: column; gap: 16px; }
+        .side-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: rgba(201,168,76,0.3);
+            transition: all 0.3s; cursor: pointer;
         }
-        .btn-outline:hover {
-            background-color: rgba(6, 182, 212, 0.1);
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        .side-dot.active { background: #C9A84C; box-shadow: 0 0 12px rgba(201,168,76,0.6); transform: scale(1.5); }
+        
+        /* Gold Shimmer Button */
+        .btn-gold {
+            background: linear-gradient(135deg, #8B7635, #C9A84C, #E8D5A3, #C9A84C, #8B7635);
+            background-size: 300% 300%; color: #0A0A0A; font-weight: 700;
+            transition: all 0.3s ease; animation: shimmer 3s ease infinite;
         }
-
-        /* Gradient Text */
-        .text-gradient {
-            background: linear-gradient(to right, #06B6D4, #10B981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .btn-gold:hover { box-shadow: 0 0 30px rgba(201,168,76,0.4); transform: translateY(-2px); }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        /* GlareHover Effect */
-        .glare-hover {
-            position: relative;
-            overflow: hidden;
+        
+        .btn-outline-gold {
+            border: 1px solid rgba(201,168,76,0.4); color: #FFFFFF;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-
-        .glare-hover::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                var(--gh-angle, -45deg),
-                hsla(0, 0%, 0%, 0) 60%,
-                var(--gh-rgba, rgba(255, 255, 255, 0.3)) 70%,
-                hsla(0, 0%, 0%, 0),
-                hsla(0, 0%, 0%, 0) 100%
-            );
-            transition: var(--gh-duration, 650ms) ease;
-            background-size: var(--gh-size, 250%) var(--gh-size, 250%), 100% 100%;
-            background-repeat: no-repeat;
-            background-position: -100% -100%, 0 0;
-            pointer-events: none;
-            z-index: 5;
+        .btn-outline-gold:hover { border-color: #C9A84C; background: rgba(201,168,76,0.1); }
+        
+        /* Text Reveal Animation */
+        .reveal-text { clip-path: inset(0 0 100% 0); }
+        .reveal-text.visible { clip-path: inset(0 0 0% 0); transition: clip-path 1s cubic-bezier(0.77, 0, 0.175, 1); }
+        
+        /* Card Glow Border */
+        .card-glow {
+            position: relative; overflow: hidden;
         }
-
-        .glare-hover:hover::before {
-            background-position: 100% 100%, 0 0;
+        .card-glow::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(201,168,76,0.3) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.5s;
         }
-        /* Water Ripple Effect - Subtle & Elegant */
-        #global-ripple-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1; 
-            overflow: hidden;
+        .card-glow:hover::before { opacity: 1; }
+        
+        /* Section Divider */
+        .section-divider {
+            display: flex; align-items: center; justify-content: center; gap: 16px; padding: 20px 0;
         }
-
-        .ripple-drop {
-            position: absolute;
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple-animation 5s ease-out forwards;
+        .section-divider .line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #C9A84C, transparent); }
+        .section-divider .dot { width: 6px; height: 6px; background: #C9A84C; border-radius: 50%; }
+        
+        /* Parallax Background Numbers */
+        .bg-number {
+            position: absolute; font-size: 20rem; font-weight: 900; color: rgba(201,168,76,0.03);
+            pointer-events: none; user-select: none; line-height: 1;
         }
-
-        @keyframes ripple-animation {
-            0% {
-                transform: scale(0.1);
-                opacity: 0.6;
-            }
-            100% {
-                transform: scale(5);
-                opacity: 0;
-            }
+        
+        /* Spotlight Hero */
+        #hero-spotlight {
+            position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(201,168,76,0.08), transparent 60%);
+        }
+        
+        /* Floating Particles */
+        .particle {
+            position: absolute; width: 2px; height: 2px; background: #C9A84C; border-radius: 50%;
+            animation: float-particle linear infinite; opacity: 0.4;
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        
+        /* FAQ Accordion */
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+        .faq-content.open { max-height: 500px; padding-top: 0; padding-bottom: 20px; }
+        .faq-icon { transition: transform 0.3s; }
+        .faq-icon.rotated { transform: rotate(180deg); }
+        
+        /* 3D Card Tilt */
+        .tilt-card { transform-style: preserve-3d; perspective: 1000px; }
+        
+        /* Scroll Indicator */
+        .scroll-indicator { animation: bounce-down 2s ease-in-out infinite; }
+        @keyframes bounce-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(12px); }
+        }
+        
+        /* Counter Animation */
+        .counter { font-variant-numeric: tabular-nums; }
+        
+        /* Mobile: hide custom cursor and side nav */
+        @media (max-width: 768px) {
+            * { cursor: auto; }
+            .cursor-dot, .cursor-ring, .side-nav { display: none; }
         }
     </style>
 </head>
-<body class="antialiased overflow-x-hidden selection:bg-cian selection:text-noche">
-    <!-- Global Ripple Container -->
-    <div id="global-ripple-container"></div>
+<body class="antialiased overflow-x-hidden">
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+    
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+    
+    <!-- Side Navigation -->
+    <div class="side-nav hidden md:flex" id="side-nav">
+        <div class="side-dot active" data-section="hero" title="Inicio"></div>
+        <div class="side-dot" data-section="servicios" title="Servicios"></div>
+        <div class="side-dot" data-section="metodo" title="Método"></div>
+        <div class="side-dot" data-section="casos" title="Casos de Éxito"></div>
+        <div class="side-dot" data-section="resenas" title="Reseñas"></div>
+        <div class="side-dot" data-section="planes" title="Planes"></div>
+        <div class="side-dot" data-section="faq" title="FAQ"></div>
+        <div class="side-dot" data-section="contacto" title="Contacto"></div>
+    </div>
 
     <!-- 1. Navbar -->
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
-        <div class="absolute inset-0 bg-noche/80 backdrop-blur-md border-b border-white/10"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <nav class="fixed w-full z-50 top-0 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                    <i class="ph-fill ph-planet text-3xl text-cian"></i>
-                    <span class="font-bold text-2xl tracking-tighter text-humo">LEMURIA</span>
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-full border border-oro/30 flex items-center justify-center group-hover:border-oro transition-colors">
+                        <i class="ph-fill ph-planet text-xl text-oro"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-[0.15em] text-blanco">LEMURIA</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#servicios" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
+                        Servicios
+                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#metodo" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
+                        Método
+                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#casos" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
+                        Casos
+                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#planes" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
+                        Planes
+                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-gold px-6 py-2.5 rounded-lg text-sm">
+                        Asesoría Gratis
+                    </a>
                 </div>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#servicios" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Servicios</a>
-                    <a href="#metodo" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Método</a>
-                    <a href="#casos" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Casos de Éxito</a>
-                    <a href="#planes" class="text-humo/80 hover:text-cian transition-colors text-sm font-medium">Planes</a>
-                </div>
-                <div class="hidden md:flex">
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-neon px-6 py-2.5 rounded-lg font-semibold text-sm">Asesoría Gratis</a>
-                </div>
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-humo hover:text-cian">
-                        <i class="ph ph-list text-3xl"></i>
-                    </button>
-                </div>
+                <button class="md:hidden text-blanco" id="mobile-menu-btn">
+                    <i class="ph ph-list text-3xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-negro/95 backdrop-blur-xl border-t border-oro/10" id="mobile-menu">
+            <div class="px-6 py-8 space-y-6">
+                <a href="#servicios" class="block text-blanco text-lg hover:text-oro transition-colors">Servicios</a>
+                <a href="#metodo" class="block text-blanco text-lg hover:text-oro transition-colors">Método</a>
+                <a href="#casos" class="block text-blanco text-lg hover:text-oro transition-colors">Casos</a>
+                <a href="#planes" class="block text-blanco text-lg hover:text-oro transition-colors">Planes</a>
+                <a href="https://wa.me/543514089238" target="_blank" class="btn-gold block text-center px-6 py-3 rounded-lg text-sm">Asesoría Gratis</a>
             </div>
         </div>
     </nav>
 
     <!-- 2. Hero -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Dynamic Dithered Waves Background -->
-        <div id="hero-canvas-container" class="absolute inset-0 -z-10 opacity-40"></div>
-        <script>
-            (function() {
-                const container = document.getElementById('hero-canvas-container');
-                const scene = new THREE.Scene();
-                const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-                const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
-                renderer.setPixelRatio(window.devicePixelRatio);
-                container.appendChild(renderer.domElement);
-
-                const uniforms = {
-                    uTime: { value: 0 },
-                    uResolution: { value: new THREE.Vector2() },
-                    uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-                    uColor: { value: new THREE.Color(0.02, 0.71, 0.83) }, // #06B6D4
-                    uFrequency: { value: 10.0 },
-                    uMouseRadius: { value: 0.15 }
-                };
-
-                const vertexShader = `
-                    varying vec2 vUv;
-                    void main() {
-                        vUv = uv;
-                        gl_Position = vec4(position, 1.0);
-                    }
-                `;
-
-                const fragmentShader = `
-                    uniform float uTime;
-                    uniform vec2 uResolution;
-                    uniform vec2 uMouse;
-                    uniform vec3 uColor;
-                    uniform float uFrequency;
-                    uniform float uMouseRadius;
-                    varying vec2 vUv;
-
-                    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                    vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                    vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
-                    float snoise(vec2 v) {
-                        const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
-                        vec2 i  = floor(v + dot(v, C.yy) );
-                        vec2 x0 = v -   i + dot(i, C.xx);
-                        vec2 i1;
-                        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-                        vec4 x12 = x0.xyxy + C.xxzz;
-                        x12.xy -= i1;
-                        i = mod289(i);
-                        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
-                        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-                        m = m*m ;
-                        m = m*m ;
-                        vec3 x = 2.0 * fract(p * C.www) - 1.0;
-                        vec3 h = abs(x) - 0.5;
-                        vec3 ox = floor(x + 0.5);
-                        vec3 a0 = x - ox;
-                        m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-                        vec3 g;
-                        g.x  = a0.x  * x0.x  + h.x  * x0.y;
-                        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-                        return 130.0 * dot(m, g);
-                    }
-
-                    float fbm(vec2 p) {
-                        float v = 0.0;
-                        float a = 0.5;
-                        for (int i = 0; i < 3; i++) {
-                            v += a * snoise(p);
-                            p = p * 2.0;
-                            a *= 0.5;
-                        }
-                        return v;
-                    }
-
-                    float dither8x8(vec2 uv) {
-                        int x = int(mod(uv.x, 8.0));
-                        int y = int(mod(uv.y, 8.0));
-                        int index = x + y * 8;
-                        float limit = 0.0;
-                        if (x < 8) {
-                            if (index == 0) limit = 0.015625; else if (index == 1) limit = 0.515625; else if (index == 2) limit = 0.140625; else if (index == 3) limit = 0.640625;
-                            else if (index == 4) limit = 0.046875; else if (index == 5) limit = 0.546875; else if (index == 6) limit = 0.171875; else if (index == 7) limit = 0.671875;
-                            else if (index == 8) limit = 0.765625; else if (index == 9) limit = 0.265625; else if (index == 10) limit = 0.890625; else if (index == 11) limit = 0.390625;
-                            else if (index == 12) limit = 0.796875; else if (index == 13) limit = 0.296875; else if (index == 14) limit = 0.921875; else if (index == 15) limit = 0.421875;
-                            else if (index == 16) limit = 0.203125; else if (index == 17) limit = 0.703125; else if (index == 18) limit = 0.078125; else if (index == 19) limit = 0.578125;
-                            else if (index == 20) limit = 0.234375; else if (index == 21) limit = 0.734375; else if (index == 22) limit = 0.109375; else if (index == 23) limit = 0.609375;
-                            else if (index == 24) limit = 0.953125; else if (index == 25) limit = 0.453125; else if (index == 26) limit = 0.828125; else if (index == 27) limit = 0.328125;
-                            else if (index == 28) limit = 0.984375; else if (index == 29) limit = 0.484375; else if (index == 30) limit = 0.859375; else if (index == 31) limit = 0.359375;
-                            else if (index == 32) limit = 0.0625; else if (index == 33) limit = 0.5625; else if (index == 34) limit = 0.1875; else if (index == 35) limit = 0.6875;
-                            else if (index == 36) limit = 0.03125; else if (index == 37) limit = 0.53125; else if (index == 38) limit = 0.15625; else if (index == 39) limit = 0.65625;
-                            else if (index == 40) limit = 0.8125; else if (index == 41) limit = 0.3125; else if (index == 42) limit = 0.9375; else if (index == 43) limit = 0.4375;
-                            else if (index == 44) limit = 0.78125; else if (index == 45) limit = 0.28125; else if (index == 46) limit = 0.90625; else if (index == 47) limit = 0.40625;
-                            else if (index == 48) limit = 0.25; else if (index == 49) limit = 0.75; else if (index == 50) limit = 0.125; else if (index == 51) limit = 0.625;
-                            else if (index == 52) limit = 0.21875; else if (index == 53) limit = 0.71875; else if (index == 54) limit = 0.09375; else if (index == 55) limit = 0.59375;
-                            else if (index == 56) limit = 1.0; else if (index == 57) limit = 0.5; else if (index == 58) limit = 0.875; else if (index == 59) limit = 0.375;
-                            else if (index == 60) limit = 0.96875; else if (index == 61) limit = 0.46875; else if (index == 62) limit = 0.84375; else if (index == 63) limit = 0.34375;
-                        }
-                        return limit;
-                    }
-
-                    void main() {
-                        vec2 uv = vUv;
-                        float dist = distance(uv, uMouse);
-                        float mouseEff = smoothstep(uMouseRadius, 0.0, dist) * 0.5;
-                        
-                        vec2 p = uv * uFrequency;
-                        float n = fbm(p + uTime * 0.2 + mouseEff);
-                        float intensity = n * 0.5 + 0.5;
-                        
-                        float threshold = dither8x8(gl_FragCoord.xy);
-                        float final = intensity > threshold ? 1.0 : 0.0;
-                        
-                        gl_FragColor = vec4(uColor * final, final * 0.5);
-                    }
-                `;
-
-                const geometry = new THREE.PlaneGeometry(2, 2);
-                const material = new THREE.ShaderMaterial({
-                    uniforms,
-                    vertexShader,
-                    fragmentShader,
-                    transparent: true
-                });
-                const mesh = new THREE.Mesh(geometry, material);
-                scene.add(mesh);
-
-                function resize() {
-                    const section = container.closest('section');
-                    const w = section.offsetWidth;
-                    const h = section.offsetHeight;
-                    renderer.setSize(w, h);
-                    uniforms.uResolution.value.set(w, h);
-                }
-
-                window.addEventListener('resize', resize);
-                window.addEventListener('mousemove', (e) => {
-                    const rect = container.getBoundingClientRect();
-                    uniforms.uMouse.value.set(
-                        (e.clientX - rect.left) / rect.width,
-                        1.0 - (e.clientY - rect.top) / rect.height
-                    );
-                });
-
-                function animate(t) {
-                    uniforms.uTime.value = t * 0.001;
-                    renderer.render(scene, camera);
-                    requestAnimationFrame(animate);
-                }
-
-                setTimeout(resize, 100);
-                requestAnimationFrame(animate);
-            })();
-        </script>
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div id="hero-spotlight"></div>
+        <div id="particles-container" class="absolute inset-0 pointer-events-none"></div>
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[1.1] text-center flex flex-col items-center justify-center">
-                <span id="hero-line-1" class="text-gradient block h-[1.1em] opacity-0">+ Clientes</span>
-                <span id="hero-line-2" class="text-gradient block h-[1.1em] opacity-0">+ Visibilidad</span>
-                <span id="hero-line-3" class="text-gradient block h-[1.1em] opacity-0">+ Confianza</span>
-            </h1>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="overflow-hidden mb-2">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1]">
+                    <span class="block reveal-text text-transparent bg-clip-text bg-gradient-to-r from-oroOscuro via-oro to-oroClaro">+ Clientes</span>
+                </h1>
+            </div>
+            <div class="overflow-hidden mb-2">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1]">
+                    <span class="block reveal-text text-transparent bg-clip-text bg-gradient-to-r from-oroOscuro via-oro to-oroClaro">+ Visibilidad</span>
+                </h1>
+            </div>
+            <div class="overflow-hidden mb-8">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1]">
+                    <span class="block reveal-text text-transparent bg-clip-text bg-gradient-to-r from-oroOscuro via-oro to-oroClaro">+ Confianza</span>
+                </h1>
+            </div>
             
-            <p class="mt-4 text-xl md:text-2xl text-pizarra max-w-3xl mx-auto mb-10 leading-relaxed opacity-0" id="hero-desc">
+            <p class="text-xl md:text-2xl text-gris max-w-3xl mx-auto mb-12 leading-relaxed opacity-0" id="hero-desc">
                 Creamos tu web, te posicionamos en Maps y mejoramos las redes para impulsar tus ventas.
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center gap-4 opacity-0" id="hero-cta">
-                <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-neon px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2">
+                <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-gold px-8 py-4 rounded-lg text-lg flex items-center justify-center gap-2">
                     Inicia tu Crecimiento <i class="ph-bold ph-arrow-right"></i>
                 </a>
-                <a href="#casos" class="btn-outline px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center">
+                <a href="#casos" class="btn-outline-gold px-8 py-4 rounded-lg text-lg flex items-center justify-center">
                     Ver Casos Reales
                 </a>
             </div>
         </div>
+        
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator">
+            <i class="ph-bold ph-caret-double-down text-oro/60 text-2xl"></i>
+        </div>
     </section>
 
-    <!-- 3. Sección Servicios -->
-    <section id="servicios" class="py-24 bg-noche/50 border-y border-white/5 relative">
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+
+    <!-- 3. Servicios -->
+    <section id="servicios" class="py-24 relative">
+        <div class="bg-number -left-20 top-20" data-speed="0.05">01</div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-section">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ecosistema Digital Completo</h2>
-                <p class="text-pizarra text-lg max-w-2xl mx-auto">Hacemos mas que web. Posicionamos tu negocio online.</p>
+            <div class="text-center mb-20">
+                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Lo que hacemos</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Ecosistema Digital Completo</h2>
+                <p class="text-gris text-lg max-w-2xl mx-auto">Hacemos mas que web. Posicionamos tu negocio online.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Service 1 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 group fade-in-section">
-                    <div class="w-14 h-14 rounded-xl bg-cian/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="ph ph-desktop text-3xl text-cian"></i>
+                <div class="card-glow bg-card rounded-2xl p-10 border border-oro/10 hover:border-oro/40 transition-all duration-500 group tilt-card">
+                    <div class="w-16 h-16 rounded-xl bg-oro/5 flex items-center justify-center mb-8 group-hover:bg-oro/10 transition-colors">
+                        <i class="ph ph-desktop text-4xl text-oro"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-humo">Desarrollo Web</h3>
-                    <p class="text-pizarra leading-relaxed">Creamos tu web de cero o mejoramos la ya existente respetando el branding de tu negocio.</p>
+                    <h3 class="text-2xl font-bold mb-4 text-blanco group-hover:text-oro transition-colors">Desarrollo Web</h3>
+                    <p class="text-gris leading-relaxed">Creamos tu web de cero o mejoramos la ya existente respetando el branding de tu negocio.</p>
+                    <div class="mt-6 w-12 h-px bg-gradient-to-r from-oro to-transparent group-hover:w-20 transition-all"></div>
                 </div>
                 
                 <!-- Service 2 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 group fade-in-section" style="transition-delay: 100ms;">
-                    <div class="w-14 h-14 rounded-xl bg-cian/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="ph ph-map-pin-line text-3xl text-cian"></i>
+                <div class="card-glow bg-card rounded-2xl p-10 border border-oro/10 hover:border-oro/40 transition-all duration-500 group tilt-card">
+                    <div class="w-16 h-16 rounded-xl bg-oro/5 flex items-center justify-center mb-8 group-hover:bg-oro/10 transition-colors">
+                        <i class="ph ph-map-pin-line text-4xl text-oro"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-humo">SEO Local & Maps</h3>
-                    <p class="text-pizarra leading-relaxed">Mejoramos la visibilidad de tu negocio posicionandolo en los primeros resultados de Google Maps.</p>
+                    <h3 class="text-2xl font-bold mb-4 text-blanco group-hover:text-oro transition-colors">SEO Local & Maps</h3>
+                    <p class="text-gris leading-relaxed">Mejoramos la visibilidad de tu negocio posicionandolo en los primeros resultados de Google Maps.</p>
+                    <div class="mt-6 w-12 h-px bg-gradient-to-r from-oro to-transparent group-hover:w-20 transition-all"></div>
                 </div>
 
                 <!-- Service 3 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 group fade-in-section" style="transition-delay: 200ms;">
-                    <div class="w-14 h-14 rounded-xl bg-cian/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="ph ph-lightbulb text-3xl text-cian"></i>
+                <div class="card-glow bg-card rounded-2xl p-10 border border-oro/10 hover:border-oro/40 transition-all duration-500 group tilt-card">
+                    <div class="w-16 h-16 rounded-xl bg-oro/5 flex items-center justify-center mb-8 group-hover:bg-oro/10 transition-colors">
+                        <i class="ph ph-lightbulb text-4xl text-oro"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-humo">Estrategia > Estética</h3>
-                    <p class="text-pizarra leading-relaxed">De nada sirve una web bonita si nadie la visita, o si quienes la visitan no entienden qué vendes. En Lemuria unimos diseño con psicología de ventas.</p>
+                    <h3 class="text-2xl font-bold mb-4 text-blanco group-hover:text-oro transition-colors">Estrategia > Estética</h3>
+                    <p class="text-gris leading-relaxed">De nada sirve una web bonita si nadie la visita. En Lemuria unimos diseño con psicología de ventas.</p>
+                    <div class="mt-6 w-12 h-px bg-gradient-to-r from-oro to-transparent group-hover:w-20 transition-all"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. Proceso (Step-by-Step) -->
-    <section id="metodo" class="py-24 bg-noche/50 border-y border-white/5 relative overflow-hidden">
-        <div class="absolute -left-24 top-1/4 w-96 h-96 bg-cian/10 rounded-full blur-[120px] -z-10"></div>
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+
+    <!-- 4. Método -->
+    <section id="metodo" class="py-24 relative overflow-hidden">
+        <div class="bg-number -right-20 top-40" data-speed="0.08">02</div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20 fade-in-section">
-                <span class="text-cian font-bold tracking-widest text-sm uppercase mb-4 block">Workflow</span>
-                <h2 class="text-4xl md:text-5xl font-black mb-4">Nuestro Método de Crecimiento</h2>
-                <p class="text-pizarra text-lg max-w-2xl mx-auto">Tu presencia digital, paso a paso.</p>
+            <div class="text-center mb-20">
+                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Workflow</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Nuestro Método</h2>
+                <p class="text-gris text-lg max-w-2xl mx-auto">Tu presencia digital, paso a paso.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Paso 1 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 fade-in-section">
-                    <div class="w-12 h-12 rounded-full bg-cian/10 flex items-center justify-center mb-6">
-                        <i class="ph-bold ph-magnifying-glass text-2xl text-cian"></i>
+            <!-- Timeline -->
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-oro/30 to-transparent -translate-x-1/2" id="timeline-line"></div>
+                
+                <div class="space-y-16 md:space-y-24">
+                    <!-- Paso 1 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="md:w-1/2 md:text-right md:pr-16">
+                            <span class="text-oro/20 text-6xl font-black block mb-2">01</span>
+                            <h3 class="text-2xl font-bold text-blanco mb-3">Análisis y Diagnóstico</h3>
+                            <p class="text-gris leading-relaxed">Entendemos tu negocio y tu mercado actual para identificar puntos de mejora.</p>
+                        </div>
+                        <div class="relative z-10 flex-shrink-0">
+                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-oro flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.3)]">
+                                <i class="ph-bold ph-magnifying-glass text-oro text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-16"></div>
                     </div>
-                    <h3 class="text-xl font-bold text-humo mb-4">01. Análisis y Diagnóstico</h3>
-                    <p class="text-pizarra leading-relaxed">Entendemos tu negocio y tu mercado actual para identificar puntos de mejora.</p>
-                </div>
 
-                <!-- Paso 2 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 fade-in-section" style="transition-delay: 100ms;">
-                    <div class="w-12 h-12 rounded-full bg-cian/10 flex items-center justify-center mb-6">
-                        <i class="ph-bold ph-strategy text-2xl text-cian"></i>
+                    <!-- Paso 2 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="md:w-1/2 md:pr-16"></div>
+                        <div class="relative z-10 flex-shrink-0">
+                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-oro flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.3)]">
+                                <i class="ph-bold ph-strategy text-oro text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-16 md:text-left">
+                            <span class="text-oro/20 text-6xl font-black block mb-2">02</span>
+                            <h3 class="text-2xl font-bold text-blanco mb-3">Planificación Estratégica</h3>
+                            <p class="text-gris leading-relaxed">Definimos la estructura de tu web y redes sociales enfocándonos en mejorar la experiencia de tus usuarios.</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-humo mb-4">02. Planificación Estratégica</h3>
-                    <p class="text-pizarra leading-relaxed">Definimos la estructura de tu web y redes sociales enfocándonos en mejorar la experiencia de tus usuarios.</p>
-                </div>
 
-                <!-- Paso 3 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 fade-in-section" style="transition-delay: 200ms;">
-                    <div class="w-12 h-12 rounded-full bg-cian/10 flex items-center justify-center mb-6">
-                        <i class="ph-bold ph-code text-2xl text-cian"></i>
+                    <!-- Paso 3 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="md:w-1/2 md:text-right md:pr-16">
+                            <span class="text-oro/20 text-6xl font-black block mb-2">03</span>
+                            <h3 class="text-2xl font-bold text-blanco mb-3">Desarrollo y Configuración</h3>
+                            <p class="text-gris leading-relaxed">Creamos o adaptamos tu presencia digital con un enfoque en funcionamiento técnico y usabilidad.</p>
+                        </div>
+                        <div class="relative z-10 flex-shrink-0">
+                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-oro flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.3)]">
+                                <i class="ph-bold ph-code text-oro text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-16"></div>
                     </div>
-                    <h3 class="text-xl font-bold text-humo mb-4">03. Desarrollo y Configuración</h3>
-                    <p class="text-pizarra leading-relaxed">Creamos o adaptamos tu presencia digital con un enfoque en funcionamiento técnico y usabilidad.</p>
-                </div>
 
-                <!-- Paso 4 -->
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 fade-in-section" style="transition-delay: 300ms;">
-                    <div class="w-12 h-12 rounded-full bg-exito/10 flex items-center justify-center mb-6">
-                        <i class="ph-bold ph-rocket-launch text-2xl text-exito"></i>
+                    <!-- Paso 4 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="md:w-1/2 md:pr-16"></div>
+                        <div class="relative z-10 flex-shrink-0">
+                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-exito flex items-center justify-center shadow-[0_0_20px_rgba(46,204,113,0.3)]">
+                                <i class="ph-bold ph-rocket-launch text-exito text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-16 md:text-left">
+                            <span class="text-exito/20 text-6xl font-black block mb-2">04</span>
+                            <h3 class="text-2xl font-bold text-blanco mb-3">Mantenimiento y Ajustes</h3>
+                            <p class="text-gris leading-relaxed">Tras el lanzamiento, realizamos revisiones periódicas para ajustar detalles según los resultados obtenidos.</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-humo mb-4">04. Mantenimiento y Ajustes</h3>
-                    <p class="text-pizarra leading-relaxed">Tras el lanzamiento, realizamos revisiones periódicas para ajustar detalles según los resultados obtenidos.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 6. Portfolio (Casos Reales) -->
-    <section id="casos" class="py-24">
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+
+    <!-- 5. Casos de Éxito -->
+    <section id="casos" class="py-24 relative">
+        <div class="bg-number -left-32 top-32" data-speed="0.03">03</div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 fade-in-section">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Casos de Éxito</h2>
-                    <p class="text-pizarra text-lg">Resultados reales para negocios reales.</p>
-                </div>
+            <div class="text-center mb-16">
+                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Portfolio</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Casos de Éxito</h2>
+                <p class="text-gris text-lg">Resultados reales para negocios reales.</p>
             </div>
 
-            <div class="grid grid-cols-1 gap-8">
-                <!-- Caso 1 -->
-                <a href="https://villasilvinaespacioparajugar.netlify.app/" target="_blank" class="group cursor-pointer fade-in-section block max-w-2xl mx-auto w-full">
-                    <div class="relative overflow-hidden rounded-2xl aspect-[4/3] mb-6 bg-card border border-white/10">
-                        <div class="absolute inset-0 bg-gradient-to-t from-noche via-noche/40 to-transparent z-10"></div>
+            <div class="max-w-3xl mx-auto">
+                <a href="https://villasilvinaespacioparajugar.netlify.app/" target="_blank" class="group block">
+                    <div class="relative overflow-hidden rounded-2xl aspect-[16/10] bg-card border border-oro/10 group-hover:border-oro/40 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-negro via-negro/50 to-transparent z-10"></div>
                         <img src="https://res.cloudinary.com/dtevfngjs/image/upload/v1778255217/cd13b27a-5476-4790-b766-8c12387574d4_grd9rv.jpg" alt="Villa Silvina" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
-                        <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+                        <div class="absolute bottom-0 left-0 p-8 md:p-12 z-20 w-full">
                             <div class="flex justify-between items-end">
                                 <div>
-                                    <p class="text-cian text-sm font-bold mb-2">Alquiler</p>
-                                    <h3 class="text-2xl font-bold text-humo">Villa Silvina | Espacio para jugar</h3>
+                                    <span class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-3 block">Alquiler</span>
+                                    <h3 class="text-2xl md:text-3xl font-bold text-blanco">Villa Silvina</h3>
+                                    <p class="text-gris text-sm mt-1">Espacio para jugar</p>
                                 </div>
-                                <div class="bg-exito/20 text-exito px-3 py-1 rounded-full text-sm font-bold border border-exito/30 backdrop-blur-sm">
+                                <div class="bg-oro/20 text-oro px-4 py-2 rounded-full text-sm font-bold border border-oro/30 backdrop-blur-sm">
                                     +150% clientes
                                 </div>
                             </div>
@@ -484,106 +457,117 @@
         </div>
     </section>
 
-    <!-- 7. Reseñas de Clientes -->
-    <section id="resenas" class="py-24 bg-noche/50 border-y border-white/5 relative">
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+
+    <!-- 6. Reseñas -->
+    <section id="resenas" class="py-24 relative">
+        <div class="bg-number -right-24 top-20" data-speed="0.06">04</div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-section">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
-                <p class="text-pizarra text-lg">Opiniones reales de negocios que confiaron en nosotros.</p>
-                <a href="resenas.html" class="inline-flex items-center gap-2 mt-6 text-cian hover:text-humo transition-colors font-medium">
-                    Dejá tu reseña <i class="ph-bold ph-arrow-right"></i>
+            <div class="text-center mb-16">
+                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Testimonios</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Lo que dicen nuestros clientes</h2>
+                <p class="text-gris text-lg mb-6">Opiniones reales de negocios que confiaron en nosotros.</p>
+                <a href="resenas.html" class="inline-flex items-center gap-2 text-oro hover:text-oroClaro transition-colors font-medium group">
+                    Dejá tu reseña <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
 
             <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Reviews will be loaded here dynamically -->
+                <!-- Reviews loaded dynamically -->
             </div>
         </div>
     </section>
 
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
 
-
-    <!-- 8. Planes (Pricing) -->
-    <section id="planes" class="py-24">
+    <!-- 7. Planes -->
+    <section id="planes" class="py-24 relative">
+        <div class="bg-number -left-20 top-40" data-speed="0.04">05</div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-section">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Planes de Crecimiento</h2>
-                <p class="text-pizarra text-lg">Elige la velocidad a la que quieres escalar tu negocio.</p>
+            <div class="text-center mb-20">
+                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Inversión</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Planes de Crecimiento</h2>
+                <p class="text-gris text-lg">Elige la velocidad a la que quieres escalar tu negocio.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
-                <!-- Plan Silver -->
-                <div class="bg-card p-8 rounded-3xl border border-white/5 fade-in-section flex flex-col">
-                    <h3 class="text-xl font-bold text-humo mb-2">Plan Silver</h3>
-                    <p class="text-cian font-medium text-sm mb-2 uppercase tracking-wider">Fundamentos Digitales</p>
-                    <p class="text-pizarra text-sm mb-6">Ideal para negocios locales que solo necesitan existir en internet.</p>
-                    <div class="text-4xl font-bold text-humo mb-8">$59.000</div>
-                    <ul class="space-y-4 mb-8 text-pizarra text-sm flex-grow">
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Optimización de Google Business Profile (Maps)</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Indexación Básica en Google</li>
+                <!-- Silver -->
+                <div class="bg-card rounded-2xl p-10 border border-white/5 hover:border-oro/30 transition-all duration-500 flex flex-col group">
+                    <h3 class="text-2xl font-bold text-blanco mb-1">Silver</h3>
+                    <p class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-4">Fundamentos Digitales</p>
+                    <p class="text-gris text-sm mb-8">Ideal para negocios locales que solo necesitan existir en internet.</p>
+                    <div class="text-4xl font-bold text-blanco mb-8">$59.000</div>
+                    <ul class="space-y-4 mb-10 text-gris text-sm flex-grow">
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Optimización de Google Business Profile</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Indexación Básica en Google</li>
                     </ul>
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Silver.%20%C2%BFPodemos%20hablar%3F" target="_blank" class="block w-full text-center py-3 rounded-lg btn-outline font-semibold">Elegir Plan</a>
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Silver." target="_blank" class="btn-outline-gold block w-full text-center py-3 rounded-lg font-semibold">Elegir Plan</a>
                 </div>
 
-                <!-- Plan Gold (Destacado) -->
-                <div class="bg-gradient-to-b from-card to-noche p-1 rounded-3xl relative fade-in-section transform md:-translate-y-4 shadow-2xl shadow-cian/20 flex flex-col">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-cian text-noche px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide z-20">Más Popular</div>
-                    <div class="bg-card p-8 rounded-[23px] h-full border border-cian/30 relative overflow-hidden flex flex-col glare-hover cursor-pointer" 
-                         style="--gh-angle: -30deg; --gh-rgba: rgba(255,255,255,0.3); --gh-duration: 800ms; --gh-size: 300%;">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-cian/10 blur-3xl rounded-full"></div>
-                        <h3 class="text-xl font-bold text-humo mb-2">Plan Gold</h3>
-                        <p class="text-cian font-medium text-sm mb-2 uppercase tracking-wider">Crecimiento y Reputación</p>
-                        <p class="text-pizarra text-sm mb-6">Ideal para negocios que quieren ganarse a la competencia local.</p>
-                        <div class="text-4xl font-bold text-humo mb-8">$99.000</div>
-                        <ul class="space-y-4 mb-8 text-pizarra text-sm relative z-10 flex-grow">
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Optimización de Google Business Profile (Maps)</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Gestión Estratégica de Reseñas (QR/Enlace)</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> SEO Local para obtener mas visibilidad</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Sitio Web con derivación a WhatsApp para un negocio más profesional</li>
+                <!-- Gold (Featured) -->
+                <div class="relative flex flex-col md:-translate-y-4">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-oro text-negro px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider z-20">Más Popular</div>
+                    <div class="bg-card p-10 rounded-2xl h-full border border-oro/50 relative overflow-hidden flex flex-col shadow-[0_0_40px_rgba(201,168,76,0.15)]">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-oro/5 blur-3xl rounded-full"></div>
+                        <h3 class="text-2xl font-bold text-blanco mb-1">Gold</h3>
+                        <p class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-4">Crecimiento y Reputación</p>
+                        <p class="text-gris text-sm mb-8">Ideal para negocios que quieren ganarse a la competencia local.</p>
+                        <div class="text-4xl font-bold text-oro mb-8">$99.000</div>
+                        <ul class="space-y-4 mb-10 text-gris text-sm relative z-10 flex-grow">
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Optimización de Google Business Profile</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Gestión Estratégica de Reseñas</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> SEO Local para mas visibilidad</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Sitio Web con derivación a WhatsApp</li>
                         </ul>
-                        <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Gold.%20%C2%BFPodemos%20hablar%3F" target="_blank" class="block w-full text-center py-3 rounded-lg btn-neon font-semibold relative z-10">Elegir Plan</a>
+                        <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Gold." target="_blank" class="btn-gold block w-full text-center py-3 rounded-lg font-semibold">Elegir Plan</a>
                     </div>
                 </div>
 
-                <!-- Plan Platinum -->
-                <div class="bg-card p-8 rounded-3xl border border-white/5 fade-in-section flex flex-col">
-                    <h3 class="text-xl font-bold text-humo mb-2">Plan Platinum</h3>
-                    <p class="text-cian font-medium text-sm mb-2 uppercase tracking-wider">Dominio de Mercado</p>
-                    <p class="text-pizarra text-sm mb-6">Ideal para marcas que buscan una presencia profesional online.</p>
-                    <div class="text-4xl font-bold text-humo mb-8">$179.000</div>
-                    <ul class="space-y-4 mb-8 text-pizarra text-sm flex-grow">
-                        <li class="flex items-center gap-3 font-bold text-humo/80"><i class="ph-bold ph-plus text-cian"></i> Todo lo del Plan Gold</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Mejora de Redes (SEO)</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cian mt-1"></i> Web Avanzada (compra dentro de la web, catálogo, etc)</li>
+                <!-- Platinum -->
+                <div class="bg-card rounded-2xl p-10 border border-white/5 hover:border-oro/30 transition-all duration-500 flex flex-col group">
+                    <h3 class="text-2xl font-bold text-blanco mb-1">Platinum</h3>
+                    <p class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-4">Dominio de Mercado</p>
+                    <p class="text-gris text-sm mb-8">Ideal para marcas que buscan una presencia profesional online.</p>
+                    <div class="text-4xl font-bold text-blanco mb-8">$179.000</div>
+                    <ul class="space-y-4 mb-10 text-gris text-sm flex-grow">
+                        <li class="flex items-center gap-3 font-bold text-blanco/80"><i class="ph-bold ph-plus text-oro"></i> Todo lo del Plan Gold</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Mejora de Redes (SEO)</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Web Avanzada (compra, catálogo, etc)</li>
                     </ul>
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Platinum.%20%C2%BFPodemos%20hablar%3F" target="_blank" class="block w-full text-center py-3 rounded-lg btn-outline font-semibold">Elegir Plan</a>
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Platinum." target="_blank" class="btn-outline-gold block w-full text-center py-3 rounded-lg font-semibold">Elegir Plan</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 9. FAQ -->
-    <section class="py-24 bg-noche/50 border-y border-white/5">
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+
+    <!-- 8. FAQ -->
+    <section id="faq" class="py-24 relative">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12 fade-in-section">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Preguntas Frecuentes</h2>
+            <div class="text-center mb-16">
+                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Dudas</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Preguntas Frecuentes</h2>
             </div>
 
-            <div class="space-y-4 fade-in-section">
-                <!-- FAQ Item 1 - Quién está detrás -->
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Quién está detrás?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
+                        <span class="font-medium text-blanco text-lg">¿Quién está detrás?</span>
+                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
                     </button>
-                    <div class="px-6 pb-5 hidden faq-content">
-                        <div class="flex flex-col md:flex-row items-start gap-6 pt-2">
-                            <div class="md:w-1/2 text-sm">
-                                <h4 class="font-bold text-humo text-lg mb-2">Tadeo Fernandez</h4>
-                                <p class="text-pizarra leading-relaxed">Fundador de Lemuria. Soy de Córdoba y me dedico a ayudar a negocios locales a crecer en internet. Trabajo directamente con cada cliente, sin intermediarios.</p>
+                    <div class="faq-content px-8">
+                        <div class="flex flex-col md:flex-row items-center gap-6 pb-6">
+                            <div class="md:w-1/2">
+                                <h4 class="font-bold text-oro text-xl mb-3">Tadeo Fernandez</h4>
+                                <p class="text-gris leading-relaxed">Fundador de Lemuria. Soy de Córdoba y me dedico a ayudar a negocios locales a crecer en internet. Trabajo directamente con cada cliente, sin intermediarios.</p>
                             </div>
-                            <div class="self-center -mt-8 md:self-start md:-mt-20 md:w-1/2">
-                                <video id="tadeo-video" class="w-full max-h-80 object-contain rounded-xl" playsinline muted preload="auto">
+                            <div class="md:w-1/2">
+                                <video class="w-full max-h-72 object-contain rounded-xl" playsinline muted preload="auto">
                                     <source src="https://res.cloudinary.com/dpeanyiml/video/upload/v1779228392/PXL_20260519_212754862_3_hdgq9d.webm" type="video/webm">
                                 </video>
                             </div>
@@ -591,125 +575,239 @@
                     </div>
                 </div>
 
-                <!-- FAQ Item 2 -->
+                <!-- FAQ 2 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cómo me aseguras que funcione?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
+                        <span class="font-medium text-blanco text-lg">¿Cómo me aseguras que funcione?</span>
+                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
                     </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Podés ver nuestros casos de éxito más arriba para comprobar resultados reales. Además, pagás recién cuando tu página está activa y funcionando. Si querés más detalles, podés tener una charla directa conmigo y te explico el método paso a paso.
+                    <div class="faq-content px-8">
+                        <p class="text-gris leading-relaxed pb-4">Podés ver nuestros casos de éxito más arriba para comprobar resultados reales. Además, pagás recién cuando tu página está activa y funcionando. Si querés más detalles, podés tener una charla directa conmigo y te explico el método paso a paso.</p>
                     </div>
                 </div>
 
-                <!-- FAQ Item 3 -->
+                <!-- FAQ 3 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cuánto tiempo tardan en crear mi web?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
+                        <span class="font-medium text-blanco text-lg">¿Cuánto tiempo tardan en crear mi web?</span>
+                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
                     </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Dependiendo del plan elegido, un proyecto tarda menos de una semana desde el diagnóstico hasta el lanzamiento.
+                    <div class="faq-content px-8">
+                        <p class="text-gris leading-relaxed pb-4">Dependiendo del plan elegido, un proyecto tarda menos de una semana desde el diagnóstico hasta el lanzamiento.</p>
                     </div>
                 </div>
 
-                <!-- FAQ Item 4 -->
+                <!-- FAQ 4 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cómo mejoran mi perfil de Google Maps?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
+                        <span class="font-medium text-blanco text-lg">¿Cómo mejoran mi perfil de Google Maps?</span>
+                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
                     </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Optimizamos la ficha con palabras clave locales, actualizamos imágenes, servicios e implementamos un sistema de reseñas para que obtengas opiniones reales de tus clientes, lo que eleva tu posicionamiento de forma orgánica.
+                    <div class="faq-content px-8">
+                        <p class="text-gris leading-relaxed pb-4">Optimizamos la ficha con palabras clave locales, actualizamos imágenes, servicios e implementamos un sistema de reseñas para que obtengas opiniones reales de tus clientes, lo que eleva tu posicionamiento de forma orgánica.</p>
                     </div>
                 </div>
 
-                <!-- FAQ Item 5 -->
+                <!-- FAQ 5 -->
                 <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
-                    <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none faq-button">
-                        <span class="font-medium text-humo">¿Cómo es el sistema de reseñas?</span>
-                        <i class="ph-bold ph-caret-down text-cian transition-transform duration-300"></i>
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
+                        <span class="font-medium text-blanco text-lg">¿Cómo es el sistema de reseñas?</span>
+                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
                     </button>
-                    <div class="px-6 pb-5 text-pizarra text-sm hidden faq-content">
-                        Implementamos un sistema que facilita a tus clientes dejar reseñas reales en Google. A través de un QR o enlace directo, simplificamos el proceso para que más clientes compartan su experiencia positiva, mejorando tu reputación online de forma orgánica.
+                    <div class="faq-content px-8">
+                        <p class="text-gris leading-relaxed pb-4">Implementamos un sistema que facilita a tus clientes dejar reseñas reales en Google. A través de un QR o enlace directo, simplificamos el proceso para que más clientes compartan su experiencia positiva, mejorando tu reputación online de forma orgánica.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 10. Footer / CTA -->
-    <section id="contacto" class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-cian/5"></div>
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-t from-cian/10 to-transparent blur-3xl -z-10"></div>
-        
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-in-section">
-            <h2 class="text-4xl md:text-6xl font-bold mb-6">¿Listo para vender más?</h2>
-            <p class="text-xl text-pizarra mb-10 max-w-2xl mx-auto">Contanos tu situación actual para ver si te podemos ayudar, sin compromiso.</p>
-            
-            <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios.%20%C2%BFPodemos%20hablar%3F" target="_blank" class="btn-neon inline-flex items-center gap-3 px-10 py-5 rounded-xl font-bold text-lg mb-8 shadow-2xl shadow-cian/20">
+    <!-- Divider -->
+    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+
+    <!-- 9. CTA Final -->
+    <section id="contacto" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tighter">¿Listo para vender más?</h2>
+            <p class="text-xl text-gris mb-12 max-w-2xl mx-auto">Contanos tu situación actual para ver si te podemos ayudar, sin compromiso.</p>
+            <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-gold inline-flex items-center gap-3 px-12 py-5 rounded-xl text-lg shadow-[0_0_40px_rgba(201,168,76,0.2)]">
                 <i class="ph-bold ph-whatsapp-logo text-2xl"></i> Escribinos por WhatsApp
             </a>
         </div>
+    </section>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 border-t border-white/10 pt-12">
+    <!-- 10. Footer -->
+    <footer class="py-16 border-t border-oro/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
-                        <i class="ph-fill ph-planet text-3xl text-cian"></i>
-                        <span class="font-bold text-2xl tracking-tighter text-humo">LEMURIA</span>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full border border-oro/30 flex items-center justify-center">
+                            <i class="ph-fill ph-planet text-xl text-oro"></i>
+                        </div>
+                        <span class="font-bold text-xl tracking-[0.15em] text-blanco">LEMURIA</span>
                     </div>
-                    <p class="text-pizarra text-sm max-w-xs">Creamos ecosistemas digitales que traen clientes, generan confianza y cierran ventas.</p>
+                    <p class="text-gris text-sm max-w-xs">Creamos ecosistemas digitales que traen clientes, generan confianza y cierran ventas.</p>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-humo mb-4">Enlaces</h4>
-                    <ul class="space-y-2 text-sm text-pizarra">
-                        <li><a href="#servicios" class="hover:text-cian transition-colors">Servicios</a></li>
-                        <li><a href="#metodo" class="hover:text-cian transition-colors">Nuestro Método</a></li>
-                        <li><a href="#casos" class="hover:text-cian transition-colors">Casos de Éxito</a></li>
-                        <li><a href="#planes" class="hover:text-cian transition-colors">Precios</a></li>
+                    <h4 class="font-bold text-blanco mb-6 text-sm tracking-[0.15em] uppercase">Enlaces</h4>
+                    <ul class="space-y-3 text-sm text-gris">
+                        <li><a href="#servicios" class="hover:text-oro transition-colors">Servicios</a></li>
+                        <li><a href="#metodo" class="hover:text-oro transition-colors">Nuestro Método</a></li>
+                        <li><a href="#casos" class="hover:text-oro transition-colors">Casos de Éxito</a></li>
+                        <li><a href="#planes" class="hover:text-oro transition-colors">Precios</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-humo mb-4">Contacto</h4>
-                    <ul class="space-y-2 text-sm text-pizarra">
-                        <li class="flex items-center gap-2"><i class="ph ph-envelope-simple text-cian"></i> lemuriahello@gmail.com</li>
-                        <li class="flex items-center gap-2"><i class="ph ph-phone text-cian"></i> +54 351 408 9238</li>
+                    <h4 class="font-bold text-blanco mb-6 text-sm tracking-[0.15em] uppercase">Contacto</h4>
+                    <ul class="space-y-3 text-sm text-gris">
+                        <li class="flex items-center gap-2"><i class="ph ph-envelope-simple text-oro"></i> lemuriahello@gmail.com</li>
+                        <li class="flex items-center gap-2"><i class="ph ph-phone text-oro"></i> +54 351 408 9238</li>
                     </ul>
-                    <div class="flex gap-4 mt-6">
-                        <a href="https://instagram.com/elmatike" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cian hover:text-noche transition-all"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
-                        <a href="https://www.linkedin.com/in/lemuria/" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cian hover:text-noche transition-all"><i class="ph-fill ph-linkedin-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cian hover:text-noche transition-all"><i class="ph-fill ph-twitter-logo text-xl"></i></a>
+                    <div class="flex gap-3 mt-6">
+                        <a href="https://instagram.com/elmatike" target="_blank" class="w-10 h-10 rounded-full border border-oro/20 flex items-center justify-center hover:border-oro hover:bg-oro/10 transition-all text-oro">
+                            <i class="ph-fill ph-instagram-logo text-lg"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/lemuria/" target="_blank" class="w-10 h-10 rounded-full border border-oro/20 flex items-center justify-center hover:border-oro hover:bg-oro/10 transition-all text-oro">
+                            <i class="ph-fill ph-linkedin-logo text-lg"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="mt-12 text-center text-xs text-pizarra/50">
+            <div class="mt-16 pt-8 border-t border-white/5 text-center text-xs text-muted">
                 &copy; 2026 Lemuria Digital. Todos los derechos reservados.
             </div>
         </div>
-    </section>
+    </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center text-4xl shadow-lg shadow-[#25D366]/40 hover:scale-110 transition-transform z-50 animate-bounce">
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-oro text-negro rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition-transform z-50">
         <i class="ph-fill ph-whatsapp-logo"></i>
     </a>
 
-    <!-- Scripts para Animaciones y FAQ -->
     <script>
+        // Custom Cursor
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
+        
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            ring.style.left = ringX + 'px';
+            ring.style.top = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+        
+        document.querySelectorAll('a, button, .star-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+            el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('scroll-progress').style.width = progress + '%';
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-negro/90', 'backdrop-blur-xl', 'border-b', 'border-oro/10');
+            } else {
+                navbar.classList.remove('bg-negro/90', 'backdrop-blur-xl', 'border-b', 'border-oro/10');
+            }
+        });
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Hero Spotlight
+        const hero = document.getElementById('hero');
+        const spotlight = document.getElementById('hero-spotlight');
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            spotlight.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+            spotlight.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+        });
+
+        // Hero Particles
+        const particlesContainer = document.getElementById('particles-container');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            p.style.animationDelay = Math.random() * 10 + 's';
+            p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+            particlesContainer.appendChild(p);
+        }
+
+        // Hero Reveal Animation
+        window.addEventListener('load', () => {
+            const reveals = document.querySelectorAll('.reveal-text');
+            reveals.forEach((el, i) => {
+                setTimeout(() => el.classList.add('visible'), 300 + i * 200);
+            });
+            
+            gsap.to('#hero-desc', { opacity: 1, y: 0, duration: 1, delay: 1.2 });
+            gsap.to('#hero-cta', { opacity: 1, y: 0, duration: 0.8, delay: 1.5 });
+        });
+
+        // Side Navigation
+        const sections = ['hero', 'servicios', 'metodo', 'casos', 'resenas', 'planes', 'faq', 'contacto'];
+        const dots = document.querySelectorAll('.side-dot');
+        
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const target = document.getElementById(dot.dataset.section);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section) {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2) current = id;
+                }
+            });
+            dots.forEach(d => d.classList.toggle('active', d.dataset.section === current));
+        });
+
         // FAQ Accordion
         document.querySelectorAll('.faq-button').forEach(button => {
             button.addEventListener('click', () => {
                 const content = button.nextElementSibling;
-                const icon = button.querySelector('i');
-                const wasHidden = content.classList.contains('hidden');
+                const icon = button.querySelector('.faq-icon');
+                const wasOpen = content.classList.contains('open');
                 
-                // Toggle current
-                content.classList.toggle('hidden');
-                if(!content.classList.contains('hidden')) {
-                    icon.classList.add('rotate-180');
-                    // Play video if it's the "quién está detrás" FAQ
+                // Close all
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.remove('open'));
+                document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotated'));
+                
+                if (!wasOpen) {
+                    content.classList.add('open');
+                    icon.classList.add('rotated');
+                    
+                    // Play video if present
                     const video = content.querySelector('video');
                     if (video) {
                         video.currentTime = 0;
@@ -720,115 +818,32 @@
                         });
                     }
                 } else {
-                    icon.classList.remove('rotate-180');
-                    // Pause video if closing
                     const video = content.querySelector('video');
-                    if (video) {
-                        video.pause();
-                    }
+                    if (video) video.pause();
                 }
             });
         });
 
-        // Scroll Animations (Intersection Observer)
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
+        // 3D Card Tilt (Desktop only)
+        if (window.innerWidth > 768) {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                });
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-section').forEach((section) => {
-            observer.observe(section);
-        });
-
-        // --- Hero GSAP Staggered Animation ---
-        window.addEventListener('load', () => {
-            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-            
-            tl.fromTo("#hero-line-1", 
-                { opacity: 0, y: 40, scale: 0.95 },
-                { opacity: 1, y: 0, scale: 1, duration: 0.8 },
-                0.3
-            )
-            .fromTo("#hero-line-2", 
-                { opacity: 0, y: 40, scale: 0.95 },
-                { opacity: 1, y: 0, scale: 1, duration: 0.8 },
-                0.6
-            )
-            .fromTo("#hero-line-3", 
-                { opacity: 0, y: 40, scale: 0.95 },
-                { opacity: 1, y: 0, scale: 1, duration: 0.8 },
-                0.9
-            )
-            .fromTo("#hero-desc", 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 1 },
-                1.3
-            )
-            .fromTo("#hero-cta", 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8 },
-                1.6
-            );
-        });
-
-        // Navbar blur effect on scroll
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-lg');
-            } else {
-                navbar.classList.remove('shadow-lg');
-            }
-        });
-
-        // --- Global Water Ripple Logic ---
-        function createSingleRipple() {
-            const container = document.getElementById('global-ripple-container');
-            if (!container) return;
-
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple-drop';
-            
-            const size = Math.random() * 100 + 20; 
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-
-            ripple.style.width = size + 'px';
-            ripple.style.height = size + 'px';
-            ripple.style.left = (x - size/2) + 'px';
-            ripple.style.top = (y - size/2) + 'px';
-
-            container.appendChild(ripple);
-            setTimeout(() => { ripple.remove(); }, 5000);
         }
 
-        function spawnRipple() {
-            createSingleRipple();
-            
-            // 40% chance of a second ripple appearing almost at the same time
-            if (Math.random() > 0.6) {
-                setTimeout(createSingleRipple, 300 + Math.random() * 800);
-            }
-
-            setTimeout(spawnRipple, Math.random() * 3000 + 2000);
-        }
-        
-        // Start after a short delay
-        window.addEventListener('load', () => {
-            setTimeout(spawnRipple, 1000);
-        });
-
-        // --- Load Approved Reviews from Supabase ---
+        // Load Reviews from Supabase
         const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -836,7 +851,7 @@
         function renderStars(count) {
             let html = '';
             for (let i = 1; i <= 5; i++) {
-                html += `<i class="ph-fill ph-star ${i <= count ? 'text-yellow-400' : 'text-pizarra/30'} text-lg"></i>`;
+                html += `<i class="ph-fill ph-star ${i <= count ? 'text-oro' : 'text-muted/30'} text-lg"></i>`;
             }
             return html;
         }
@@ -853,31 +868,35 @@
 
             if (error || !data || data.length === 0) {
                 container.innerHTML = `
-                    <div class="col-span-full text-center text-pizarra py-8">
-                        <i class="ph ph-chat-text text-4xl mb-3 block"></i>
-                        <p>Aún no hay reseñas publicadas. ¡Sé el primero!</p>
+                    <div class="col-span-full text-center text-gris py-12">
+                        <div class="w-16 h-16 rounded-full bg-oro/5 flex items-center justify-center mx-auto mb-4">
+                            <i class="ph ph-chat-text text-3xl text-oro/40"></i>
+                        </div>
+                        <p class="text-lg">Aún no hay reseñas publicadas.</p>
+                        <a href="resenas.html" class="inline-flex items-center gap-2 mt-4 text-oro hover:text-oroClaro transition-colors font-medium">
+                            Sé el primero <i class="ph-bold ph-arrow-right"></i>
+                        </a>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = data.map(review => `
-                <div class="bg-card rounded-2xl p-8 border border-white/5 hover:border-cian/30 transition-all duration-300 fade-in-section">
-                    <h3 class="text-lg font-bold text-humo mb-3">${review.empresa}</h3>
+                <div class="bg-card rounded-2xl p-8 border border-oro/10 hover:border-oro/30 transition-all duration-500 relative group">
+                    <div class="absolute top-4 right-6 text-oro/10 text-6xl font-serif leading-none">"</div>
                     <div class="flex gap-1 mb-4">${renderStars(review.estrellas)}</div>
-                    <p class="text-pizarra text-sm leading-relaxed">"${review.descripcion}"</p>
+                    <p class="text-gris text-sm leading-relaxed mb-6 relative z-10">"${review.descripcion}"</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-oro/10">
+                        <div class="w-8 h-8 rounded-full bg-oro/10 flex items-center justify-center">
+                            <i class="ph-fill ph-buildings text-oro text-sm"></i>
+                        </div>
+                        <span class="text-blanco font-semibold text-sm">${review.empresa}</span>
+                    </div>
                 </div>
             `).join('');
-
-            // Re-observe new fade-in elements
-            document.querySelectorAll('.fade-in-section:not(.is-visible)').forEach(el => {
-                observer.observe(el);
-            });
         }
 
         loadReviews();
     </script>
 </body>
 </html>
-
-<!-- Build Trigger: Fri May 15 14:08:00 -03 2026 -->

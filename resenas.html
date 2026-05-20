@@ -4,115 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dejar Reseña | LEMURIA</title>
-    <meta name="description" content="Dejá tu reseña sobre el servicio de Lemuria Digital.">
-    
-    <!-- Planet Favicon -->
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtevfngjs/image/upload/e_trim,c_lpad,w_512,h_512,b_transparent/v1778556633/Gemini_Generated_Image_rb7hc0rb7hc0rb7h_jq1ftt.png">
-    
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        noche: '#0F172A',
-                        cian: '#06B6D4',
-                        pizarra: '#94A3B8',
-                        exito: '#10B981',
-                        humo: '#F8FAFC',
-                        card: '#1E293B',
+                        negro: '#0A0A0A', carbon: '#111111', card: '#161616',
+                        oro: '#C9A84C', oroClaro: '#E8D5A3', oroOscuro: '#8B7635',
+                        blanco: '#FFFFFF', gris: '#A0A0A0', muted: '#555555', exito: '#2ECC71',
                     }
                 }
             }
         }
     </script>
-    
     <style>
-        body {
-            background-color: #0F172A;
-            color: #F8FAFC;
-        }
-        
-        .star-btn {
-            cursor: pointer;
-            transition: transform 0.15s ease, color 0.15s ease;
-            background: none;
-            border: none;
-            padding: 0;
-            display: inline-flex;
-            color: #475569;
-            font-size: 2.25rem;
-            line-height: 1;
-        }
-        .star-btn:hover {
-            transform: scale(1.15);
-        }
-        .star-btn.active,
-        .star-btn.hovered {
-            color: #FBBF24;
-        }
-        
-        .btn-neon {
-            background-color: #06B6D4;
-            color: #0F172A;
-            transition: all 0.3s ease;
-        }
-        .btn-neon:hover {
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
-        
-        .btn-neon:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+        body { background-color: #0A0A0A; color: #FFFFFF; }
+        .star-btn { cursor: pointer; transition: transform 0.15s ease, color 0.15s ease; background: none; border: none; padding: 0; display: inline-flex; color: #555555; font-size: 2.5rem; line-height: 1; }
+        .star-btn:hover { transform: scale(1.2); }
+        .star-btn.active, .star-btn.hovered { color: #C9A84C; }
+        .btn-gold { background: linear-gradient(135deg, #8B7635, #C9A84C, #E8D5A3, #C9A84C, #8B7635); background-size: 300% 300%; color: #0A0A0A; font-weight: 700; transition: all 0.3s ease; animation: shimmer 3s ease infinite; }
+        .btn-gold:hover { box-shadow: 0 0 30px rgba(201,168,76,0.4); transform: translateY(-2px); }
+        .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     </style>
 </head>
 <body class="antialiased min-h-screen flex items-center justify-center px-4">
-    <div class="max-w-lg w-full fade-in-section">
-        <!-- Back button -->
-        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-pizarra hover:text-cian transition-colors mb-8 text-sm">
+    <div class="max-w-lg w-full">
+        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-gris hover:text-oro transition-colors mb-8 text-sm">
             <i class="ph-bold ph-arrow-left"></i> Volver al sitio
         </a>
 
         <div class="text-center mb-10">
-            <div class="w-16 h-16 rounded-2xl bg-cian/10 flex items-center justify-center mx-auto mb-6">
-                <i class="ph-fill ph-star text-4xl text-cian"></i>
+            <div class="w-16 h-16 rounded-full border border-oro/20 flex items-center justify-center mx-auto mb-6">
+                <i class="ph-fill ph-star text-4xl text-oro"></i>
             </div>
             <h1 class="text-3xl md:text-4xl font-bold mb-3">Dejá tu Reseña</h1>
-            <p class="text-pizarra">Contanos tu experiencia con Lemuria. Tu opinión ayuda a otros negocios a confiar en nosotros.</p>
+            <p class="text-gris">Contanos tu experiencia con Lemuria. Tu opinión ayuda a otros negocios a confiar en nosotros.</p>
         </div>
 
-        <div class="bg-card rounded-2xl p-8 border border-white/10 shadow-2xl">
+        <div class="bg-card rounded-2xl p-10 border border-oro/10">
             <form id="review-form" class="space-y-6">
-                <!-- Nombre de empresa -->
                 <div>
-                    <label for="empresa" class="block text-sm font-medium text-humo mb-2">Nombre de tu empresa</label>
+                    <label for="empresa" class="block text-sm font-medium text-blanco mb-2">Nombre de tu empresa</label>
                     <input type="text" id="empresa" required placeholder="Ej: Villa Silvina" 
-                        class="w-full px-4 py-3 rounded-xl bg-noche border border-white/10 text-humo placeholder-pizarra/50 focus:outline-none focus:border-cian focus:ring-1 focus:ring-cian transition-colors">
+                        class="w-full px-4 py-3 rounded-xl bg-negro border border-white/10 text-blanco placeholder-muted focus:outline-none focus:border-oro focus:ring-1 focus:ring-oro transition-colors">
                 </div>
 
-                <!-- Estrellas -->
                 <div>
-                    <label class="block text-sm font-medium text-humo mb-2">¿Cómo fue tu experiencia?</label>
+                    <label class="block text-sm font-medium text-blanco mb-2">¿Cómo fue tu experiencia?</label>
                     <div class="flex items-center gap-1" id="star-container">
                         <button type="button" class="star-btn" data-value="1">★</button>
                         <button type="button" class="star-btn" data-value="2">★</button>
@@ -123,27 +70,24 @@
                     <input type="hidden" id="estrellas" value="0">
                 </div>
 
-                <!-- Descripción -->
                 <div>
-                    <label for="descripcion" class="block text-sm font-medium text-humo mb-2">Tu opinión</label>
+                    <label for="descripcion" class="block text-sm font-medium text-blanco mb-2">Tu opinión</label>
                     <textarea id="descripcion" required rows="4" placeholder="Contanos qué te pareció el servicio..."
-                        class="w-full px-4 py-3 rounded-xl bg-noche border border-white/10 text-humo placeholder-pizarra/50 focus:outline-none focus:border-cian focus:ring-1 focus:ring-cian transition-colors resize-none"></textarea>
+                        class="w-full px-4 py-3 rounded-xl bg-negro border border-white/10 text-blanco placeholder-muted focus:outline-none focus:border-oro focus:ring-1 focus:ring-oro transition-colors resize-none"></textarea>
                 </div>
 
-                <!-- Submit button -->
-                <button type="submit" id="submit-btn" class="w-full btn-neon py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+                <button type="submit" id="submit-btn" class="w-full btn-gold py-4 rounded-xl text-lg flex items-center justify-center gap-2">
                     <i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña
                 </button>
             </form>
 
-            <!-- Success message (hidden by default) -->
             <div id="success-msg" class="hidden text-center py-8">
                 <div class="w-16 h-16 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-4">
                     <i class="ph-fill ph-check-circle text-4xl text-exito"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-humo mb-2">¡Gracias por tu reseña!</h2>
-                <p class="text-pizarra">Será revisada antes de publicarse en nuestro sitio.</p>
-                <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-6 text-cian hover:text-humo transition-colors font-medium">
+                <h2 class="text-2xl font-bold text-blanco mb-2">¡Gracias por tu reseña!</h2>
+                <p class="text-gris">Será revisada antes de publicarse en nuestro sitio.</p>
+                <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-6 text-oro hover:text-oroClaro transition-colors font-medium">
                     Volver al sitio <i class="ph-bold ph-arrow-right"></i>
                 </a>
             </div>
@@ -153,10 +97,8 @@
     <script>
         const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
-        
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Star rating logic
         const starBtns = document.querySelectorAll('.star-btn');
         const estrellasInput = document.getElementById('estrellas');
         let selectedStars = 0;
@@ -170,75 +112,44 @@
         }
 
         starBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                setStars(parseInt(btn.dataset.value));
-            });
-
+            btn.addEventListener('click', () => setStars(parseInt(btn.dataset.value)));
             btn.addEventListener('mouseenter', () => {
-                const hoverValue = parseInt(btn.dataset.value);
-                starBtns.forEach(b => {
-                    b.classList.toggle('hovered', parseInt(b.dataset.value) <= hoverValue);
-                });
+                const v = parseInt(btn.dataset.value);
+                starBtns.forEach(b => b.classList.toggle('hovered', parseInt(b.dataset.value) <= v));
             });
         });
 
         document.getElementById('star-container').addEventListener('mouseleave', () => {
-            starBtns.forEach(btn => {
-                btn.classList.remove('hovered');
-            });
+            starBtns.forEach(btn => btn.classList.remove('hovered'));
             setStars(selectedStars);
         });
 
-        // Initialize with 0 stars
         setStars(0);
 
-        // Form submission
         document.getElementById('review-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const btn = document.getElementById('submit-btn');
             const empresa = document.getElementById('empresa').value.trim();
             const estrellas = parseInt(document.getElementById('estrellas').value);
             const descripcion = document.getElementById('descripcion').value.trim();
 
             if (!empresa || !descripcion) return;
-            if (estrellas < 1 || estrellas > 5) {
-                alert('Por favor seleccioná una calificación de estrellas.');
-                return;
-            }
+            if (estrellas < 1 || estrellas > 5) { alert('Por favor seleccioná una calificación.'); return; }
 
             btn.disabled = true;
             btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Enviando...';
 
             try {
-                const { data, error } = await sb
-                    .from('reviews')
-                    .insert([
-                        { empresa, estrellas, descripcion, aprobada: false }
-                    ])
-                    .select()
-                    .single();
-
+                const { data, error } = await sb.from('reviews').insert([{ empresa, estrellas, descripcion, aprobada: false }]).select().single();
                 if (error) throw error;
-
-                // Call edge function to send approval email
-                try {
-                    await sb.functions.invoke('send-approval-email', {
-                        body: { reviewId: data.id, empresa, estrellas, descripcion }
-                    });
-                } catch (emailError) {
-                    console.error('Error sending email:', emailError);
-                }
-
-                // Show success message
+                try { await sb.functions.invoke('send-approval-email', { body: { reviewId: data.id, empresa, estrellas, descripcion } }); } catch (e) { console.error('Email error:', e); }
                 document.getElementById('review-form').classList.add('hidden');
                 document.getElementById('success-msg').classList.remove('hidden');
-
             } catch (error) {
                 console.error('Error:', error);
                 btn.disabled = false;
                 btn.innerHTML = '<i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña';
-                alert('Hubo un error al enviar tu reseña. Por favor intentá de nuevo.');
+                alert('Hubo un error. Intentá de nuevo.');
             }
         });
     </script>
