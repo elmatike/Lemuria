@@ -379,9 +379,6 @@
                     <span class="font-mono text-violeta text-2xl counter" id="visitor-count">0</span>
                 </div>
             </div>
-
-            <!-- Spacer for centering last card on desktop -->
-            <div class="hidden md:block flex-shrink-0" style="width: calc((100vw - 48px - 32px) / 2 - 32px); min-width: 0;"></div>
         </div>
             </div>
 
@@ -471,10 +468,7 @@
         </div>
 
         <!-- Horizontal Scroll Container -->
-        <div class="horizontal-scroll flex gap-4 md:gap-8 px-4 sm:px-6 lg:px-8 pb-8" id="services-scroll">
-            <!-- Spacer for centering first card on desktop -->
-            <div class="hidden md:block flex-shrink-0" style="width: calc((100vw - 48px - 32px) / 2 - 32px); min-width: 0;"></div>
-
+        <div class="flex flex-nowrap md:flex-wrap md:justify-center gap-4 md:gap-8 px-4 sm:px-6 lg:px-8 pb-8 overflow-x-auto md:overflow-visible" id="services-scroll">
             <!-- Service 1 -->
             <div class="snap-card flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[400px] lg:w-[420px]">
                 <div class="glass rounded-3xl p-6 md:p-10 h-full relative overflow-hidden group">
