@@ -259,6 +259,14 @@
         .sparkline { stroke: #7C3AED; stroke-width: 2; fill: none; }
         .sparkline-fill { fill: url(#sparklineGradient); opacity: 0.3; }
         
+        /* Line clamp utility */
+        .line-clamp-4 {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
         /* Mobile */
         @media (max-width: 768px) {
             * { cursor: auto; }
@@ -267,7 +275,7 @@
             .dock-nav::-webkit-scrollbar { display: none; }
             .dock-item { width: 36px; height: 36px; flex-shrink: 0; }
             .dock-item .tooltip { display: none; }
-            .scroll-progress-ring { bottom: 72px; right: 12px; width: 36px; height: 36px; }
+            .scroll-progress-ring { top: 20px; right: 12px; bottom: auto; width: 36px; height: 36px; }
             .scroll-progress-ring .icon { font-size: 12px; }
         }
         
@@ -396,6 +404,9 @@
                     </a>
                     <a href="#resultados" class="glass px-6 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
                         Ver Resultados <i class="ph-bold ph-chart-bar text-violeta"></i>
+                    </a>
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="glass px-6 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
+                        <i class="ph-fill ph-whatsapp-logo text-green-400"></i> WhatsApp
                     </a>
                 </div>
             </div>
@@ -980,7 +991,7 @@
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-20 right-4 md:bottom-24 md:right-6 w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-violeta to-magenta text-texto rounded-full flex items-center justify-center text-xl md:text-2xl shadow-lg shadow-violeta/30 hover:scale-110 transition-transform z-50">
+    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-20 left-4 md:bottom-24 md:right-6 md:left-auto w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-violeta to-magenta text-texto rounded-full flex items-center justify-center text-xl md:text-2xl shadow-lg shadow-violeta/30 hover:scale-110 transition-transform z-50">
         <i class="ph-fill ph-whatsapp-logo"></i>
     </a>
 
@@ -1058,13 +1069,13 @@
         let lastScrollY = 0;
 
         window.addEventListener('scroll', () => {
-            // Hide/show dock
-            if (window.scrollY > lastScrollY && window.scrollY > 200) {
+            // Hide dock only at the very bottom of the page
+            const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
+            if (atBottom) {
                 dock.classList.add('hidden');
             } else {
                 dock.classList.remove('hidden');
             }
-            lastScrollY = window.scrollY;
 
             // Update active section
             let current = '';
@@ -1086,13 +1097,21 @@
         let heroParticles = [];
 
         function resizeHeroCanvas() {
-            heroCanvas.width = heroCanvas.offsetWidth;
-            heroCanvas.height = heroCanvas.offsetHeight;
+            const rect = heroCanvas.parentElement.getBoundingClientRect();
+            heroCanvas.width = rect.width;
+            heroCanvas.height = rect.height;
         }
         resizeHeroCanvas();
-        window.addEventListener('resize', resizeHeroCanvas);
+        window.addEventListener('resize', () => {
+            resizeHeroCanvas();
+            heroParticles.forEach(p => {
+                if (p.x > heroCanvas.width) p.x = Math.random() * heroCanvas.width;
+                if (p.y > heroCanvas.height) p.y = Math.random() * heroCanvas.height;
+            });
+        });
 
-        for (let i = 0; i < (window.innerWidth <= 768 ? 30 : 60); i++) {
+        const particleCount = window.innerWidth <= 768 ? 30 : 60;
+        for (let i = 0; i < particleCount; i++) {
             heroParticles.push({
                 x: Math.random() * heroCanvas.width,
                 y: Math.random() * heroCanvas.height,
@@ -1287,19 +1306,36 @@
             });
         });
 
+        // ==================== FAQ VIDEO AUTOPLAY ON SCROLL ====================
+        const faqVideo = document.querySelector('.faq-content video');
+        if (faqVideo) {
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        faqVideo.play().catch(() => {});
+                    } else {
+                        faqVideo.pause();
+                    }
+                });
+            }, { threshold: 0.5 });
+            videoObserver.observe(faqVideo.closest('.faq-item'));
+        }
+
         // ==================== CTA PARTICLES ====================
         const ctaCanvas = document.getElementById('cta-particles');
         const ctaCtx = ctaCanvas.getContext('2d');
         let ctaParticles = [];
 
         function resizeCtaCanvas() {
-            ctaCanvas.width = ctaCanvas.offsetWidth;
-            ctaCanvas.height = ctaCanvas.offsetHeight;
+            const rect = ctaCanvas.parentElement.getBoundingClientRect();
+            ctaCanvas.width = rect.width;
+            ctaCanvas.height = rect.height;
         }
         resizeCtaCanvas();
         window.addEventListener('resize', resizeCtaCanvas);
 
-        for (let i = 0; i < (window.innerWidth <= 768 ? 20 : 40); i++) {
+        const ctaParticleCount = window.innerWidth <= 768 ? 20 : 40;
+        for (let i = 0; i < ctaParticleCount; i++) {
             ctaParticles.push({
                 x: Math.random() * ctaCanvas.width,
                 y: Math.random() * ctaCanvas.height,
@@ -1353,15 +1389,15 @@
             ];
 
             const cardsHTML = reviews.map(review => `
-                <div class="glass rounded-2xl p-5 md:p-8 min-w-[280px] md:min-w-[380px] flex-shrink-0 relative group hover:border-violeta/40 transition-colors">
-                    <div class="absolute top-3 md:top-4 right-4 md:right-6 text-violeta/10 text-5xl md:text-6xl font-serif leading-none">"</div>
-                    <div class="flex gap-1 mb-3 md:mb-4">${renderStars(review.estrellas)}</div>
-                    <p class="text-gris text-xs md:text-sm leading-relaxed mb-4 md:mb-6 relative z-10">"${review.descripcion}"</p>
-                    <div class="flex items-center gap-3 pt-3 md:pt-4 border-t border-white/5">
-                        <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-violeta/10 flex items-center justify-center">
+                <div class="glass rounded-2xl p-4 md:p-8 min-w-[260px] md:min-w-[380px] flex-shrink-0 relative group hover:border-violeta/40 transition-colors">
+                    <div class="absolute top-3 md:top-4 right-4 md:right-6 text-violeta/10 text-4xl md:text-6xl font-serif leading-none">"</div>
+                    <div class="flex gap-1 mb-2 md:mb-4">${renderStars(review.estrellas)}</div>
+                    <p class="text-gris text-xs md:text-sm leading-relaxed mb-3 md:mb-6 relative z-10 line-clamp-4">"${review.descripcion}"</p>
+                    <div class="flex items-center gap-2 md:gap-3 pt-2 md:pt-4 border-t border-white/5">
+                        <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-violeta/10 flex items-center justify-center flex-shrink-0">
                             <i class="ph-fill ph-buildings text-violeta text-xs md:text-sm"></i>
                         </div>
-                        <span class="text-texto font-semibold text-xs md:text-sm">${review.empresa}</span>
+                        <span class="text-texto font-semibold text-xs md:text-sm truncate">${review.empresa}</span>
                     </div>
                 </div>
             `).join('');
