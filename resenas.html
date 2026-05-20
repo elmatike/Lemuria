@@ -153,7 +153,6 @@
     <script>
         const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
-        const EDGE_FUNCTION_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co/functions/v1/send-approval-email';
         
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -224,18 +223,8 @@
 
                 // Call edge function to send approval email
                 try {
-                    await fetch(EDGE_FUNCTION_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'apikey': SUPABASE_ANON_KEY
-                        },
-                        body: JSON.stringify({
-                            reviewId: data.id,
-                            empresa: empresa,
-                            estrellas: estrellas,
-                            descripcion: descripcion
-                        })
+                    await sb.functions.invoke('send-approval-email', {
+                        body: { reviewId: data.id, empresa, estrellas, descripcion }
                     });
                 } catch (emailError) {
                     console.error('Error sending email:', emailError);
