@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEMURIA | Presencia Digital que Vende</title>
+    <title>LEMURIA — Digital Growth Engine</title>
     <meta name="description" content="Agencia de crecimiento digital. Creamos tu web, te posicionamos en Maps y mejoramos las redes para impulsar tus ventas.">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtevfngjs/image/upload/e_trim,c_lpad,w_512,h_512,b_transparent/v1778556633/Gemini_Generated_Image_rb7hc0rb7hc0rb7h_jq1ftt.png">
+    <!-- Favicon: Geometric L -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%237C3AED'/><stop offset='100%25' stop-color='%23EC4899'/></linearGradient></defs><rect width='100' height='100' rx='20' fill='%23050510'/><path d='M25 20 L25 80 L75 80' stroke='url(%23g)' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" type="image/svg+xml">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -20,7 +20,7 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- GSAP -->
+    <!-- GSAP + ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -30,18 +30,21 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
                     colors: {
-                        negro: '#0A0A0A',
-                        carbon: '#111111',
-                        card: '#161616',
-                        oro: '#C9A84C',
-                        oroClaro: '#E8D5A3',
-                        oroOscuro: '#8B7635',
-                        blanco: '#FFFFFF',
-                        gris: '#A0A0A0',
-                        muted: '#555555',
-                        exito: '#2ECC71',
+                        noche: '#050510',
+                        indigo: '#0D0D1A',
+                        violeta: '#7C3AED',
+                        purpura: '#A855F7',
+                        magenta: '#EC4899',
+                        cyan: '#06B6D4',
+                        texto: '#F1F0FF',
+                        gris: '#8B8BA3',
+                        muted: '#4A4A6A',
+                        exito: '#34D399',
                     }
                 }
             }
@@ -50,369 +53,556 @@
     
     <style>
         * { cursor: none; }
-        body { background-color: #0A0A0A; color: #FFFFFF; }
+        body { background-color: #050510; color: #F1F0FF; }
+        ::selection { background: rgba(124,58,237,0.4); color: #fff; }
         
-        /* Custom Cursor */
+        /* Custom Cursor with Particle Trail */
         .cursor-dot {
-            width: 8px; height: 8px; background: #C9A84C;
+            width: 6px; height: 6px; background: #7C3AED;
             position: fixed; border-radius: 50%; pointer-events: none;
-            z-index: 9999; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
+            z-index: 99999; transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #7C3AED, 0 0 20px rgba(124,58,237,0.5);
+        }
+        .cursor-trail {
+            width: 3px; height: 3px; background: rgba(236,72,153,0.6);
+            position: fixed; border-radius: 50%; pointer-events: none;
+            z-index: 99998; transform: translate(-50%, -50%);
+            transition: opacity 0.5s;
         }
         .cursor-ring {
-            width: 40px; height: 40px; border: 1px solid rgba(201,168,76,0.5);
+            width: 36px; height: 36px; border: 1px solid rgba(124,58,237,0.4);
             position: fixed; border-radius: 50%; pointer-events: none;
-            z-index: 9998; transform: translate(-50%, -50%);
+            z-index: 99997; transform: translate(-50%, -50%);
             transition: width 0.3s, height 0.3s, border-color 0.3s;
         }
-        .cursor-ring.hover { width: 60px; height: 60px; border-color: #C9A84C; }
+        .cursor-ring.hover { width: 56px; height: 56px; border-color: #EC4899; }
+        .cursor-ring.click { width: 28px; height: 28px; }
         
-        /* Noise Overlay */
-        .noise-overlay {
-            position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-size: 128px 128px;
+        /* Circular Scroll Progress */
+        .scroll-progress-ring {
+            position: fixed; bottom: 100px; right: 24px; z-index: 9000;
+            width: 48px; height: 48px; cursor: pointer;
+        }
+        .scroll-progress-ring circle {
+            fill: none; stroke-width: 2;
+        }
+        .scroll-progress-ring .bg { stroke: rgba(124,58,237,0.15); }
+        .scroll-progress-ring .progress {
+            stroke: url(#progressGradient);
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 0.1s;
+        }
+        .scroll-progress-ring .icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #7C3AED; font-size: 14px;
         }
         
-        /* Scroll Progress Bar */
-        .scroll-progress {
-            position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, #8B7635, #C9A84C, #E8D5A3);
-            z-index: 9997; width: 0%; transition: width 0.1s;
+        /* Bottom Dock Navigation */
+        .dock-nav {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            z-index: 9000; display: flex; gap: 4px; padding: 8px 12px;
+            background: rgba(13,13,26,0.8); backdrop-filter: blur(20px);
+            border: 1px solid rgba(124,58,237,0.2); border-radius: 16px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+        }
+        .dock-nav.hidden { transform: translateX(-50%) translateY(100px); opacity: 0; }
+        .dock-item {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #8B8BA3; transition: all 0.2s; position: relative;
+        }
+        .dock-item:hover { color: #F1F0FF; background: rgba(124,58,237,0.15); transform: translateY(-4px); }
+        .dock-item.active { color: #7C3AED; background: rgba(124,58,237,0.2); }
+        .dock-item .tooltip {
+            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+            padding: 4px 10px; background: #0D0D1A; border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 8px; font-size: 11px; font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s; margin-bottom: 8px;
+        }
+        .dock-item:hover .tooltip { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(124,58,237,0.15);
         }
         
-        /* Side Navigation Dots */
-        .side-nav { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); z-index: 9000; display: flex; flex-direction: column; gap: 16px; }
-        .side-dot {
-            width: 8px; height: 8px; border-radius: 50%; background: rgba(201,168,76,0.3);
-            transition: all 0.3s; cursor: pointer;
-        }
-        .side-dot.active { background: #C9A84C; box-shadow: 0 0 12px rgba(201,168,76,0.6); transform: scale(1.5); }
-        
-        /* Gold Shimmer Button */
-        .btn-gold {
-            background: linear-gradient(135deg, #8B7635, #C9A84C, #E8D5A3, #C9A84C, #8B7635);
-            background-size: 300% 300%; color: #0A0A0A; font-weight: 700;
-            transition: all 0.3s ease; animation: shimmer 3s ease infinite;
-        }
-        .btn-gold:hover { box-shadow: 0 0 30px rgba(201,168,76,0.4); transform: translateY(-2px); }
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #7C3AED, #EC4899, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .btn-outline-gold {
-            border: 1px solid rgba(201,168,76,0.4); color: #FFFFFF;
-            transition: all 0.3s ease; position: relative; overflow: hidden;
+        /* Gradient Border */
+        .gradient-border {
+            position: relative;
         }
-        .btn-outline-gold:hover { border-color: #C9A84C; background: rgba(201,168,76,0.1); }
+        .gradient-border::before {
+            content: ''; position: absolute; inset: 0; border-radius: inherit;
+            padding: 1px; background: linear-gradient(135deg, #7C3AED, #EC4899);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+        }
         
-        /* Text Reveal Animation */
-        .reveal-text { clip-path: inset(0 0 100% 0); }
-        .reveal-text.visible { clip-path: inset(0 0 0% 0); transition: clip-path 1s cubic-bezier(0.77, 0, 0.175, 1); }
-        
-        /* Card Glow Border */
-        .card-glow {
+        /* Portal Button */
+        .portal-btn {
             position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            transition: all 0.3s;
         }
-        .card-glow::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(180deg, rgba(201,168,76,0.3) 0%, transparent 50%);
-            opacity: 0; transition: opacity 0.5s;
+        .portal-btn::before {
+            content: ''; position: absolute; inset: -50%;
+            background: conic-gradient(from 0deg, transparent, #7C3AED, #EC4899, transparent);
+            animation: portal-spin 3s linear infinite;
         }
-        .card-glow:hover::before { opacity: 1; }
+        .portal-btn::after {
+            content: ''; position: absolute; inset: 2px;
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            border-radius: inherit;
+        }
+        .portal-btn span { position: relative; z-index: 1; }
+        @keyframes portal-spin { to { transform: rotate(360deg); } }
         
-        /* Section Divider */
-        .section-divider {
-            display: flex; align-items: center; justify-content: center; gap: 16px; padding: 20px 0;
+        /* Pulse Rings */
+        .pulse-ring {
+            position: absolute; border: 2px solid rgba(124,58,237,0.4);
+            border-radius: 50%; animation: pulse-expand 2s ease-out infinite;
         }
-        .section-divider .line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #C9A84C, transparent); }
-        .section-divider .dot { width: 6px; height: 6px; background: #C9A84C; border-radius: 50%; }
-        
-        /* Parallax Background Numbers */
-        .bg-number {
-            position: absolute; font-size: 20rem; font-weight: 900; color: rgba(201,168,76,0.03);
-            pointer-events: none; user-select: none; line-height: 1;
-        }
-        
-        /* Spotlight Hero */
-        #hero-spotlight {
-            position: absolute; inset: 0; pointer-events: none;
-            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(201,168,76,0.08), transparent 60%);
-        }
-        
-        /* Floating Particles */
-        .particle {
-            position: absolute; width: 2px; height: 2px; background: #C9A84C; border-radius: 50%;
-            animation: float-particle linear infinite; opacity: 0.4;
-        }
-        @keyframes float-particle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        @keyframes pulse-expand {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
         
-        /* FAQ Accordion */
-        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
-        .faq-content.open { max-height: 500px; padding-top: 0; padding-bottom: 20px; }
-        .faq-icon { transition: transform 0.3s; }
-        .faq-icon.rotated { transform: rotate(180deg); }
-        
-        /* 3D Card Tilt */
-        .tilt-card { transform-style: preserve-3d; perspective: 1000px; }
-        
-        /* Scroll Indicator */
-        .scroll-indicator { animation: bounce-down 2s ease-in-out infinite; }
-        @keyframes bounce-down {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(12px); }
+        /* Grid Background */
+        .grid-bg {
+            background-image: radial-gradient(rgba(124,58,237,0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
         
-        /* Counter Animation */
+        /* Dot Grid Background */
+        .dot-grid {
+            background-image: radial-gradient(circle, rgba(124,58,237,0.2) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        /* Glitch Effect */
+        .glitch { position: relative; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        .glitch::before {
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip-path: inset(0 0 60% 0); color: #EC4899;
+        }
+        .glitch::after {
+            animation: glitch-2 2s infinite linear alternate-reverse;
+            clip-path: inset(60% 0 0 0); color: #06B6D4;
+        }
+        @keyframes glitch-1 {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+            100% { transform: translate(0); }
+        }
+        @keyframes glitch-2 {
+            0% { transform: translate(0); }
+            20% { transform: translate(2px, -2px); }
+            40% { transform: translate(-2px, 2px); }
+            60% { transform: translate(1px, -1px); }
+            80% { transform: translate(-1px, 1px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* Horizontal Scroll Section */
+        .horizontal-scroll { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        .snap-card { scroll-snap-align: center; }
+        
+        /* Audio Visualizer Bars */
+        .audio-bar {
+            width: 3px; background: linear-gradient(to top, #7C3AED, #EC4899);
+            border-radius: 2px; animation: audio-pulse ease-in-out infinite;
+        }
+        @keyframes audio-pulse {
+            0%, 100% { height: 8px; }
+            50% { height: var(--max-height, 32px); }
+        }
+        
+        /* Circuit Line Animation */
+        .circuit-line {
+            stroke-dasharray: 1000; stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 1.5s ease;
+        }
+        .circuit-line.visible { stroke-dashoffset: 0; }
+        
+        /* Carousel */
+        .carousel-track { display: flex; gap: 24px; animation: carousel-scroll 30s linear infinite; }
+        .carousel-track:hover { animation-play-state: paused; }
+        @keyframes carousel-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Counter */
         .counter { font-variant-numeric: tabular-nums; }
         
-        /* Mobile: hide custom cursor and side nav */
+        /* Sparkline */
+        .sparkline { stroke: #7C3AED; stroke-width: 2; fill: none; }
+        .sparkline-fill { fill: url(#sparklineGradient); opacity: 0.3; }
+        
+        /* Mobile */
         @media (max-width: 768px) {
             * { cursor: auto; }
-            .cursor-dot, .cursor-ring, .side-nav { display: none; }
+            .cursor-dot, .cursor-trail, .cursor-ring { display: none; }
+            .dock-nav { bottom: 16px; padding: 6px 8px; }
+            .dock-item { width: 36px; height: 36px; }
+            .dock-item .tooltip { display: none; }
+            .scroll-progress-ring { bottom: 80px; right: 16px; width: 40px; height: 40px; }
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
-    <!-- Noise Overlay -->
-    <div class="noise-overlay"></div>
-    
-    <!-- Scroll Progress -->
-    <div class="scroll-progress" id="scroll-progress"></div>
-    
+    <!-- SVG Defs -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#EC4899"/>
+            </linearGradient>
+            <linearGradient id="sparklineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-ring" id="cursor-ring"></div>
-    
-    <!-- Side Navigation -->
-    <div class="side-nav hidden md:flex" id="side-nav">
-        <div class="side-dot active" data-section="hero" title="Inicio"></div>
-        <div class="side-dot" data-section="servicios" title="Servicios"></div>
-        <div class="side-dot" data-section="metodo" title="Método"></div>
-        <div class="side-dot" data-section="casos" title="Casos de Éxito"></div>
-        <div class="side-dot" data-section="resenas" title="Reseñas"></div>
-        <div class="side-dot" data-section="planes" title="Planes"></div>
-        <div class="side-dot" data-section="faq" title="FAQ"></div>
-        <div class="side-dot" data-section="contacto" title="Contacto"></div>
+    <div id="cursor-trails"></div>
+
+    <!-- Circular Scroll Progress -->
+    <div class="scroll-progress-ring" id="scroll-progress" title="Volver al inicio">
+        <svg viewBox="0 0 48 48">
+            <circle class="bg" cx="24" cy="24" r="20"/>
+            <circle class="progress" cx="24" cy="24" r="20" stroke-dasharray="125.66" stroke-dashoffset="125.66"/>
+        </svg>
+        <div class="icon"><i class="ph-bold ph-arrow-up"></i></div>
     </div>
 
-    <!-- 1. Navbar -->
-    <nav class="fixed w-full z-50 top-0 transition-all duration-500" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-full border border-oro/30 flex items-center justify-center group-hover:border-oro transition-colors">
-                        <i class="ph-fill ph-planet text-xl text-oro"></i>
-                    </div>
-                    <span class="font-bold text-xl tracking-[0.15em] text-blanco">LEMURIA</span>
-                </a>
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#servicios" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
-                        Servicios
-                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="#metodo" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
-                        Método
-                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="#casos" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
-                        Casos
-                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="#planes" class="text-gris hover:text-oro transition-colors text-sm font-medium tracking-wide relative group">
-                        Planes
-                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-oro transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-gold px-6 py-2.5 rounded-lg text-sm">
-                        Asesoría Gratis
-                    </a>
-                </div>
-                <button class="md:hidden text-blanco" id="mobile-menu-btn">
-                    <i class="ph ph-list text-3xl"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div class="md:hidden hidden bg-negro/95 backdrop-blur-xl border-t border-oro/10" id="mobile-menu">
-            <div class="px-6 py-8 space-y-6">
-                <a href="#servicios" class="block text-blanco text-lg hover:text-oro transition-colors">Servicios</a>
-                <a href="#metodo" class="block text-blanco text-lg hover:text-oro transition-colors">Método</a>
-                <a href="#casos" class="block text-blanco text-lg hover:text-oro transition-colors">Casos</a>
-                <a href="#planes" class="block text-blanco text-lg hover:text-oro transition-colors">Planes</a>
-                <a href="https://wa.me/543514089238" target="_blank" class="btn-gold block text-center px-6 py-3 rounded-lg text-sm">Asesoría Gratis</a>
-            </div>
-        </div>
+    <!-- Bottom Dock Navigation -->
+    <nav class="dock-nav" id="dock-nav">
+        <a href="#manifiesto" class="dock-item active" data-section="manifiesto">
+            <i class="ph-bold ph-house text-lg"></i>
+            <span class="tooltip">Inicio</span>
+        </a>
+        <a href="#problema" class="dock-item" data-section="problema">
+            <i class="ph-bold ph-warning text-lg"></i>
+            <span class="tooltip">Problema</span>
+        </a>
+        <a href="#solucion" class="dock-item" data-section="solucion">
+            <i class="ph-bold ph-lightbulb text-lg"></i>
+            <span class="tooltip">Solución</span>
+        </a>
+        <a href="#metodo" class="dock-item" data-section="metodo">
+            <i class="ph-bold ph-git-merge text-lg"></i>
+            <span class="tooltip">Método</span>
+        </a>
+        <a href="#resultados" class="dock-item" data-section="resultados">
+            <i class="ph-bold ph-chart-line-up text-lg"></i>
+            <span class="tooltip">Resultados</span>
+        </a>
+        <a href="#planes" class="dock-item" data-section="planes">
+            <i class="ph-bold ph-credit-card text-lg"></i>
+            <span class="tooltip">Planes</span>
+        </a>
+        <a href="#faq" class="dock-item" data-section="faq">
+            <i class="ph-bold ph-question text-lg"></i>
+            <span class="tooltip">FAQ</span>
+        </a>
+        <a href="#contacto" class="dock-item" data-section="contacto">
+            <i class="ph-bold ph-rocket-launch text-lg"></i>
+            <span class="tooltip">Contacto</span>
+        </a>
     </nav>
 
-    <!-- 2. Hero -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div id="hero-spotlight"></div>
-        <div id="particles-container" class="absolute inset-0 pointer-events-none"></div>
+    <!-- ==================== 1. MANIFIESTO (HERO) ==================== -->
+    <section id="manifiesto" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Particles Canvas -->
+        <canvas id="hero-particles" class="absolute inset-0 pointer-events-none"></canvas>
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div class="overflow-hidden mb-2">
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1]">
-                    <span class="block reveal-text text-transparent bg-clip-text bg-gradient-to-r from-oroOscuro via-oro to-oroClaro">+ Clientes</span>
-                </h1>
-            </div>
-            <div class="overflow-hidden mb-2">
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1]">
-                    <span class="block reveal-text text-transparent bg-clip-text bg-gradient-to-r from-oroOscuro via-oro to-oroClaro">+ Visibilidad</span>
-                </h1>
-            </div>
-            <div class="overflow-hidden mb-8">
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1]">
-                    <span class="block reveal-text text-transparent bg-clip-text bg-gradient-to-r from-oroOscuro via-oro to-oroClaro">+ Confianza</span>
-                </h1>
-            </div>
-            
-            <p class="text-xl md:text-2xl text-gris max-w-3xl mx-auto mb-12 leading-relaxed opacity-0" id="hero-desc">
-                Creamos tu web, te posicionamos en Maps y mejoramos las redes para impulsar tus ventas.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row justify-center gap-4 opacity-0" id="hero-cta">
-                <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-gold px-8 py-4 rounded-lg text-lg flex items-center justify-center gap-2">
-                    Inicia tu Crecimiento <i class="ph-bold ph-arrow-right"></i>
-                </a>
-                <a href="#casos" class="btn-outline-gold px-8 py-4 rounded-lg text-lg flex items-center justify-center">
-                    Ver Casos Reales
-                </a>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator">
-            <i class="ph-bold ph-caret-double-down text-oro/60 text-2xl"></i>
-        </div>
-    </section>
+        <!-- Audio Visualizer -->
+        <div class="absolute bottom-24 left-1/2 -translate-x-1/2 flex items-end gap-[3px] opacity-30" id="audio-visualizer"></div>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
-
-    <!-- 3. Servicios -->
-    <section id="servicios" class="py-24 relative">
-        <div class="bg-number -left-20 top-20" data-speed="0.05">01</div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Lo que hacemos</span>
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Ecosistema Digital Completo</h2>
-                <p class="text-gris text-lg max-w-2xl mx-auto">Hacemos mas que web. Posicionamos tu negocio online.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Service 1 -->
-                <div class="card-glow bg-card rounded-2xl p-10 border border-oro/10 hover:border-oro/40 transition-all duration-500 group tilt-card">
-                    <div class="w-16 h-16 rounded-xl bg-oro/5 flex items-center justify-center mb-8 group-hover:bg-oro/10 transition-colors">
-                        <i class="ph ph-desktop text-4xl text-oro"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 text-blanco group-hover:text-oro transition-colors">Desarrollo Web</h3>
-                    <p class="text-gris leading-relaxed">Creamos tu web de cero o mejoramos la ya existente respetando el branding de tu negocio.</p>
-                    <div class="mt-6 w-12 h-px bg-gradient-to-r from-oro to-transparent group-hover:w-20 transition-all"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <!-- Act 1 -->
+            <div id="hero-act-1" class="transition-all duration-1000">
+                <p class="font-mono text-violeta/60 text-sm tracking-[0.2em] uppercase mb-8 opacity-0" id="hero-label">Estado actual</p>
+                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[1.05] mb-6">
+                    <span class="block text-texto" id="hero-line-1">Tu negocio existe.</span>
+                </h1>
+                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[1.05] mb-12">
+                    <span class="block text-texto" id="hero-line-2">Pero en internet,</span>
+                    <span class="block gradient-text" id="hero-line-3">no.</span>
+                </h1>
+                <div class="flex items-center justify-center gap-3 mb-16 opacity-0" id="hero-counter">
+                    <span class="font-mono text-muted text-sm">Visitantes hoy:</span>
+                    <span class="font-mono text-violeta text-2xl counter" id="visitor-count">0</span>
                 </div>
+            </div>
+
+            <!-- Act 2 (hidden initially) -->
+            <div id="hero-act-2" class="hidden">
+                <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-[-0.04em]">
+                    <span class="gradient-text">Hasta ahora.</span>
+                </h1>
+                <div class="flex items-center justify-center gap-3 mt-12">
+                    <span class="font-mono text-muted text-sm">Visitantes hoy:</span>
+                    <span class="font-mono text-exito text-2xl counter" id="visitor-count-2">+147</span>
+                </div>
+            </div>
+
+            <!-- Act 3 (hidden initially) -->
+            <div id="hero-act-3" class="hidden">
+                <div class="mb-8">
+                    <div class="w-20 h-20 rounded-2xl glass flex items-center justify-center mx-auto mb-6">
+                        <i class="ph-fill ph-planet text-4xl text-violeta"></i>
+                    </div>
+                </div>
+                <h1 class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-[-0.04em] mb-4 glitch" data-text="LEMURIA">
+                    <span class="text-texto">LEMURIA</span>
+                </h1>
+                <p class="font-mono text-gris text-sm sm:text-base tracking-[0.2em] uppercase mb-12">Digital Growth Engine</p>
                 
-                <!-- Service 2 -->
-                <div class="card-glow bg-card rounded-2xl p-10 border border-oro/10 hover:border-oro/40 transition-all duration-500 group tilt-card">
-                    <div class="w-16 h-16 rounded-xl bg-oro/5 flex items-center justify-center mb-8 group-hover:bg-oro/10 transition-colors">
-                        <i class="ph ph-map-pin-line text-4xl text-oro"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 text-blanco group-hover:text-oro transition-colors">SEO Local & Maps</h3>
-                    <p class="text-gris leading-relaxed">Mejoramos la visibilidad de tu negocio posicionandolo en los primeros resultados de Google Maps.</p>
-                    <div class="mt-6 w-12 h-px bg-gradient-to-r from-oro to-transparent group-hover:w-20 transition-all"></div>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="portal-btn px-8 py-4 rounded-xl text-lg font-bold text-texto flex items-center justify-center gap-2">
+                        <span>Inicia tu Crecimiento <i class="ph-bold ph-arrow-right"></i></span>
+                    </a>
+                    <a href="#resultados" class="glass px-8 py-4 rounded-xl text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
+                        Ver Resultados <i class="ph-bold ph-chart-bar text-violeta"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50" id="scroll-hint">
+            <span class="font-mono text-muted text-xs tracking-widest uppercase">Scroll</span>
+            <div class="w-px h-8 bg-gradient-to-b from-violeta to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- ==================== 2. EL PROBLEMA ==================== -->
+    <section id="problema" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 grid-bg opacity-50"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Left: Big Text -->
+                <div>
+                    <span class="font-mono text-magenta text-xs tracking-[0.25em] uppercase mb-6 block">El problema</span>
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] leading-tight mb-8">
+                        <span class="text-texto">El </span>
+                        <span class="gradient-text counter-text" data-target="76">0</span>
+                        <span class="text-texto">% de los clientes buscan tu negocio online antes de visitarte.</span>
+                    </h2>
+                    <p class="text-gris text-lg leading-relaxed">Si no tenés presencia digital, simplemente <span class="text-magenta font-medium">no existís</span> para la mayoría de tus potenciales clientes.</p>
                 </div>
 
-                <!-- Service 3 -->
-                <div class="card-glow bg-card rounded-2xl p-10 border border-oro/10 hover:border-oro/40 transition-all duration-500 group tilt-card">
-                    <div class="w-16 h-16 rounded-xl bg-oro/5 flex items-center justify-center mb-8 group-hover:bg-oro/10 transition-colors">
-                        <i class="ph ph-lightbulb text-4xl text-oro"></i>
+                <!-- Right: Stats Cards -->
+                <div class="space-y-6" id="problem-stats">
+                    <div class="glass rounded-2xl p-8 transform translate-x-full opacity-0" data-delay="0">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-violeta/10 flex items-center justify-center">
+                                <i class="ph-bold ph-globe text-violeta text-xl"></i>
+                            </div>
+                            <span class="font-mono text-violeta text-sm tracking-wider">46%</span>
+                        </div>
+                        <p class="text-gris">de las búsquedas locales no encuentran web</p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4 text-blanco group-hover:text-oro transition-colors">Estrategia > Estética</h3>
-                    <p class="text-gris leading-relaxed">De nada sirve una web bonita si nadie la visita. En Lemuria unimos diseño con psicología de ventas.</p>
-                    <div class="mt-6 w-12 h-px bg-gradient-to-r from-oro to-transparent group-hover:w-20 transition-all"></div>
+                    <div class="glass rounded-2xl p-8 transform translate-x-full opacity-0" data-delay="200">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-magenta/10 flex items-center justify-center">
+                                <i class="ph-bold ph-star text-magenta text-xl"></i>
+                            </div>
+                            <span class="font-mono text-magenta text-sm tracking-wider">88%</span>
+                        </div>
+                        <p class="text-gris">confían en reseñas online antes de comprar</p>
+                    </div>
+                    <div class="glass rounded-2xl p-8 transform translate-x-full opacity-0" data-delay="400">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-cyan/10 flex items-center justify-center">
+                                <i class="ph-bold ph-map-pin text-cyan text-xl"></i>
+                            </div>
+                            <span class="font-mono text-cyan text-sm tracking-wider">80%</span>
+                        </div>
+                        <p class="text-gris">de clicks van al primer resultado de Maps</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+    <!-- ==================== 3. LA SOLUCIÓN (Horizontal Scroll) ==================== -->
+    <section id="solucion" class="py-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+            <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-6 block">La solución</span>
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em]">Hacemos más que web.<br><span class="gradient-text">Posicionamos tu negocio.</span></h2>
+        </div>
 
-    <!-- 4. Método -->
-    <section id="metodo" class="py-24 relative overflow-hidden">
-        <div class="bg-number -right-20 top-40" data-speed="0.08">02</div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Workflow</span>
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Nuestro Método</h2>
-                <p class="text-gris text-lg max-w-2xl mx-auto">Tu presencia digital, paso a paso.</p>
+        <!-- Horizontal Scroll Container -->
+        <div class="horizontal-scroll flex gap-8 px-4 sm:px-6 lg:px-8 pb-8" id="services-scroll">
+            <!-- Service 1 -->
+            <div class="snap-card flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[40vw]">
+                <div class="glass rounded-3xl p-10 h-full relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-violeta/10 rounded-full blur-3xl group-hover:bg-violeta/20 transition-colors"></div>
+                    <span class="font-mono text-violeta/40 text-8xl font-bold absolute top-6 right-8">01</span>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-violeta/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="ph ph-desktop text-4xl text-violeta"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-texto mb-4">Desarrollo Web</h3>
+                        <p class="text-gris text-lg leading-relaxed mb-8">Creamos tu web de cero o mejoramos la ya existente respetando el branding de tu negocio.</p>
+                        <div class="flex items-center gap-2 text-violeta font-mono text-sm">
+                            <span>Ver más</span>
+                            <i class="ph-bold ph-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <!-- Timeline -->
+
+            <!-- Service 2 -->
+            <div class="snap-card flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[40vw]">
+                <div class="glass rounded-3xl p-10 h-full relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-magenta/10 rounded-full blur-3xl group-hover:bg-magenta/20 transition-colors"></div>
+                    <span class="font-mono text-magenta/40 text-8xl font-bold absolute top-6 right-8">02</span>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-magenta/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="ph ph-map-pin-line text-4xl text-magenta"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-texto mb-4">SEO Local & Maps</h3>
+                        <p class="text-gris text-lg leading-relaxed mb-8">Mejoramos la visibilidad de tu negocio posicionandolo en los primeros resultados de Google Maps.</p>
+                        <div class="flex items-center gap-2 text-magenta font-mono text-sm">
+                            <span>Ver más</span>
+                            <i class="ph-bold ph-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="snap-card flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[40vw]">
+                <div class="glass rounded-3xl p-10 h-full relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-cyan/10 rounded-full blur-3xl group-hover:bg-cyan/20 transition-colors"></div>
+                    <span class="font-mono text-cyan/40 text-8xl font-bold absolute top-6 right-8">03</span>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-cyan/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="ph ph-lightbulb text-4xl text-cyan"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-texto mb-4">Estrategia <span class="text-magenta">&gt;</span> Estética</h3>
+                        <p class="text-gris text-lg leading-relaxed mb-8">De nada sirve una web bonita si nadie la visita. En Lemuria unimos diseño con psicología de ventas.</p>
+                        <div class="flex items-center gap-2 text-cyan font-mono text-sm">
+                            <span>Ver más</span>
+                            <i class="ph-bold ph-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="flex items-center justify-center gap-4 mt-8 text-muted font-mono text-sm">
+            <i class="ph-bold ph-caret-left-right text-violeta"></i>
+            <span>Desliza para explorar</span>
+        </div>
+    </section>
+
+    <!-- ==================== 4. EL MÉTODO (Circuit Diagram) ==================== -->
+    <section id="metodo" class="py-32 relative overflow-hidden dot-grid">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20">
+                <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-6 block">Workflow</span>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em]">Tu presencia digital,<br><span class="gradient-text">paso a paso.</span></h2>
+            </div>
+
+            <!-- Circuit Timeline -->
             <div class="relative">
-                <!-- Vertical Line -->
-                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-oro/30 to-transparent -translate-x-1/2" id="timeline-line"></div>
-                
-                <div class="space-y-16 md:space-y-24">
-                    <!-- Paso 1 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="md:w-1/2 md:text-right md:pr-16">
-                            <span class="text-oro/20 text-6xl font-black block mb-2">01</span>
-                            <h3 class="text-2xl font-bold text-blanco mb-3">Análisis y Diagnóstico</h3>
+                <!-- Circuit Line (SVG) -->
+                <svg class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-2 hidden md:block" viewBox="0 0 8 1000" preserveAspectRatio="none">
+                    <line x1="4" y1="0" x2="4" y2="1000" stroke="rgba(124,58,237,0.2)" stroke-width="2"/>
+                    <line class="circuit-line" id="circuit-line" x1="4" y1="0" x2="4" y2="1000" stroke="url(#progressGradient)" stroke-width="2"/>
+                </svg>
+
+                <div class="space-y-20 md:space-y-32">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                        <div class="md:w-1/2 md:text-right md:pr-20">
+                            <span class="font-mono text-violeta/30 text-7xl font-bold block mb-4">01</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Análisis y Diagnóstico</h3>
                             <p class="text-gris leading-relaxed">Entendemos tu negocio y tu mercado actual para identificar puntos de mejora.</p>
                         </div>
                         <div class="relative z-10 flex-shrink-0">
-                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-oro flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.3)]">
-                                <i class="ph-bold ph-magnifying-glass text-oro text-xl"></i>
+                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-violeta flex items-center justify-center shadow-[0_0_30px_rgba(124,58,237,0.3)]">
+                                <i class="ph-bold ph-magnifying-glass text-violeta text-2xl"></i>
                             </div>
                         </div>
-                        <div class="md:w-1/2 md:pl-16"></div>
+                        <div class="md:w-1/2 md:pl-20"></div>
                     </div>
 
-                    <!-- Paso 2 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="md:w-1/2 md:pr-16"></div>
+                    <!-- Step 2 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                        <div class="md:w-1/2 md:pr-20"></div>
                         <div class="relative z-10 flex-shrink-0">
-                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-oro flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.3)]">
-                                <i class="ph-bold ph-strategy text-oro text-xl"></i>
+                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-magenta flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.3)]">
+                                <i class="ph-bold ph-strategy text-magenta text-2xl"></i>
                             </div>
                         </div>
-                        <div class="md:w-1/2 md:pl-16 md:text-left">
-                            <span class="text-oro/20 text-6xl font-black block mb-2">02</span>
-                            <h3 class="text-2xl font-bold text-blanco mb-3">Planificación Estratégica</h3>
+                        <div class="md:w-1/2 md:pl-20 md:text-left">
+                            <span class="font-mono text-magenta/30 text-7xl font-bold block mb-4">02</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Planificación Estratégica</h3>
                             <p class="text-gris leading-relaxed">Definimos la estructura de tu web y redes sociales enfocándonos en mejorar la experiencia de tus usuarios.</p>
                         </div>
                     </div>
 
-                    <!-- Paso 3 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="md:w-1/2 md:text-right md:pr-16">
-                            <span class="text-oro/20 text-6xl font-black block mb-2">03</span>
-                            <h3 class="text-2xl font-bold text-blanco mb-3">Desarrollo y Configuración</h3>
+                    <!-- Step 3 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                        <div class="md:w-1/2 md:text-right md:pr-20">
+                            <span class="font-mono text-cyan/30 text-7xl font-bold block mb-4">03</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Desarrollo y Configuración</h3>
                             <p class="text-gris leading-relaxed">Creamos o adaptamos tu presencia digital con un enfoque en funcionamiento técnico y usabilidad.</p>
                         </div>
                         <div class="relative z-10 flex-shrink-0">
-                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-oro flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.3)]">
-                                <i class="ph-bold ph-code text-oro text-xl"></i>
+                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-cyan flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+                                <i class="ph-bold ph-code text-cyan text-2xl"></i>
                             </div>
                         </div>
-                        <div class="md:w-1/2 md:pl-16"></div>
+                        <div class="md:w-1/2 md:pl-20"></div>
                     </div>
 
-                    <!-- Paso 4 -->
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="md:w-1/2 md:pr-16"></div>
+                    <!-- Step 4 -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+                        <div class="md:w-1/2 md:pr-20"></div>
                         <div class="relative z-10 flex-shrink-0">
-                            <div class="w-14 h-14 rounded-full bg-negro border-2 border-exito flex items-center justify-center shadow-[0_0_20px_rgba(46,204,113,0.3)]">
-                                <i class="ph-bold ph-rocket-launch text-exito text-xl"></i>
+                            <div class="w-16 h-16 rounded-full bg-noche border-2 border-exito flex items-center justify-center shadow-[0_0_30px_rgba(52,211,153,0.3)]">
+                                <i class="ph-bold ph-rocket-launch text-exito text-2xl"></i>
                             </div>
                         </div>
-                        <div class="md:w-1/2 md:pl-16 md:text-left">
-                            <span class="text-exito/20 text-6xl font-black block mb-2">04</span>
-                            <h3 class="text-2xl font-bold text-blanco mb-3">Mantenimiento y Ajustes</h3>
+                        <div class="md:w-1/2 md:pl-20 md:text-left">
+                            <span class="font-mono text-exito/30 text-7xl font-bold block mb-4">04</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-texto mb-3">Mantenimiento y Ajustes</h3>
                             <p class="text-gris leading-relaxed">Tras el lanzamiento, realizamos revisiones periódicas para ajustar detalles según los resultados obtenidos.</p>
                         </div>
                     </div>
@@ -421,153 +611,191 @@
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
-
-    <!-- 5. Casos de Éxito -->
-    <section id="casos" class="py-24 relative">
-        <div class="bg-number -left-32 top-32" data-speed="0.03">03</div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Portfolio</span>
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Casos de Éxito</h2>
-                <p class="text-gris text-lg">Resultados reales para negocios reales.</p>
+    <!-- ==================== 5. RESULTADOS (Analytics Dashboard) ==================== -->
+    <section id="resultados" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-noche via-indigo to-noche"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20">
+                <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-6 block">Resultados</span>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em]">Resultados que<br><span class="gradient-text">hablan solos.</span></h2>
             </div>
 
-            <div class="max-w-3xl mx-auto">
-                <a href="https://villasilvinaespacioparajugar.netlify.app/" target="_blank" class="group block">
-                    <div class="relative overflow-hidden rounded-2xl aspect-[16/10] bg-card border border-oro/10 group-hover:border-oro/40 transition-all duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-negro via-negro/50 to-transparent z-10"></div>
-                        <img src="https://res.cloudinary.com/dtevfngjs/image/upload/v1778255217/cd13b27a-5476-4790-b766-8c12387574d4_grd9rv.jpg" alt="Villa Silvina" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
-                        <div class="absolute bottom-0 left-0 p-8 md:p-12 z-20 w-full">
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <span class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-3 block">Alquiler</span>
-                                    <h3 class="text-2xl md:text-3xl font-bold text-blanco">Villa Silvina</h3>
-                                    <p class="text-gris text-sm mt-1">Espacio para jugar</p>
-                                </div>
-                                <div class="bg-oro/20 text-oro px-4 py-2 rounded-full text-sm font-bold border border-oro/30 backdrop-blur-sm">
-                                    +150% clientes
-                                </div>
+            <!-- Metrics Row -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div class="font-mono text-violeta text-sm tracking-wider mb-2">Clientes</div>
+                    <div class="text-4xl md:text-5xl font-bold gradient-text counter" data-target="150">0</div>
+                    <div class="font-mono text-gris text-sm mt-1">+150%</div>
+                    <svg class="w-full h-8 mt-3" viewBox="0 0 100 20"><path class="sparkline" d="M0,18 L10,16 L20,14 L30,12 L40,10 L50,8 L60,6 L70,4 L80,3 L90,2 L100,1"/><path class="sparkline-fill" d="M0,18 L10,16 L20,14 L30,12 L40,10 L50,8 L60,6 L70,4 L80,3 L90,2 L100,1 L100,20 L0,20 Z"/></svg>
+                </div>
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div class="font-mono text-magenta text-sm tracking-wider mb-2">Visibilidad</div>
+                    <div class="text-4xl md:text-5xl font-bold gradient-text counter" data-target="340">0</div>
+                    <div class="font-mono text-gris text-sm mt-1">+340%</div>
+                    <svg class="w-full h-8 mt-3" viewBox="0 0 100 20"><path class="sparkline" d="M0,19 L15,17 L30,15 L45,12 L60,8 L75,5 L90,2 L100,1"/><path class="sparkline-fill" d="M0,19 L15,17 L30,15 L45,12 L60,8 L75,5 L90,2 L100,1 L100,20 L0,20 Z"/></svg>
+                </div>
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div class="font-mono text-cyan text-sm tracking-wider mb-2">Rating</div>
+                    <div class="text-4xl md:text-5xl font-bold gradient-text">4.9</div>
+                    <div class="flex justify-center gap-1 mt-2">
+                        <i class="ph-fill ph-star text-magenta text-sm"></i>
+                        <i class="ph-fill ph-star text-magenta text-sm"></i>
+                        <i class="ph-fill ph-star text-magenta text-sm"></i>
+                        <i class="ph-fill ph-star text-magenta text-sm"></i>
+                        <i class="ph-fill ph-star text-magenta text-sm"></i>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div class="font-mono text-exito text-sm tracking-wider mb-2">Carga</div>
+                    <div class="text-4xl md:text-5xl font-bold gradient-text">&lt;2s</div>
+                    <div class="font-mono text-gris text-sm mt-1">Velocidad</div>
+                    <div class="w-full h-2 bg-white/5 rounded-full mt-3 overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-violeta to-exito w-[95%] rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Case -->
+            <div class="glass rounded-3xl overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <div class="relative aspect-[4/3] lg:aspect-auto">
+                        <img src="https://res.cloudinary.com/dtevfngjs/image/upload/v1778255217/cd13b27a-5476-4790-b766-8c12387574d4_grd9rv.jpg" alt="Villa Silvina" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-gradient-to-r from-noche/80 to-transparent lg:bg-gradient-to-l"></div>
+                    </div>
+                    <div class="p-10 lg:p-16 flex flex-col justify-center">
+                        <span class="font-mono text-violeta text-xs tracking-[0.2em] uppercase mb-4">Caso de Éxito</span>
+                        <h3 class="text-3xl font-bold text-texto mb-2">Villa Silvina</h3>
+                        <p class="text-gris mb-8">Espacio para jugar — Alquiler</p>
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <div class="font-mono text-violeta text-3xl font-bold">+150%</div>
+                                <div class="text-gris text-sm">Más clientes</div>
+                            </div>
+                            <div>
+                                <div class="font-mono text-magenta text-3xl font-bold">#1</div>
+                                <div class="text-gris text-sm">En Google Maps</div>
                             </div>
                         </div>
+                        <a href="https://villasilvinaespacioparajugar.netlify.app/" target="_blank" class="inline-flex items-center gap-2 text-violeta hover:text-magenta transition-colors font-medium group">
+                            Ver proyecto <i class="ph-bold ph-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
-
-    <!-- 6. Reseñas -->
-    <section id="resenas" class="py-24 relative">
-        <div class="bg-number -right-24 top-20" data-speed="0.06">04</div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- ==================== 6. VOCES (Infinite Carousel) ==================== -->
+    <section id="voces" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo via-noche to-indigo"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16">
-                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Testimonios</span>
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Lo que dicen nuestros clientes</h2>
-                <p class="text-gris text-lg mb-6">Opiniones reales de negocios que confiaron en nosotros.</p>
-                <a href="resenas.html" class="inline-flex items-center gap-2 text-oro hover:text-oroClaro transition-colors font-medium group">
-                    Dejá tu reseña <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-6 block">Testimonios</span>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] mb-6">Lo que dicen</h2>
+                <a href="resenas.html" class="inline-flex items-center gap-2 text-violeta hover:text-magenta transition-colors font-medium group">
+                    Dejá tu reseña <i class="ph-bold ph-arrow-right group-hover:translate-x-2 transition-transform"></i>
                 </a>
             </div>
+        </div>
 
-            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Reviews loaded dynamically -->
+        <!-- Carousel -->
+        <div class="overflow-hidden">
+            <div class="carousel-track" id="reviews-carousel">
+                <!-- Reviews will be injected here -->
             </div>
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
-
-    <!-- 7. Planes -->
-    <section id="planes" class="py-24 relative">
-        <div class="bg-number -left-20 top-40" data-speed="0.04">05</div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- ==================== 7. INVERSIÓN (Plans) ==================== -->
+    <section id="planes" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.08)_0%,transparent_70%)]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-20">
-                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Inversión</span>
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Planes de Crecimiento</h2>
-                <p class="text-gris text-lg">Elige la velocidad a la que quieres escalar tu negocio.</p>
+                <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-6 block">Inversión</span>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em]">Tu inversión</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
                 <!-- Silver -->
-                <div class="bg-card rounded-2xl p-10 border border-white/5 hover:border-oro/30 transition-all duration-500 flex flex-col group">
-                    <h3 class="text-2xl font-bold text-blanco mb-1">Silver</h3>
-                    <p class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-4">Fundamentos Digitales</p>
+                <div class="glass rounded-3xl p-10 flex flex-col hover:border-violeta/40 transition-all duration-500 group">
+                    <span class="font-mono text-violeta/40 text-6xl font-bold block mb-2">01</span>
+                    <h3 class="text-2xl font-bold text-texto mb-1">Silver</h3>
+                    <p class="font-mono text-violeta text-xs tracking-[0.15em] uppercase mb-4">Fundamentos Digitales</p>
                     <p class="text-gris text-sm mb-8">Ideal para negocios locales que solo necesitan existir en internet.</p>
-                    <div class="text-4xl font-bold text-blanco mb-8">$59.000</div>
+                    <div class="text-4xl font-bold text-texto mb-8">$59.000</div>
                     <ul class="space-y-4 mb-10 text-gris text-sm flex-grow">
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Optimización de Google Business Profile</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Indexación Básica en Google</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-violeta mt-1"></i> Optimización de Google Business Profile</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-violeta mt-1"></i> Indexación Básica en Google</li>
                     </ul>
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Silver." target="_blank" class="btn-outline-gold block w-full text-center py-3 rounded-lg font-semibold">Elegir Plan</a>
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Silver." target="_blank" class="glass block w-full text-center py-3 rounded-xl font-semibold hover:border-violeta/40 transition-colors">Elegir Plan</a>
                 </div>
 
                 <!-- Gold (Featured) -->
                 <div class="relative flex flex-col md:-translate-y-4">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-oro text-negro px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider z-20">Más Popular</div>
-                    <div class="bg-card p-10 rounded-2xl h-full border border-oro/50 relative overflow-hidden flex flex-col shadow-[0_0_40px_rgba(201,168,76,0.15)]">
-                        <div class="absolute top-0 right-0 w-40 h-40 bg-oro/5 blur-3xl rounded-full"></div>
-                        <h3 class="text-2xl font-bold text-blanco mb-1">Gold</h3>
-                        <p class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-4">Crecimiento y Reputación</p>
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violeta to-magenta text-texto px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider z-20">Más Popular</div>
+                    <div class="glass rounded-3xl p-10 h-full relative overflow-hidden flex flex-col border-violeta/40 shadow-[0_0_60px_rgba(124,58,237,0.15)]">
+                        <div class="absolute top-0 right-0 w-48 h-48 bg-violeta/10 blur-3xl rounded-full"></div>
+                        <span class="font-mono text-magenta/40 text-6xl font-bold block mb-2">02</span>
+                        <h3 class="text-2xl font-bold text-texto mb-1">Gold</h3>
+                        <p class="font-mono text-magenta text-xs tracking-[0.15em] uppercase mb-4">Crecimiento y Reputación</p>
                         <p class="text-gris text-sm mb-8">Ideal para negocios que quieren ganarse a la competencia local.</p>
-                        <div class="text-4xl font-bold text-oro mb-8">$99.000</div>
+                        <div class="text-4xl font-bold gradient-text mb-8">$99.000</div>
                         <ul class="space-y-4 mb-10 text-gris text-sm relative z-10 flex-grow">
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Optimización de Google Business Profile</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Gestión Estratégica de Reseñas</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> SEO Local para mas visibilidad</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Sitio Web con derivación a WhatsApp</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-magenta mt-1"></i> Optimización de Google Business Profile</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-magenta mt-1"></i> Gestión Estratégica de Reseñas</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-magenta mt-1"></i> SEO Local para mas visibilidad</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check text-magenta mt-1"></i> Sitio Web con derivación a WhatsApp</li>
                         </ul>
-                        <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Gold." target="_blank" class="btn-gold block w-full text-center py-3 rounded-lg font-semibold">Elegir Plan</a>
+                        <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Gold." target="_blank" class="portal-btn block w-full text-center py-3 rounded-xl font-semibold">
+                            <span>Elegir Plan</span>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Platinum -->
-                <div class="bg-card rounded-2xl p-10 border border-white/5 hover:border-oro/30 transition-all duration-500 flex flex-col group">
-                    <h3 class="text-2xl font-bold text-blanco mb-1">Platinum</h3>
-                    <p class="text-oro text-xs font-bold tracking-[0.2em] uppercase mb-4">Dominio de Mercado</p>
+                <div class="glass rounded-3xl p-10 flex flex-col hover:border-violeta/40 transition-all duration-500 group">
+                    <span class="font-mono text-cyan/40 text-6xl font-bold block mb-2">03</span>
+                    <h3 class="text-2xl font-bold text-texto mb-1">Platinum</h3>
+                    <p class="font-mono text-cyan text-xs tracking-[0.15em] uppercase mb-4">Dominio de Mercado</p>
                     <p class="text-gris text-sm mb-8">Ideal para marcas que buscan una presencia profesional online.</p>
-                    <div class="text-4xl font-bold text-blanco mb-8">$179.000</div>
+                    <div class="text-4xl font-bold text-texto mb-8">$179.000</div>
                     <ul class="space-y-4 mb-10 text-gris text-sm flex-grow">
-                        <li class="flex items-center gap-3 font-bold text-blanco/80"><i class="ph-bold ph-plus text-oro"></i> Todo lo del Plan Gold</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Mejora de Redes (SEO)</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-oro mt-1"></i> Web Avanzada (compra, catálogo, etc)</li>
+                        <li class="flex items-center gap-3 font-bold text-texto/80"><i class="ph-bold ph-plus text-cyan"></i> Todo lo del Plan Gold</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cyan mt-1"></i> Mejora de Redes (SEO)</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-cyan mt-1"></i> Web Avanzada (compra, catálogo, etc)</li>
                     </ul>
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Platinum." target="_blank" class="btn-outline-gold block w-full text-center py-3 rounded-lg font-semibold">Elegir Plan</a>
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20me%20interesa%20el%20Plan%20Platinum." target="_blank" class="glass block w-full text-center py-3 rounded-xl font-semibold hover:border-violeta/40 transition-colors">Elegir Plan</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
-
-    <!-- 8. FAQ -->
-    <section id="faq" class="py-24 relative">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="text-oro text-xs font-bold tracking-[0.25em] uppercase mb-4 block">Dudas</span>
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Preguntas Frecuentes</h2>
+    <!-- ==================== 8. SEÑALES (FAQ) ==================== -->
+    <section id="faq" class="py-32 relative overflow-hidden dot-grid">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <span class="font-mono text-violeta text-xs tracking-[0.25em] uppercase mb-6 block">Señales</span>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em]">Preguntas<br><span class="gradient-text">frecuentes</span></h2>
             </div>
 
             <div class="space-y-4">
-                <!-- FAQ 1 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                <!-- FAQ 1: Quién está detrás -->
+                <div class="glass rounded-2xl overflow-hidden faq-item">
                     <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
-                        <span class="font-medium text-blanco text-lg">¿Quién está detrás?</span>
-                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
+                        <div class="flex items-center gap-4">
+                            <span class="font-mono text-violeta/40 text-sm">01</span>
+                            <span class="font-medium text-texto text-lg">¿Quién está detrás?</span>
+                        </div>
+                        <i class="ph-bold ph-plus text-violeta faq-icon transition-transform"></i>
                     </button>
                     <div class="faq-content px-8">
                         <div class="flex flex-col md:flex-row items-center gap-6 pb-6">
                             <div class="md:w-1/2">
-                                <h4 class="font-bold text-oro text-xl mb-3">Tadeo Fernandez</h4>
+                                <h4 class="font-bold text-violeta text-xl mb-3">Tadeo Fernandez</h4>
                                 <p class="text-gris leading-relaxed">Fundador de Lemuria. Soy de Córdoba y me dedico a ayudar a negocios locales a crecer en internet. Trabajo directamente con cada cliente, sin intermediarios.</p>
                             </div>
                             <div class="md:w-1/2">
-                                <video class="w-full max-h-72 object-contain rounded-xl" playsinline muted preload="auto">
+                                <video class="w-full max-h-64 object-contain rounded-xl" playsinline muted preload="auto">
                                     <source src="https://res.cloudinary.com/dpeanyiml/video/upload/v1779228392/PXL_20260519_212754862_3_hdgq9d.webm" type="video/webm">
                                 </video>
                             </div>
@@ -576,10 +804,13 @@
                 </div>
 
                 <!-- FAQ 2 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                <div class="glass rounded-2xl overflow-hidden faq-item">
                     <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
-                        <span class="font-medium text-blanco text-lg">¿Cómo me aseguras que funcione?</span>
-                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
+                        <div class="flex items-center gap-4">
+                            <span class="font-mono text-magenta/40 text-sm">02</span>
+                            <span class="font-medium text-texto text-lg">¿Cómo me aseguras que funcione?</span>
+                        </div>
+                        <i class="ph-bold ph-plus text-magenta faq-icon transition-transform"></i>
                     </button>
                     <div class="faq-content px-8">
                         <p class="text-gris leading-relaxed pb-4">Podés ver nuestros casos de éxito más arriba para comprobar resultados reales. Además, pagás recién cuando tu página está activa y funcionando. Si querés más detalles, podés tener una charla directa conmigo y te explico el método paso a paso.</p>
@@ -587,10 +818,13 @@
                 </div>
 
                 <!-- FAQ 3 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                <div class="glass rounded-2xl overflow-hidden faq-item">
                     <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
-                        <span class="font-medium text-blanco text-lg">¿Cuánto tiempo tardan en crear mi web?</span>
-                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
+                        <div class="flex items-center gap-4">
+                            <span class="font-mono text-cyan/40 text-sm">03</span>
+                            <span class="font-medium text-texto text-lg">¿Cuánto tiempo tardan?</span>
+                        </div>
+                        <i class="ph-bold ph-plus text-cyan faq-icon transition-transform"></i>
                     </button>
                     <div class="faq-content px-8">
                         <p class="text-gris leading-relaxed pb-4">Dependiendo del plan elegido, un proyecto tarda menos de una semana desde el diagnóstico hasta el lanzamiento.</p>
@@ -598,10 +832,13 @@
                 </div>
 
                 <!-- FAQ 4 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                <div class="glass rounded-2xl overflow-hidden faq-item">
                     <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
-                        <span class="font-medium text-blanco text-lg">¿Cómo mejoran mi perfil de Google Maps?</span>
-                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
+                        <div class="flex items-center gap-4">
+                            <span class="font-mono text-violeta/40 text-sm">04</span>
+                            <span class="font-medium text-texto text-lg">¿Cómo mejoran mi perfil de Google Maps?</span>
+                        </div>
+                        <i class="ph-bold ph-plus text-violeta faq-icon transition-transform"></i>
                     </button>
                     <div class="faq-content px-8">
                         <p class="text-gris leading-relaxed pb-4">Optimizamos la ficha con palabras clave locales, actualizamos imágenes, servicios e implementamos un sistema de reseñas para que obtengas opiniones reales de tus clientes, lo que eleva tu posicionamiento de forma orgánica.</p>
@@ -609,10 +846,13 @@
                 </div>
 
                 <!-- FAQ 5 -->
-                <div class="bg-card border border-white/5 rounded-xl overflow-hidden faq-item">
+                <div class="glass rounded-2xl overflow-hidden faq-item">
                     <button class="w-full px-8 py-6 text-left flex justify-between items-center faq-button">
-                        <span class="font-medium text-blanco text-lg">¿Cómo es el sistema de reseñas?</span>
-                        <i class="ph-bold ph-caret-down text-oro faq-icon"></i>
+                        <div class="flex items-center gap-4">
+                            <span class="font-mono text-magenta/40 text-sm">05</span>
+                            <span class="font-medium text-texto text-lg">¿Cómo es el sistema de reseñas?</span>
+                        </div>
+                        <i class="ph-bold ph-plus text-magenta faq-icon transition-transform"></i>
                     </button>
                     <div class="faq-content px-8">
                         <p class="text-gris leading-relaxed pb-4">Implementamos un sistema que facilita a tus clientes dejar reseñas reales en Google. A través de un QR o enlace directo, simplificamos el proceso para que más clientes compartan su experiencia positiva, mejorando tu reputación online de forma orgánica.</p>
@@ -622,165 +862,166 @@
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
-
-    <!-- 9. CTA Final -->
-    <section id="contacto" class="py-32 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]"></div>
+    <!-- ==================== 9. EL SALTO (CTA Final) ==================== -->
+    <section id="contacto" class="py-40 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.1)_0%,transparent_60%)]"></div>
+        <canvas id="cta-particles" class="absolute inset-0 pointer-events-none"></canvas>
+        
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 class="text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tighter">¿Listo para vender más?</h2>
+            <h2 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] mb-8">
+                <span class="text-texto">¿Listo para</span><br>
+                <span class="gradient-text">el salto?</span>
+            </h2>
             <p class="text-xl text-gris mb-12 max-w-2xl mx-auto">Contanos tu situación actual para ver si te podemos ayudar, sin compromiso.</p>
-            <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="btn-gold inline-flex items-center gap-3 px-12 py-5 rounded-xl text-lg shadow-[0_0_40px_rgba(201,168,76,0.2)]">
-                <i class="ph-bold ph-whatsapp-logo text-2xl"></i> Escribinos por WhatsApp
-            </a>
+            
+            <div class="relative inline-block">
+                <!-- Pulse Rings -->
+                <div class="pulse-ring absolute -inset-8"></div>
+                <div class="pulse-ring absolute -inset-8" style="animation-delay: 0.5s"></div>
+                <div class="pulse-ring absolute -inset-8" style="animation-delay: 1s"></div>
+                
+                <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="portal-btn inline-flex items-center gap-3 px-12 py-5 rounded-xl text-lg font-bold text-texto relative z-10">
+                    <span><i class="ph-bold ph-whatsapp-logo text-2xl"></i> Escribinos por WhatsApp</span>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- 10. Footer -->
-    <footer class="py-16 border-t border-oro/10">
+    <!-- ==================== 10. FOOTER ==================== -->
+    <footer class="py-16 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violeta to-transparent"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full border border-oro/30 flex items-center justify-center">
-                            <i class="ph-fill ph-planet text-xl text-oro"></i>
+                        <div class="w-10 h-10 rounded-xl bg-violeta/10 flex items-center justify-center">
+                            <i class="ph-fill ph-planet text-xl text-violeta"></i>
                         </div>
-                        <span class="font-bold text-xl tracking-[0.15em] text-blanco">LEMURIA</span>
+                        <span class="font-bold text-xl tracking-[0.15em] text-texto">LEMURIA</span>
                     </div>
                     <p class="text-gris text-sm max-w-xs">Creamos ecosistemas digitales que traen clientes, generan confianza y cierran ventas.</p>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-blanco mb-6 text-sm tracking-[0.15em] uppercase">Enlaces</h4>
+                    <h4 class="font-mono text-violeta text-xs tracking-[0.2em] uppercase mb-6">Enlaces</h4>
                     <ul class="space-y-3 text-sm text-gris">
-                        <li><a href="#servicios" class="hover:text-oro transition-colors">Servicios</a></li>
-                        <li><a href="#metodo" class="hover:text-oro transition-colors">Nuestro Método</a></li>
-                        <li><a href="#casos" class="hover:text-oro transition-colors">Casos de Éxito</a></li>
-                        <li><a href="#planes" class="hover:text-oro transition-colors">Precios</a></li>
+                        <li><a href="#solucion" class="hover:text-violeta transition-colors">Servicios</a></li>
+                        <li><a href="#metodo" class="hover:text-violeta transition-colors">Nuestro Método</a></li>
+                        <li><a href="#resultados" class="hover:text-violeta transition-colors">Casos de Éxito</a></li>
+                        <li><a href="#planes" class="hover:text-violeta transition-colors">Precios</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-blanco mb-6 text-sm tracking-[0.15em] uppercase">Contacto</h4>
+                    <h4 class="font-mono text-violeta text-xs tracking-[0.2em] uppercase mb-6">Contacto</h4>
                     <ul class="space-y-3 text-sm text-gris">
-                        <li class="flex items-center gap-2"><i class="ph ph-envelope-simple text-oro"></i> lemuriahello@gmail.com</li>
-                        <li class="flex items-center gap-2"><i class="ph ph-phone text-oro"></i> +54 351 408 9238</li>
+                        <li class="flex items-center gap-2"><i class="ph ph-envelope-simple text-violeta"></i> lemuriahello@gmail.com</li>
+                        <li class="flex items-center gap-2"><i class="ph ph-phone text-violeta"></i> +54 351 408 9238</li>
                     </ul>
                     <div class="flex gap-3 mt-6">
-                        <a href="https://instagram.com/elmatike" target="_blank" class="w-10 h-10 rounded-full border border-oro/20 flex items-center justify-center hover:border-oro hover:bg-oro/10 transition-all text-oro">
+                        <a href="https://instagram.com/elmatike" target="_blank" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:border-violeta/40 transition-all text-violeta">
                             <i class="ph-fill ph-instagram-logo text-lg"></i>
                         </a>
-                        <a href="https://www.linkedin.com/in/lemuria/" target="_blank" class="w-10 h-10 rounded-full border border-oro/20 flex items-center justify-center hover:border-oro hover:bg-oro/10 transition-all text-oro">
+                        <a href="https://www.linkedin.com/in/lemuria/" target="_blank" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:border-violeta/40 transition-all text-violeta">
                             <i class="ph-fill ph-linkedin-logo text-lg"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="mt-16 pt-8 border-t border-white/5 text-center text-xs text-muted">
+            <div class="mt-16 pt-8 border-t border-white/5 text-center text-xs font-mono text-muted">
                 &copy; 2026 Lemuria Digital. Todos los derechos reservados.
             </div>
         </div>
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-oro text-negro rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition-transform z-50">
+    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-violeta to-magenta text-texto rounded-full flex items-center justify-center text-2xl shadow-lg shadow-violeta/30 hover:scale-110 transition-transform z-50 md:bottom-24">
         <i class="ph-fill ph-whatsapp-logo"></i>
     </a>
 
     <script>
-        // Custom Cursor
+        // ==================== CUSTOM CURSOR ====================
         const dot = document.getElementById('cursor-dot');
         const ring = document.getElementById('cursor-ring');
+        const trailsContainer = document.getElementById('cursor-trails');
         let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-        
+        const trails = [];
+        const maxTrails = 8;
+
+        for (let i = 0; i < maxTrails; i++) {
+            const t = document.createElement('div');
+            t.className = 'cursor-trail';
+            t.style.opacity = (1 - i / maxTrails) * 0.5;
+            trailsContainer.appendChild(t);
+            trails.push({ el: t, x: 0, y: 0 });
+        }
+
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX; mouseY = e.clientY;
             dot.style.left = mouseX + 'px';
             dot.style.top = mouseY + 'px';
         });
-        
-        function animateRing() {
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
+
+        document.addEventListener('mousedown', () => ring.classList.add('click'));
+        document.addEventListener('mouseup', () => ring.classList.remove('click'));
+
+        function animateCursor() {
+            ringX += (mouseX - ringX) * 0.12;
+            ringY += (mouseY - ringY) * 0.12;
             ring.style.left = ringX + 'px';
             ring.style.top = ringY + 'px';
-            requestAnimationFrame(animateRing);
+
+            let prevX = mouseX, prevY = mouseY;
+            trails.forEach((t, i) => {
+                const speed = 0.3 - i * 0.03;
+                t.x += (prevX - t.x) * speed;
+                t.y += (prevY - t.y) * speed;
+                t.el.style.left = t.x + 'px';
+                t.el.style.top = t.y + 'px';
+                prevX = t.x; prevY = t.y;
+            });
+
+            requestAnimationFrame(animateCursor);
         }
-        animateRing();
-        
-        document.querySelectorAll('a, button, .star-btn').forEach(el => {
+        animateCursor();
+
+        document.querySelectorAll('a, button, .dock-item, .faq-button').forEach(el => {
             el.addEventListener('mouseenter', () => ring.classList.add('hover'));
             el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
         });
 
-        // Scroll Progress
+        // ==================== SCROLL PROGRESS ====================
+        const progressCircle = document.querySelector('.scroll-progress-ring .progress');
+        const circumference = 2 * Math.PI * 20;
+        
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrollTop / docHeight) * 100;
-            document.getElementById('scroll-progress').style.width = progress + '%';
+            const progress = scrollTop / docHeight;
+            const offset = circumference - (progress * circumference);
+            progressCircle.style.strokeDashoffset = offset;
         });
 
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
+        document.getElementById('scroll-progress').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ==================== DOCK NAVIGATION ====================
+        const dock = document.getElementById('dock-nav');
+        const sections = ['manifiesto', 'problema', 'solucion', 'metodo', 'resultados', 'voces', 'planes', 'faq', 'contacto'];
+        const dockItems = document.querySelectorAll('.dock-item');
+        let lastScrollY = 0;
+
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-negro/90', 'backdrop-blur-xl', 'border-b', 'border-oro/10');
+            // Hide/show dock
+            if (window.scrollY > lastScrollY && window.scrollY > 200) {
+                dock.classList.add('hidden');
             } else {
-                navbar.classList.remove('bg-negro/90', 'backdrop-blur-xl', 'border-b', 'border-oro/10');
+                dock.classList.remove('hidden');
             }
-        });
+            lastScrollY = window.scrollY;
 
-        // Mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        // Hero Spotlight
-        const hero = document.getElementById('hero');
-        const spotlight = document.getElementById('hero-spotlight');
-        hero.addEventListener('mousemove', (e) => {
-            const rect = hero.getBoundingClientRect();
-            spotlight.style.setProperty('--x', (e.clientX - rect.left) + 'px');
-            spotlight.style.setProperty('--y', (e.clientY - rect.top) + 'px');
-        });
-
-        // Hero Particles
-        const particlesContainer = document.getElementById('particles-container');
-        for (let i = 0; i < 30; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.animationDuration = (Math.random() * 10 + 8) + 's';
-            p.style.animationDelay = Math.random() * 10 + 's';
-            p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
-            particlesContainer.appendChild(p);
-        }
-
-        // Hero Reveal Animation
-        window.addEventListener('load', () => {
-            const reveals = document.querySelectorAll('.reveal-text');
-            reveals.forEach((el, i) => {
-                setTimeout(() => el.classList.add('visible'), 300 + i * 200);
-            });
-            
-            gsap.to('#hero-desc', { opacity: 1, y: 0, duration: 1, delay: 1.2 });
-            gsap.to('#hero-cta', { opacity: 1, y: 0, duration: 0.8, delay: 1.5 });
-        });
-
-        // Side Navigation
-        const sections = ['hero', 'servicios', 'metodo', 'casos', 'resenas', 'planes', 'faq', 'contacto'];
-        const dots = document.querySelectorAll('.side-dot');
-        
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                const target = document.getElementById(dot.dataset.section);
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-        
-        window.addEventListener('scroll', () => {
+            // Update active section
             let current = '';
             sections.forEach(id => {
                 const section = document.getElementById(id);
@@ -789,25 +1030,197 @@
                     if (rect.top <= window.innerHeight / 2) current = id;
                 }
             });
-            dots.forEach(d => d.classList.toggle('active', d.dataset.section === current));
+            dockItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.section === current);
+            });
         });
 
-        // FAQ Accordion
+        // ==================== HERO PARTICLES ====================
+        const heroCanvas = document.getElementById('hero-particles');
+        const heroCtx = heroCanvas.getContext('2d');
+        let heroParticles = [];
+
+        function resizeHeroCanvas() {
+            heroCanvas.width = heroCanvas.offsetWidth;
+            heroCanvas.height = heroCanvas.offsetHeight;
+        }
+        resizeHeroCanvas();
+        window.addEventListener('resize', resizeHeroCanvas);
+
+        for (let i = 0; i < 60; i++) {
+            heroParticles.push({
+                x: Math.random() * heroCanvas.width,
+                y: Math.random() * heroCanvas.height,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.5,
+                opacity: Math.random() * 0.5 + 0.1,
+                color: Math.random() > 0.5 ? '124,58,237' : '236,72,153'
+            });
+        }
+
+        function animateHeroParticles() {
+            heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+            heroParticles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0) p.x = heroCanvas.width;
+                if (p.x > heroCanvas.width) p.x = 0;
+                if (p.y < 0) p.y = heroCanvas.height;
+                if (p.y > heroCanvas.height) p.y = 0;
+                
+                heroCtx.beginPath();
+                heroCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                heroCtx.fillStyle = `rgba(${p.color}, ${p.opacity})`;
+                heroCtx.fill();
+            });
+            requestAnimationFrame(animateHeroParticles);
+        }
+        animateHeroParticles();
+
+        // ==================== AUDIO VISUALIZER ====================
+        const visualizer = document.getElementById('audio-visualizer');
+        for (let i = 0; i < 40; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'audio-bar';
+            bar.style.setProperty('--max-height', (Math.random() * 24 + 8) + 'px');
+            bar.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+            visualizer.appendChild(bar);
+        }
+
+        // ==================== HERO ANIMATION SEQUENCE ====================
+        window.addEventListener('load', () => {
+            // Act 1: Initial reveal
+            gsap.to('#hero-label', { opacity: 1, duration: 1, delay: 0.5 });
+            gsap.from('#hero-line-1', { y: 60, opacity: 0, duration: 1, delay: 0.8, ease: 'power3.out' });
+            gsap.from('#hero-line-2', { y: 60, opacity: 0, duration: 1, delay: 1.2, ease: 'power3.out' });
+            gsap.from('#hero-line-3', { y: 60, opacity: 0, duration: 1, delay: 1.6, ease: 'power3.out' });
+            gsap.to('#hero-counter', { opacity: 1, duration: 1, delay: 2 });
+
+            // Counter animation
+            const counterEl = document.getElementById('visitor-count');
+            let count = 0;
+            const counterInterval = setInterval(() => {
+                count++;
+                counterEl.textContent = count;
+                if (count >= 3) clearInterval(counterInterval);
+            }, 400);
+
+            // Act 2: After 4 seconds
+            setTimeout(() => {
+                document.getElementById('hero-act-1').classList.add('hidden');
+                document.getElementById('hero-act-2').classList.remove('hidden');
+                gsap.from('#hero-act-2 h1', { scale: 0.8, opacity: 0, duration: 1, ease: 'power3.out' });
+                gsap.from('#hero-act-2 .counter', { y: 20, opacity: 0, duration: 0.8, delay: 0.5 });
+            }, 4000);
+
+            // Act 3: After 7 seconds
+            setTimeout(() => {
+                document.getElementById('hero-act-2').classList.add('hidden');
+                document.getElementById('hero-act-3').classList.remove('hidden');
+                gsap.from('#hero-act-3 .w-20', { scale: 0, rotation: 180, duration: 1, ease: 'back.out(1.7)' });
+                gsap.from('#hero-act-3 h1', { y: 40, opacity: 0, duration: 0.8, delay: 0.3 });
+                gsap.from('#hero-act-3 p', { y: 20, opacity: 0, duration: 0.8, delay: 0.5 });
+                gsap.from('#hero-act-3 .flex', { y: 30, opacity: 0, duration: 0.8, delay: 0.7, stagger: 0.1 });
+            }, 7000);
+        });
+
+        // ==================== PROBLEM SECTION ANIMATION ====================
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Counter animation for 76%
+        ScrollTrigger.create({
+            trigger: '#problema',
+            start: 'top 60%',
+            onEnter: () => {
+                const el = document.querySelector('.counter-text');
+                if (el && !el.dataset.animated) {
+                    el.dataset.animated = 'true';
+                    let current = 0;
+                    const target = parseInt(el.dataset.target);
+                    const interval = setInterval(() => {
+                        current += 2;
+                        el.textContent = current;
+                        if (current >= target) {
+                            el.textContent = target;
+                            clearInterval(interval);
+                        }
+                    }, 30);
+                }
+            }
+        });
+
+        // Stats cards animation
+        ScrollTrigger.create({
+            trigger: '#problem-stats',
+            start: 'top 70%',
+            onEnter: () => {
+                document.querySelectorAll('#problem-stats > div').forEach((card, i) => {
+                    setTimeout(() => {
+                        gsap.to(card, { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' });
+                    }, i * 200);
+                });
+            }
+        });
+
+        // ==================== CIRCUIT LINE ANIMATION ====================
+        ScrollTrigger.create({
+            trigger: '#metodo',
+            start: 'top 50%',
+            onEnter: () => {
+                document.getElementById('circuit-line').classList.add('visible');
+            }
+        });
+
+        // ==================== COUNTER ANIMATIONS ====================
+        document.querySelectorAll('.counter[data-target]').forEach(el => {
+            ScrollTrigger.create({
+                trigger: el,
+                start: 'top 80%',
+                onEnter: () => {
+                    if (!el.dataset.animated) {
+                        el.dataset.animated = 'true';
+                        let current = 0;
+                        const target = parseInt(el.dataset.target);
+                        const step = Math.ceil(target / 60);
+                        const interval = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(interval);
+                            }
+                            el.textContent = current;
+                        }, 30);
+                    }
+                }
+            });
+        });
+
+        // ==================== FAQ ACCORDION ====================
         document.querySelectorAll('.faq-button').forEach(button => {
             button.addEventListener('click', () => {
                 const content = button.nextElementSibling;
                 const icon = button.querySelector('.faq-icon');
-                const wasOpen = content.classList.contains('open');
+                const wasOpen = content.style.maxHeight;
                 
                 // Close all
-                document.querySelectorAll('.faq-content').forEach(c => c.classList.remove('open'));
-                document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotated'));
+                document.querySelectorAll('.faq-content').forEach(c => {
+                    c.style.maxHeight = null;
+                    c.style.paddingTop = '0';
+                    c.style.paddingBottom = '0';
+                });
+                document.querySelectorAll('.faq-icon').forEach(i => {
+                    i.classList.remove('rotate-45');
+                    i.style.transform = '';
+                });
                 
                 if (!wasOpen) {
-                    content.classList.add('open');
-                    icon.classList.add('rotated');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    content.style.paddingTop = '0';
+                    content.style.paddingBottom = '20px';
+                    icon.classList.add('rotate-45');
+                    icon.style.transform = 'rotate(45deg)';
                     
-                    // Play video if present
                     const video = content.querySelector('video');
                     if (video) {
                         video.currentTime = 0;
@@ -824,26 +1237,49 @@
             });
         });
 
-        // 3D Card Tilt (Desktop only)
-        if (window.innerWidth > 768) {
-            document.querySelectorAll('.tilt-card').forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 20;
-                    const rotateY = (centerX - x) / 20;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-                });
+        // ==================== CTA PARTICLES ====================
+        const ctaCanvas = document.getElementById('cta-particles');
+        const ctaCtx = ctaCanvas.getContext('2d');
+        let ctaParticles = [];
+
+        function resizeCtaCanvas() {
+            ctaCanvas.width = ctaCanvas.offsetWidth;
+            ctaCanvas.height = ctaCanvas.offsetHeight;
+        }
+        resizeCtaCanvas();
+        window.addEventListener('resize', resizeCtaCanvas);
+
+        for (let i = 0; i < 40; i++) {
+            ctaParticles.push({
+                x: Math.random() * ctaCanvas.width,
+                y: Math.random() * ctaCanvas.height,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.3,
+                opacity: Math.random() * 0.4 + 0.1,
             });
         }
 
-        // Load Reviews from Supabase
+        function animateCtaParticles() {
+            ctaCtx.clearRect(0, 0, ctaCanvas.width, ctaCanvas.height);
+            ctaParticles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0) p.x = ctaCanvas.width;
+                if (p.x > ctaCanvas.width) p.x = 0;
+                if (p.y < 0) p.y = ctaCanvas.height;
+                if (p.y > ctaCanvas.height) p.y = 0;
+                
+                ctaCtx.beginPath();
+                ctaCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctaCtx.fillStyle = `rgba(124,58,237, ${p.opacity})`;
+                ctaCtx.fill();
+            });
+            requestAnimationFrame(animateCtaParticles);
+        }
+        animateCtaParticles();
+
+        // ==================== REVIEWS CAROUSEL ====================
         const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -851,49 +1287,55 @@
         function renderStars(count) {
             let html = '';
             for (let i = 1; i <= 5; i++) {
-                html += `<i class="ph-fill ph-star ${i <= count ? 'text-oro' : 'text-muted/30'} text-lg"></i>`;
+                html += `<i class="ph-fill ph-star ${i <= count ? 'text-magenta' : 'text-muted/30'} text-sm"></i>`;
             }
             return html;
         }
 
         async function loadReviews() {
+            const carousel = document.getElementById('reviews-carousel');
             const container = document.getElementById('reviews-container');
-            if (!container) return;
 
-            const { data, error } = await sb
-                .from('reviews')
-                .select('*')
-                .eq('aprobada', true)
-                .order('created_at', { ascending: false });
+            const { data, error } = await sb.from('reviews').select('*').eq('aprobada', true).order('created_at', { ascending: false });
 
-            if (error || !data || data.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center text-gris py-12">
-                        <div class="w-16 h-16 rounded-full bg-oro/5 flex items-center justify-center mx-auto mb-4">
-                            <i class="ph ph-chat-text text-3xl text-oro/40"></i>
-                        </div>
-                        <p class="text-lg">Aún no hay reseñas publicadas.</p>
-                        <a href="resenas.html" class="inline-flex items-center gap-2 mt-4 text-oro hover:text-oroClaro transition-colors font-medium">
-                            Sé el primero <i class="ph-bold ph-arrow-right"></i>
-                        </a>
-                    </div>
-                `;
-                return;
-            }
+            const reviews = data && data.length > 0 ? data : [
+                { empresa: 'Villa Silvina', estrellas: 5, descripcion: 'Excelente servicio. Tadeo entendió exactamente lo que necesitábamos y en menos de una semana ya teníamos la web funcionando.' }
+            ];
 
-            container.innerHTML = data.map(review => `
-                <div class="bg-card rounded-2xl p-8 border border-oro/10 hover:border-oro/30 transition-all duration-500 relative group">
-                    <div class="absolute top-4 right-6 text-oro/10 text-6xl font-serif leading-none">"</div>
+            const cardsHTML = reviews.map(review => `
+                <div class="glass rounded-2xl p-8 min-w-[320px] md:min-w-[380px] flex-shrink-0 relative group hover:border-violeta/40 transition-colors">
+                    <div class="absolute top-4 right-6 text-violeta/10 text-6xl font-serif leading-none">"</div>
                     <div class="flex gap-1 mb-4">${renderStars(review.estrellas)}</div>
                     <p class="text-gris text-sm leading-relaxed mb-6 relative z-10">"${review.descripcion}"</p>
-                    <div class="flex items-center gap-3 pt-4 border-t border-oro/10">
-                        <div class="w-8 h-8 rounded-full bg-oro/10 flex items-center justify-center">
-                            <i class="ph-fill ph-buildings text-oro text-sm"></i>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                        <div class="w-8 h-8 rounded-full bg-violeta/10 flex items-center justify-center">
+                            <i class="ph-fill ph-buildings text-violeta text-sm"></i>
                         </div>
-                        <span class="text-blanco font-semibold text-sm">${review.empresa}</span>
+                        <span class="text-texto font-semibold text-sm">${review.empresa}</span>
                     </div>
                 </div>
             `).join('');
+
+            // Duplicate for infinite loop
+            const fullHTML = cardsHTML + cardsHTML;
+            carousel.innerHTML = fullHTML;
+
+            // Also update the grid container if it exists
+            if (container) {
+                container.innerHTML = reviews.map(review => `
+                    <div class="glass rounded-2xl p-8 relative group hover:border-violeta/40 transition-colors">
+                        <div class="absolute top-4 right-6 text-violeta/10 text-6xl font-serif leading-none">"</div>
+                        <div class="flex gap-1 mb-4">${renderStars(review.estrellas)}</div>
+                        <p class="text-gris text-sm leading-relaxed mb-6 relative z-10">"${review.descripcion}"</p>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-violeta/10 flex items-center justify-center">
+                                <i class="ph-fill ph-buildings text-violeta text-sm"></i>
+                            </div>
+                            <span class="text-texto font-semibold text-sm">${review.empresa}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
         }
 
         loadReviews();

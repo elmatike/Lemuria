@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dejar Reseña | LEMURIA</title>
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtevfngjs/image/upload/e_trim,c_lpad,w_512,h_512,b_transparent/v1778556633/Gemini_Generated_Image_rb7hc0rb7hc0rb7h_jq1ftt.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%237C3AED'/><stop offset='100%25' stop-color='%23EC4899'/></linearGradient></defs><rect width='100' height='100' rx='20' fill='%23050510'/><path d='M25 20 L25 80 L75 80' stroke='url(%23g)' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,51 +15,58 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: { sans: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
                     colors: {
-                        negro: '#0A0A0A', carbon: '#111111', card: '#161616',
-                        oro: '#C9A84C', oroClaro: '#E8D5A3', oroOscuro: '#8B7635',
-                        blanco: '#FFFFFF', gris: '#A0A0A0', muted: '#555555', exito: '#2ECC71',
+                        noche: '#050510', indigo: '#0D0D1A', violeta: '#7C3AED', purpura: '#A855F7',
+                        magenta: '#EC4899', cyan: '#06B6D4', texto: '#F1F0FF', gris: '#8B8BA3',
+                        muted: '#4A4A6A', exito: '#34D399',
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0A0A0A; color: #FFFFFF; }
-        .star-btn { cursor: pointer; transition: transform 0.15s ease, color 0.15s ease; background: none; border: none; padding: 0; display: inline-flex; color: #555555; font-size: 2.5rem; line-height: 1; }
+        body { background-color: #050510; color: #F1F0FF; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(124,58,237,0.15); }
+        .gradient-text { background: linear-gradient(135deg, #7C3AED, #EC4899, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .portal-btn { position: relative; overflow: hidden; background: linear-gradient(135deg, #7C3AED, #EC4899); transition: all 0.3s; }
+        .portal-btn::before { content: ''; position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent, #7C3AED, #EC4899, transparent); animation: portal-spin 3s linear infinite; }
+        .portal-btn::after { content: ''; position: absolute; inset: 2px; background: linear-gradient(135deg, #7C3AED, #EC4899); border-radius: inherit; }
+        .portal-btn span { position: relative; z-index: 1; }
+        @keyframes portal-spin { to { transform: rotate(360deg); } }
+        .portal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .portal-btn:disabled::before { animation: none; }
+        .star-btn { cursor: pointer; transition: transform 0.15s ease, color 0.15s ease; background: none; border: none; padding: 0; display: inline-flex; color: #4A4A6A; font-size: 2.5rem; line-height: 1; }
         .star-btn:hover { transform: scale(1.2); }
-        .star-btn.active, .star-btn.hovered { color: #C9A84C; }
-        .btn-gold { background: linear-gradient(135deg, #8B7635, #C9A84C, #E8D5A3, #C9A84C, #8B7635); background-size: 300% 300%; color: #0A0A0A; font-weight: 700; transition: all 0.3s ease; animation: shimmer 3s ease infinite; }
-        .btn-gold:hover { box-shadow: 0 0 30px rgba(201,168,76,0.4); transform: translateY(-2px); }
-        .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-        @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .star-btn.active, .star-btn.hovered { color: #EC4899; }
+        .dot-grid { background-image: radial-gradient(circle, rgba(124,58,237,0.15) 1px, transparent 1px); background-size: 24px 24px; }
+        ::selection { background: rgba(124,58,237,0.4); color: #fff; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex items-center justify-center px-4">
+<body class="antialiased min-h-screen flex items-center justify-center px-4 dot-grid">
     <div class="max-w-lg w-full">
-        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-gris hover:text-oro transition-colors mb-8 text-sm">
-            <i class="ph-bold ph-arrow-left"></i> Volver al sitio
+        <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 text-gris hover:text-violeta transition-colors mb-10 text-sm font-mono tracking-wide group">
+            <i class="ph-bold ph-arrow-left group-hover:-translate-x-1 transition-transform"></i> Volver al sitio
         </a>
 
         <div class="text-center mb-10">
-            <div class="w-16 h-16 rounded-full border border-oro/20 flex items-center justify-center mx-auto mb-6">
-                <i class="ph-fill ph-star text-4xl text-oro"></i>
+            <div class="w-16 h-16 rounded-2xl glass flex items-center justify-center mx-auto mb-6">
+                <i class="ph-fill ph-star text-4xl text-violeta"></i>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">Dejá tu Reseña</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3 tracking-[-0.02em]">Dejá tu Reseña</h1>
             <p class="text-gris">Contanos tu experiencia con Lemuria. Tu opinión ayuda a otros negocios a confiar en nosotros.</p>
         </div>
 
-        <div class="bg-card rounded-2xl p-10 border border-oro/10">
+        <div class="glass rounded-3xl p-10">
             <form id="review-form" class="space-y-6">
                 <div>
-                    <label for="empresa" class="block text-sm font-medium text-blanco mb-2">Nombre de tu empresa</label>
+                    <label for="empresa" class="block text-sm font-medium text-texto mb-2 font-mono tracking-wide">Nombre de tu empresa</label>
                     <input type="text" id="empresa" required placeholder="Ej: Villa Silvina" 
-                        class="w-full px-4 py-3 rounded-xl bg-negro border border-white/10 text-blanco placeholder-muted focus:outline-none focus:border-oro focus:ring-1 focus:ring-oro transition-colors">
+                        class="w-full px-4 py-3 rounded-xl bg-noche/50 border border-white/10 text-texto placeholder-muted focus:outline-none focus:border-violeta focus:ring-1 focus:ring-violeta transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-blanco mb-2">¿Cómo fue tu experiencia?</label>
+                    <label class="block text-sm font-medium text-texto mb-2 font-mono tracking-wide">¿Cómo fue tu experiencia?</label>
                     <div class="flex items-center gap-1" id="star-container">
                         <button type="button" class="star-btn" data-value="1">★</button>
                         <button type="button" class="star-btn" data-value="2">★</button>
@@ -71,13 +78,13 @@
                 </div>
 
                 <div>
-                    <label for="descripcion" class="block text-sm font-medium text-blanco mb-2">Tu opinión</label>
+                    <label for="descripcion" class="block text-sm font-medium text-texto mb-2 font-mono tracking-wide">Tu opinión</label>
                     <textarea id="descripcion" required rows="4" placeholder="Contanos qué te pareció el servicio..."
-                        class="w-full px-4 py-3 rounded-xl bg-negro border border-white/10 text-blanco placeholder-muted focus:outline-none focus:border-oro focus:ring-1 focus:ring-oro transition-colors resize-none"></textarea>
+                        class="w-full px-4 py-3 rounded-xl bg-noche/50 border border-white/10 text-texto placeholder-muted focus:outline-none focus:border-violeta focus:ring-1 focus:ring-violeta transition-colors resize-none"></textarea>
                 </div>
 
-                <button type="submit" id="submit-btn" class="w-full btn-gold py-4 rounded-xl text-lg flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña
+                <button type="submit" id="submit-btn" class="w-full portal-btn py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2">
+                    <span><i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña</span>
                 </button>
             </form>
 
@@ -85,10 +92,10 @@
                 <div class="w-16 h-16 rounded-full bg-exito/10 flex items-center justify-center mx-auto mb-4">
                     <i class="ph-fill ph-check-circle text-4xl text-exito"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-blanco mb-2">¡Gracias por tu reseña!</h2>
+                <h2 class="text-2xl font-bold text-texto mb-2">¡Gracias por tu reseña!</h2>
                 <p class="text-gris">Será revisada antes de publicarse en nuestro sitio.</p>
-                <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-6 text-oro hover:text-oroClaro transition-colors font-medium">
-                    Volver al sitio <i class="ph-bold ph-arrow-right"></i>
+                <a href="https://lemurianos.vercel.app/" class="inline-flex items-center gap-2 mt-6 text-violeta hover:text-magenta transition-colors font-medium group">
+                    Volver al sitio <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
         </div>
@@ -106,9 +113,7 @@
         function setStars(value) {
             selectedStars = value;
             estrellasInput.value = value;
-            starBtns.forEach(btn => {
-                btn.classList.toggle('active', parseInt(btn.dataset.value) <= value);
-            });
+            starBtns.forEach(btn => btn.classList.toggle('active', parseInt(btn.dataset.value) <= value));
         }
 
         starBtns.forEach(btn => {
@@ -137,7 +142,7 @@
             if (estrellas < 1 || estrellas > 5) { alert('Por favor seleccioná una calificación.'); return; }
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Enviando...';
+            btn.innerHTML = '<span><i class="ph-bold ph-spinner animate-spin"></i> Enviando...</span>';
 
             try {
                 const { data, error } = await sb.from('reviews').insert([{ empresa, estrellas, descripcion, aprobada: false }]).select().single();
@@ -148,7 +153,7 @@
             } catch (error) {
                 console.error('Error:', error);
                 btn.disabled = false;
-                btn.innerHTML = '<i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña';
+                btn.innerHTML = '<span><i class="ph-bold ph-paper-plane-right"></i> Publicar Reseña</span>';
                 alert('Hubo un error. Intentá de nuevo.');
             }
         });
