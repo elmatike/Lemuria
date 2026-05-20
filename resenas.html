@@ -227,7 +227,12 @@
                     await fetch(EDGE_FUNCTION_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ reviewId: data.id })
+                        body: JSON.stringify({
+                            reviewId: data.id,
+                            empresa: empresa,
+                            estrellas: estrellas,
+                            descripcion: descripcion
+                        })
                     });
                 } catch (emailError) {
                     console.error('Error sending email:', emailError);
