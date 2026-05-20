@@ -63,7 +63,7 @@
     <script>
         const SUPABASE_URL = 'https://iuhcdfvzgyrowbaqdagg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1aGNkZnZ6Z3lyb3diYXFkYWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjkyMTcsImV4cCI6MjA5NDgwNTIxN30.AeEryLxTtqINNyxbMIxXUYFV46nlTd5b1jJ-ikjzVNU';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const params = new URLSearchParams(window.location.search);
         const reviewId = params.get('id');
@@ -73,7 +73,7 @@
             document.getElementById('error-state').classList.remove('hidden');
             document.getElementById('error-msg').textContent = 'No se proporcionó un ID de reseña válido.';
         } else {
-            supabase
+            sb
                 .from('reviews')
                 .update({ aprobada: true })
                 .eq('id', reviewId)
