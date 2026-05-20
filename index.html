@@ -398,16 +398,18 @@
                 </h1>
                 <p class="font-mono text-gris text-xs sm:text-base tracking-[0.2em] uppercase mb-8">Digital Growth Engine</p>
                 
-                <div class="flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="portal-btn px-6 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-bold text-texto flex items-center justify-center gap-2">
+                <div class="flex flex-col items-center gap-3 md:gap-4">
+                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="portal-btn w-full max-w-xs px-6 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-bold text-texto flex items-center justify-center gap-2">
                         <span>Inicia tu Crecimiento <i class="ph-bold ph-arrow-right"></i></span>
                     </a>
-                    <a href="#resultados" class="glass px-6 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
-                        Ver Resultados <i class="ph-bold ph-chart-bar text-violeta"></i>
-                    </a>
-                    <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="glass px-6 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
-                        <i class="ph-fill ph-whatsapp-logo text-green-400"></i> WhatsApp
-                    </a>
+                    <div class="flex gap-3 md:gap-4 w-full max-w-xs">
+                        <a href="#resultados" class="glass flex-1 px-4 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
+                            Ver Resultados <i class="ph-bold ph-chart-bar text-violeta"></i>
+                        </a>
+                        <a href="https://wa.me/543514089238?text=Hola%2C%20quiero%20consultar%20sobre%20sus%20servicios." target="_blank" class="glass flex-1 px-4 md:px-8 py-3 md:py-4 rounded-xl text-base md:text-lg font-medium text-texto flex items-center justify-center gap-2 hover:border-violeta/40 transition-colors">
+                            <i class="ph-fill ph-whatsapp-logo text-green-400"></i> WhatsApp
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -715,8 +717,8 @@
             <div class="glass rounded-3xl overflow-hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
                     <div class="relative aspect-[4/3] lg:aspect-auto max-h-64 lg:max-h-none">
-                        <img src="https://res.cloudinary.com/dtevfngjs/image/upload/v1778255217/cd13b27a-5476-4790-b766-8c12387574d4_grd9rv.jpg" alt="Villa Silvina" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-gradient-to-t from-noche/80 via-noche/20 to-transparent lg:bg-gradient-to-l lg:from-noche/80 lg:to-transparent"></div>
+                        <img src="https://res.cloudinary.com/dtevfngjs/image/upload/v1778255217/cd13b27a-5476-4790-b766-8c12387574d4_grd9rv.jpg" alt="Villa Silvina" class="object-cover object-center w-full h-full">
+                        <div class="absolute inset-0 bg-gradient-to-t from-noche/80 via-transparent to-transparent lg:bg-gradient-to-l lg:from-noche/80 lg:to-transparent"></div>
                     </div>
                     <div class="p-6 md:p-10 lg:p-16 flex flex-col justify-center">
                         <span class="font-mono text-violeta text-xs tracking-[0.2em] uppercase mb-3 md:mb-4">Caso de Éxito</span>
@@ -754,11 +756,9 @@
             </div>
         </div>
 
-        <!-- Carousel -->
-        <div class="overflow-hidden">
-            <div class="carousel-track" id="reviews-carousel">
-                <!-- Reviews will be injected here -->
-            </div>
+        <!-- Reviews Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto" id="reviews-grid">
+            <!-- Reviews will be injected here -->
         </div>
     </section>
 
@@ -990,10 +990,6 @@
         </div>
     </footer>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/543514089238" target="_blank" class="fixed bottom-20 left-4 md:bottom-24 md:right-6 md:left-auto w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-violeta to-magenta text-texto rounded-full flex items-center justify-center text-xl md:text-2xl shadow-lg shadow-violeta/30 hover:scale-110 transition-transform z-50">
-        <i class="ph-fill ph-whatsapp-logo"></i>
-    </a>
 
     <script>
         // ==================== CUSTOM CURSOR ====================
@@ -1066,7 +1062,6 @@
         const dock = document.getElementById('dock-nav');
         const sections = ['manifiesto', 'problema', 'solucion', 'metodo', 'resultados', 'voces', 'planes', 'faq', 'contacto'];
         const dockItems = document.querySelectorAll('.dock-item');
-        let lastScrollY = 0;
 
         window.addEventListener('scroll', () => {
             // Hide dock only at the very bottom of the page
@@ -1309,12 +1304,13 @@
         // ==================== FAQ VIDEO AUTOPLAY ON SCROLL ====================
         const faqVideo = document.querySelector('.faq-content video');
         if (faqVideo) {
+            let videoPlayed = false;
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
+                    if (entry.isIntersecting && !videoPlayed) {
+                        videoPlayed = true;
                         faqVideo.play().catch(() => {});
-                    } else {
-                        faqVideo.pause();
+                        videoObserver.disconnect();
                     }
                 });
             }, { threshold: 0.5 });
@@ -1379,8 +1375,7 @@
         }
 
         async function loadReviews() {
-            const carousel = document.getElementById('reviews-carousel');
-            const container = document.getElementById('reviews-container');
+            const grid = document.getElementById('reviews-grid');
 
             const { data, error } = await sb.from('reviews').select('*').eq('aprobada', true).order('created_at', { ascending: false });
 
@@ -1388,40 +1383,19 @@
                 { empresa: 'Villa Silvina', estrellas: 5, descripcion: 'Excelente servicio. Tadeo entendió exactamente lo que necesitábamos y en menos de una semana ya teníamos la web funcionando.' }
             ];
 
-            const cardsHTML = reviews.map(review => `
-                <div class="glass rounded-2xl p-4 md:p-8 min-w-[260px] md:min-w-[380px] flex-shrink-0 relative group hover:border-violeta/40 transition-colors">
+            grid.innerHTML = reviews.map(review => `
+                <div class="glass rounded-2xl p-5 md:p-8 relative group hover:border-violeta/40 transition-colors">
                     <div class="absolute top-3 md:top-4 right-4 md:right-6 text-violeta/10 text-4xl md:text-6xl font-serif leading-none">"</div>
                     <div class="flex gap-1 mb-2 md:mb-4">${renderStars(review.estrellas)}</div>
-                    <p class="text-gris text-xs md:text-sm leading-relaxed mb-3 md:mb-6 relative z-10 line-clamp-4">"${review.descripcion}"</p>
+                    <p class="text-gris text-xs md:text-sm leading-relaxed mb-3 md:mb-6 relative z-10">"${review.descripcion}"</p>
                     <div class="flex items-center gap-2 md:gap-3 pt-2 md:pt-4 border-t border-white/5">
                         <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-violeta/10 flex items-center justify-center flex-shrink-0">
                             <i class="ph-fill ph-buildings text-violeta text-xs md:text-sm"></i>
                         </div>
-                        <span class="text-texto font-semibold text-xs md:text-sm truncate">${review.empresa}</span>
+                        <span class="text-texto font-semibold text-xs md:text-sm">${review.empresa}</span>
                     </div>
                 </div>
             `).join('');
-
-            // Duplicate for infinite loop
-            const fullHTML = cardsHTML + cardsHTML;
-            carousel.innerHTML = fullHTML;
-
-            // Also update the grid container if it exists
-            if (container) {
-                container.innerHTML = reviews.map(review => `
-                    <div class="glass rounded-2xl p-8 relative group hover:border-violeta/40 transition-colors">
-                        <div class="absolute top-4 right-6 text-violeta/10 text-6xl font-serif leading-none">"</div>
-                        <div class="flex gap-1 mb-4">${renderStars(review.estrellas)}</div>
-                        <p class="text-gris text-sm leading-relaxed mb-6 relative z-10">"${review.descripcion}"</p>
-                        <div class="flex items-center gap-3 pt-4 border-t border-white/5">
-                            <div class="w-8 h-8 rounded-full bg-violeta/10 flex items-center justify-center">
-                                <i class="ph-fill ph-buildings text-violeta text-sm"></i>
-                            </div>
-                            <span class="text-texto font-semibold text-sm">${review.empresa}</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
         }
 
         loadReviews();
