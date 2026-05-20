@@ -426,9 +426,7 @@
                 <div>
                     <span class="font-mono text-magenta text-xs tracking-[0.25em] uppercase mb-4 md:mb-6 block">El problema</span>
                     <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.04em] leading-tight mb-6 md:mb-8">
-                        <span class="text-texto">El </span>
-                        <span class="gradient-text counter-text inline-block min-w-[2ch] text-center" data-target="76">0</span>
-                        <span class="text-texto">% de los clientes buscan tu negocio online antes de visitarte.</span>
+                        <span class="text-texto">Tus clientes te buscan online antes de visitarte.</span>
                     </h2>
                     <p class="text-gris text-base md:text-lg leading-relaxed">Si no tenés presencia digital, simplemente <span class="text-magenta font-medium">no existís</span> para la mayoría de tus potenciales clientes.</p>
                 </div>
@@ -440,7 +438,7 @@
                             <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-violeta/10 flex items-center justify-center">
                                 <i class="ph-bold ph-globe text-violeta text-lg md:text-xl"></i>
                             </div>
-                            <span class="font-mono text-violeta text-sm tracking-wider">46%</span>
+                            <span class="font-mono text-violeta text-sm tracking-wider">Casi la mitad</span>
                         </div>
                         <p class="text-gris text-sm md:text-base">de las búsquedas locales no encuentran web</p>
                     </div>
@@ -449,16 +447,16 @@
                             <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-magenta/10 flex items-center justify-center">
                                 <i class="ph-bold ph-star text-magenta text-lg md:text-xl"></i>
                             </div>
-                            <span class="font-mono text-magenta text-sm tracking-wider">88%</span>
+                            <span class="font-mono text-magenta text-sm tracking-wider">La gran mayoría</span>
                         </div>
-                        <p class="text-gris text-sm md:text-base">confían en reseñas online antes de comprar</p>
+                        <p class="text-gris text-sm md:text-base">confía en reseñas online antes de comprar</p>
                     </div>
                     <div class="glass rounded-2xl p-5 md:p-8 opacity-0" data-delay="400">
                         <div class="flex items-center gap-3 md:gap-4 mb-3">
                             <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-cyan/10 flex items-center justify-center">
                                 <i class="ph-bold ph-map-pin text-cyan text-lg md:text-xl"></i>
                             </div>
-                            <span class="font-mono text-cyan text-sm tracking-wider">80%</span>
+                            <span class="font-mono text-cyan text-sm tracking-wider">La mayoría</span>
                         </div>
                         <p class="text-gris text-sm md:text-base">de clicks van al primer resultado de Maps</p>
                     </div>
@@ -655,13 +653,13 @@
                 <div class="glass rounded-2xl p-4 md:p-8 text-center">
                     <div class="font-mono text-violeta text-xs md:text-sm tracking-wider mb-2">Clientes</div>
                     <div class="text-3xl md:text-5xl font-bold gradient-text counter" data-target="150">0</div>
-                    <div class="font-mono text-gris text-xs md:text-sm mt-1">+150%</div>
+                    <div class="font-mono text-gris text-xs md:text-sm mt-1">+150 clientes</div>
                     <svg class="w-full h-6 md:h-8 mt-2 md:mt-3" viewBox="0 0 100 20"><path class="sparkline" d="M0,18 L10,16 L20,14 L30,12 L40,10 L50,8 L60,6 L70,4 L80,3 L90,2 L100,1"/><path class="sparkline-fill" d="M0,18 L10,16 L20,14 L30,12 L40,10 L50,8 L60,6 L70,4 L80,3 L90,2 L100,1 L100,20 L0,20 Z"/></svg>
                 </div>
                 <div class="glass rounded-2xl p-4 md:p-8 text-center">
                     <div class="font-mono text-magenta text-xs md:text-sm tracking-wider mb-2">Visibilidad</div>
                     <div class="text-3xl md:text-5xl font-bold gradient-text counter" data-target="340">0</div>
-                    <div class="font-mono text-gris text-xs md:text-sm mt-1">+340%</div>
+                    <div class="font-mono text-gris text-xs md:text-sm mt-1">Mayor visibilidad</div>
                     <svg class="w-full h-6 md:h-8 mt-2 md:mt-3" viewBox="0 0 100 20"><path class="sparkline" d="M0,19 L15,17 L30,15 L45,12 L60,8 L75,5 L90,2 L100,1"/><path class="sparkline-fill" d="M0,19 L15,17 L30,15 L45,12 L60,8 L75,5 L90,2 L100,1 L100,20 L0,20 Z"/></svg>
                 </div>
                 <div class="glass rounded-2xl p-4 md:p-8 text-center">
@@ -698,7 +696,7 @@
                         <p class="text-gris text-sm md:text-base mb-6 md:mb-8">Espacio para jugar — Alquiler</p>
                         <div class="grid grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
                             <div>
-                                <div class="font-mono text-violeta text-2xl md:text-3xl font-bold">+150%</div>
+                                <div class="font-mono text-violeta text-2xl md:text-3xl font-bold">+150 clientes</div>
                                 <div class="text-gris text-xs md:text-sm">Más clientes</div>
                             </div>
                             <div>
@@ -1159,28 +1157,6 @@
 
         // ==================== PROBLEM SECTION ANIMATION ====================
         gsap.registerPlugin(ScrollTrigger);
-
-        // Counter animation for 76%
-        ScrollTrigger.create({
-            trigger: '#problema',
-            start: 'top 60%',
-            onEnter: () => {
-                const el = document.querySelector('.counter-text');
-                if (el && !el.dataset.animated) {
-                    el.dataset.animated = 'true';
-                    let current = 0;
-                    const target = parseInt(el.dataset.target);
-                    const interval = setInterval(() => {
-                        current += 2;
-                        el.textContent = current;
-                        if (current >= target) {
-                            el.textContent = target;
-                            clearInterval(interval);
-                        }
-                    }, 30);
-                }
-            }
-        });
 
         // Stats cards animation
         ScrollTrigger.create({
